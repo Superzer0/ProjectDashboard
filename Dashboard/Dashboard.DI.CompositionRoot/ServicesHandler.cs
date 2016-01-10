@@ -1,7 +1,11 @@
 ﻿using Autofac;
 
+
 namespace Dashboard.DI.CompositionRoot
 {
+    /// <summary>
+    /// sdfsdfsdfsdfasfsdf
+    /// </summary>
     public class ServicesHandler : Module
     {
         public delegate void SomeFunc(object sender);

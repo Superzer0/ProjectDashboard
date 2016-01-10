@@ -1,8 +1,12 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Linq;
+using System.Web.Http;
 using Common.Logging;
+using Dashboard.DataAccess;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Razor;
 using Dashboard.Models.Home;
+using Dashboard.UI.Objects.DataObjects;
 
 namespace Dashboard.Controllers.MVC
 {
@@ -12,13 +16,20 @@ namespace Dashboard.Controllers.MVC
 
         public HomeController(IExecuteRazorViews razorEngineService)
         {
-            
+
         }
 
         // GET: api/Home
         public IHttpActionResult Get()
         {
-            return View("../Views/Home.cshtml", new HomeViewModel { Version = "0.1v" });
+            using (var context = new PluginsContext())
+            {
+                var plugin = new Plugin { Id = Guid.NewGuid(), AddedBy = "Kuba", Added = DateTime.Now, Xml = "hehe" };
+                context.Plugins.Add(plugin);
+                context.SaveChanges();
+                var elements = context.Plugins.Count();
+                return View("../Views/Home.cshtml", new HomeViewModel { Version = elements.ToString() });
+            }
         }
 
         // GET: api/Home/5

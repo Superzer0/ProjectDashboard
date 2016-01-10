@@ -10,10 +10,12 @@ namespace Dashboard
         static void Main(string[] args)
         {
             using (WebApp.Start<Application>(AppConfiguration.LocalAddress))
-            {   
+            {
                 LogManager.GetLogger<Program>().Info(m => m("Dashboard server stared"));
                 Console.ReadLine();
             }
+
+            Console.ReadLine();
         }
     }
 }
