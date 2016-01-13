@@ -7,12 +7,10 @@ namespace Dashboard.DataAccess
     {
         public PluginsContext() : base("name=EmbeddedDbContext")
         {
-
             Database.SetInitializer<PluginsContext>(null);
         }
 
         public DbSet<Plugin> Plugins { get; set; }
         public DbSet<PluginUiConfiguration> PluginUiConfigurations { get; set; }
-
     }
 }

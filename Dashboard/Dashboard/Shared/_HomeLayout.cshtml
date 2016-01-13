@@ -1,0 +1,28 @@
+﻿@inherits RazorEngine.Templating.TemplateBase
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/keen-dashboards.css" />
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/holder.js"></script>
+    <script>
+        Holder.add_theme("white", { background: "#fff", foreground: "#a7a7a7", size: 10 });
+    </script>
+    <script type="text/javascript" src="~/Scripts/keen-js/dist/keen.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/angular-route.js"></script>
+    <script type="text/javascript" src="~/Scripts/angular-resource.js"></script>
+
+</head>
+@RenderBody()
+
+
+</html>

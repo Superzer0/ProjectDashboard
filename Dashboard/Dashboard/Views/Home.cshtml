@@ -1,22 +1,9 @@
 ﻿@inherits RazorEngine.Templating.TemplateBase<Dashboard.Models.Home.HomeViewModel>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@Model.Version</title>
-    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="~/Content/keen-dashboards.css"/>
-    <script type="text/javascript" src="~/Scripts/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/holder.js"></script>
-    <script>
-        Holder.add_theme("white", { background: "#fff", foreground: "#a7a7a7", size: 10 });
-    </script>
-    <script type="text/javascript" src="~/Scripts/keen-js/dist/keen.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/angular-route.js"></script>
-    <script type="text/javascript" src="~/Scripts/angular-resource.js"></script>
-</head>
+@{
+    Layout = "../Shared/_HomeLayout.cshtml";
+}
+
 <body class="application">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container-fluid">
@@ -41,171 +28,218 @@
             </div>
         </div>
     </div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="chart-wrapper">
-                        <div class="chart-title">
-                            Cell Title
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="chart-wrapper">
+                            <div class="chart-title">
+                                Cell Title
+                            </div>
+                            <div class="chart-stage">
+                                <form name="form1" method="post" enctype="multipart/form-data" action="api/configure/upload-plugin">
+                                    <div>
+                                        <label for="caption">Image Caption</label>
+                                        <input name="caption" type="text" />
+                                    </div>
+                                    <div>
+                                        <label for="image1">Image File</label>
+                                        <input name="image1" type="file" />
+                                    </div>
+                                    <div>
+                                        <input type="submit" value="Submit" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="chart-notes">
+                                Notes about this chart
+                            </div>
                         </div>
-                        <div class="chart-stage">
-                            <img data-src="holder.js/100%x120/white">
-                        </div>
-                        <div class="chart-notes">
-                            Notes about this chart
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="chart-wrapper">
+                            <div class="chart-title">
+                                Cell Title
+                            </div>
+                            <div class="chart-stage">
+                                <img data-src="holder.js/100%x120/white">
+                            </div>
+                            <div class="chart-notes">
+                                Notes about this chart
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="chart-wrapper">
-                        <div class="chart-title">
-                            Cell Title
+            <div class="col-sm-6">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <form action="/api/account/register" class="form-horizontal" method="post" role="form">
+                            <hr />
+                            <div class="validation-summary-valid text-danger" data-valmsg-summary="true">
+                                <ul>
+                                    <li style="display:none"></li>
+                                </ul>
+                            </div>    <div class="form-group">
+                                <label class="col-md-2 control-label" for="Email">Email</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="Email" name="Email" type="text" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="Hometown">Hometown</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" id="Hometown" name="Hometown" type="text" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="Password">Password</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" data-val="true" data-val-length="The Password must be at least 6 characters long." data-val-length-max="100" data-val-length-min="6" data-val-required="The Password field is required." id="Password" name="Password" type="password" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="ConfirmPassword">Confirm password</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" data-val="true" data-val-equalto="The password and confirmation password do not match." data-val-equalto-other="*.Password" id="ConfirmPassword" name="ConfirmPassword" type="password" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" class="btn btn-default" value="Register" />
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="chart-wrapper">
+                            <div class="chart-title">
+                                Cell Title
+                            </div>
+                            <div class="chart-stage">
+                                <img data-src="holder.js/100%x120/white">
+                            </div>
+                            <div class="chart-notes">
+                                Notes about this chart
+                            </div>
                         </div>
-                        <div class="chart-stage">
-                            <img data-src="holder.js/100%x120/white">
-                        </div>
-                        <div class="chart-notes">
-                            Notes about this chart
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="chart-wrapper">
+                            <div class="chart-title">
+                                Cell Title
+                            </div>
+                            <div class="chart-stage">
+                                <img data-src="holder.js/100%x120/white">
+                            </div>
+                            <div class="chart-notes">
+                                Notes about this chart
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x325/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="chart-wrapper">
-                        <div class="chart-title">
-                            Cell Title
-                        </div>
-                        <div class="chart-stage">
-                            <img data-src="holder.js/100%x120/white">
-                        </div>
-                        <div class="chart-notes">
-                            Notes about this chart
-                        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <img data-src="holder.js/100%x120/white">
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="chart-wrapper">
-                        <div class="chart-title">
-                            Cell Title
-                        </div>
-                        <div class="chart-stage">
-                            <img data-src="holder.js/100%x120/white">
-                        </div>
-                        <div class="chart-notes">
-                            Notes about this chart
-                        </div>
+            <div class="col-sm-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <img data-src="holder.js/100%x120/white">
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <img data-src="holder.js/100%x120/white">
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <img data-src="holder.js/100%x120/white">
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <img data-src="holder.js/100%x120/white">
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        Cell Title
+                    </div>
+                    <div class="chart-stage">
+                        <img data-src="holder.js/100%x120/white">
+                    </div>
+                    <div class="chart-notes">
+                        Notes about this chart
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x120/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x120/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x120/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x120/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x120/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="chart-wrapper">
-                <div class="chart-title">
-                    Cell Title
-                </div>
-                <div class="chart-stage">
-                    <img data-src="holder.js/100%x120/white">
-                </div>
-                <div class="chart-notes">
-                    Notes about this chart
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
     <hr>
 
 </body>
-</html>

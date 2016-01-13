@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+  <name>TestApp</name>
+  <pluginId>3F2504E0-4F89-41D3-9A0C-0305E82C3301</pluginId>
+  <communicationType>Plain</communicationType>
+  <api>
+    <method name="GetData">
+      <inputType>String</inputType>
+      <outputType>String</outputType>
+    </method>
+    <method name="PutData">
+      <inputType>Json</inputType>
+      <outputType>String</outputType>
+    </method>
+  </api>
+</plugin>

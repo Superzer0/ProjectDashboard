@@ -12,7 +12,6 @@ namespace Dashboard.Infrastructure.Razor
     {
         private readonly ILog _logger = LogManager.GetLogger<RazorEngineViewsExec>();
         private readonly IRazorEngineService _razorEngineService;
-
         private readonly IEnumerable<string> _viewsLocations = new[] { @"../Views", @"../Views/Shared" };
 
         public RazorEngineViewsExec()
