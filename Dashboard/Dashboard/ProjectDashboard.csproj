@@ -25,6 +25,21 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -200,40 +215,68 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
-    <Content Include="app\controllers\associateController.js" />
     <Content Include="app\controllers\homeController.js" />
-    <Content Include="app\controllers\indexController.js" />
+    <Content Include="app\controllers\instance\indexInstanceController.js" />
+    <Content Include="app\controllers\navigationController.js" />
     <Content Include="app\controllers\loginController.js" />
-    <Content Include="app\controllers\ordersController.js" />
+    <Content Include="app\controllers\plugins\indexPluginsController.js" />
     <Content Include="app\controllers\refreshController.js" />
     <Content Include="app\controllers\signupController.js" />
     <Content Include="app\controllers\tokensManagerController.js" />
+    <Content Include="app\controllers\user\indexUserController.js" />
     <Content Include="app\services\authInterceptorService.js" />
     <Content Include="app\services\authService.js" />
+    <Content Include="app\services\notificationService.js" />
     <Content Include="app\services\ordersService.js" />
     <Content Include="app\services\tokensManagerService.js" />
-    <Content Include="app\views\associate.html" />
     <Content Include="app\views\home.html" />
+    <Content Include="app\views\instance\index.html" />
+    <Content Include="app\views\instance\users.html" />
+    <Content Include="app\views\instance\settings.html" />
+    <Content Include="app\views\instance\sidebar.html" />
     <Content Include="app\views\login.html" />
-    <Content Include="app\views\orders.html" />
+    <Content Include="app\views\plugins\index.html" />
+    <Content Include="app\views\plugins\upload.html" />
+    <Content Include="app\views\plugins\sidebar.html" />
     <Content Include="app\views\refresh.html" />
     <Content Include="app\views\signup.html" />
     <Content Include="app\views\tokens.html" />
+    <Content Include="app\views\user\index.html" />
+    <Content Include="app\views\user\plugins.html" />
+    <Content Include="app\views\user\settings.html" />
+    <Content Include="app\views\user\sidebar.html" />
+    <Content Include="content\css\animate.css" />
     <Content Include="content\css\bootstrap.min.css" />
     <Content Include="content\css\font-awesome.min.css" />
-    <Content Include="content\css\loading-bar.css" />
     <Content Include="content\css\loading-bar.min.css" />
-    <Content Include="content\css\site.css" />
+    <Content Include="content\css\site\common.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="content\css\site\common.min.css">
+      <DependentUpon>common.css</DependentUpon>
+    </Content>
+    <Content Include="content\css\site\simple-sidebar.css">
+      <DependentUpon>simple-sidebar.less</DependentUpon>
+    </Content>
+    <Content Include="content\css\site\simple-sidebar.min.css">
+      <DependentUpon>simple-sidebar.css</DependentUpon>
+    </Content>
     <Content Include="content\css\social-buttons.css" />
+    <Content Include="content\img\logo\dashboard-128-royal.png" />
     <Content Include="content\img\logo\dashboard-128x128.png" />
+    <Content Include="content\img\logo\dashboard-256-royal.png" />
     <Content Include="content\img\logo\dashboard-256x256.png" />
-    <Content Include="content\img\logo\dashboard-64x64.png" />
+    <Content Include="content\img\logo\dashboard-48x48.png" />
     <Content Include="content\img\logo\dashboard512.png" />
     <Content Include="content\keen-dashboards.css" />
-    <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="content\fonts\fontawesome-webfont.svg" />
+    <Content Include="content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="favicon.ico" />
     <Content Include="packages.config" />
     <Content Include="plugins\placeholder.txt" />
+    <Content Include="scripts\angular-animate.js" />
+    <Content Include="scripts\angular-animate.min.js" />
+    <Content Include="scripts\angular-growl-notifications.min.js" />
     <Content Include="scripts\angular-local-storage.min.js" />
     <Content Include="scripts\angular-mocks.js" />
     <Content Include="scripts\angular-resource.js" />
@@ -249,23 +292,28 @@
     <Content Include="scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="scripts\jquery-2.2.0.js" />
     <Content Include="scripts\jquery-2.2.0.min.js" />
-    <Content Include="scripts\keen-js\dist\keen-tracker.js" />
-    <Content Include="scripts\keen-js\dist\keen-tracker.min.js" />
-    <Content Include="scripts\keen-js\dist\keen.js" />
-    <Content Include="scripts\keen-js\dist\keen.min.js" />
     <Content Include="scripts\loading-bar.min.js" />
+    <Content Include="scripts\modernizr-custom.js" />
+    <Content Include="scripts\wow.js" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <None Include="fonts\fontawesome-webfont.eot" />
-    <None Include="fonts\fontawesome-webfont.ttf" />
-    <None Include="fonts\fontawesome-webfont.woff" />
-    <None Include="fonts\FontAwesome.otf" />
-    <None Include="fonts\glyphicons-halflings-regular.eot" />
-    <None Include="fonts\glyphicons-halflings-regular.ttf" />
-    <None Include="fonts\glyphicons-halflings-regular.woff" />
-    <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <None Include="content\css\site\common.less" />
+    <None Include="content\css\site\simple-sidebar.less" />
+    <None Include="content\fonts\fontawesome-webfont.eot" />
+    <None Include="content\fonts\fontawesome-webfont.ttf" />
+    <None Include="content\fonts\fontawesome-webfont.woff" />
+    <None Include="content\fonts\FontAwesome.otf" />
+    <None Include="content\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="content\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="content\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="content\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="scripts\angular-animate.min.js.map" />
     <None Include="scripts\angular-resource.min.js.map" />
     <None Include="scripts\angular-route.min.js.map" />
     <None Include="scripts\angular.min.js.map" />
@@ -286,7 +334,7 @@
     <Compile Include="Controllers\MVC\AdminController.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
     <Compile Include="Infrastructure\ActionResults\RazorResult.cs" />
-    <Compile Include="Infrastructure\AppConfiguration.cs" />
+    <Compile Include="Infrastructure\Controllers\BaseController.cs" />
     <Compile Include="Infrastructure\Controllers\RazorController.cs" />
     <Compile Include="Infrastructure\Filters\DbSessionFilter.cs" />
     <Compile Include="Infrastructure\Identity\AuthContext.cs" />
@@ -296,11 +344,16 @@
     <Compile Include="Infrastructure\Razor\IExecuteRazorViews.cs" />
     <Compile Include="Infrastructure\Razor\RazorEngineViewsExec.cs" />
     <Compile Include="Infrastructure\Identity\DashboardUser.cs" />
+    <Compile Include="Infrastructure\Services\Abstract\IEnvironment.cs" />
+    <Compile Include="Infrastructure\Services\Abstract\OwinSelfHostEnvironment.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\Admin\AdminViewModel.cs" />
+    <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\Home\HomeViewModel.cs" />
+    <Compile Include="Models\Home\PluginViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -321,12 +374,22 @@
       <Name>Dashboard.UI.Objects</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

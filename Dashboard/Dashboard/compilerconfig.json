@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "content/css/site/common.css",
+    "inputFile": "content/css/site/common.less"
+  },
+  {
+    "outputFile": "content/css/site/admin.css",
+    "inputFile": "content/css/site/admin.less"
+  },
+  {
+    "outputFile": "content/css/site/simple-sidebar.css",
+    "inputFile": "content/css/site/simple-sidebar.less"
+  }
+]

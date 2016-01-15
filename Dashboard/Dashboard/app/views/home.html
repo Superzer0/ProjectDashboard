@@ -1,18 +1,96 @@
-﻿    <div class="row">
-        <div class="col-md-2">
-            &nbsp;
-        </div>
-        <div class="col-md-4">
-            <h2>Login</h2>
-            <p class="text-primary">If you have Username and Password, you can use the button below to access the secured content using a token.</p>
-            <p><a class="btn btn-info" href="#/login" role="button">Login &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Sign Up</h2>
-            <p class="text-primary">Use the button below to create Username and Password to access the secured content using a token.</p>
-            <p><a class="btn btn-info" href="#/signup" role="button">Sign Up &raquo;</a></p>
-        </div>
-        <div class="col-md-2">
-            &nbsp;
+﻿
+<article class="jumbotron" id="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" >
+                <div class="page-header text-center">
+                    <h1>Project Dashboard</h1>
+                </div>
+                <p>
+                    Plug-in based platform for aggregated information presentation.
+                </p>
+
+                <hr />
+                <div class="row" id="info">
+                    <div class="col-md-4">
+                        <a target="_blank" href="/documentation">
+                            <i class="fa fa-book fa-4x"></i>
+                            <br />
+                            Tutorials
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a target="_blank" href="/api/reference">
+                            <i class="fa fa-server fa-4x"></i>
+                            <br />
+                            API
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a target="_blank" href="https://github.com/Superzer0/ProjectDashboard">
+                            <i class="fa fa-github fa-4x"></i>
+                            <br />
+                            Sources
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="carousel" class="carousel slide" data-ride="carousel" data-wrap="wrap">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div>
+                                <br />
+                                <i class="fa fa-plug fa-2x"></i>
+                                <br/>
+                                <span>Plugin based</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <br />
+                            <i class="fa fa-cogs fa-2x"></i>
+                            <br/>
+                            <span>Technology invariant</span>
+                        </div>
+                        <div class="item">
+                            <div>
+                                <br />
+                                <i class="fa fa-creative-commons fa-2x"></i>
+                                <br/>
+                                <span>Open Source</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</article>
+
+
+<article class="row">
+    <div class="col-md-2">
+        &nbsp;
+    </div>
+    <div class="col-md-4">
+        <h2>Login</h2>
+        <p class="text-primary">Token & Cookies based Authentication</p>
+        <p><a class="btn btn-info" href="#/login" role="button">Login &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Sign Up</h2>
+        <p class="text-primary">Create your own Project View</p>
+        <p><a class="btn btn-info" href="#/signup" role="button">Sign Up &raquo;</a></p>
+    </div>
+    <div class="col-md-2">
+        &nbsp;
+    </div>
+</article>
+<script>
+    $(document).ready(function () {
+        $('.carousel').carousel({
+            interval: 6000
+        });
+        $('.carousel').carousel('cycle');
+    });
+</script>

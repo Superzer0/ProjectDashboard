@@ -1,18 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Dashboard;
-using Microsoft.Owin;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dashboard")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Project Dashboard")]
+[assembly: AssemblyDescription("Plugin Platform UI")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("3qsd.com")]
 [assembly: AssemblyProduct("Dashboard")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 3qsd.com 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,9 +31,6 @@ using Microsoft.Owin;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Dashboard.Tests")]
-[assembly: InternalsVisibleTo("Dashboard.Explorables")]
-[assembly: InternalsVisibleTo("Dashboard.Tests1")]
 

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 using Common.Logging;
 using RazorEngine;
 using RazorEngine.Configuration;
@@ -19,7 +19,7 @@ namespace Dashboard.Infrastructure.Razor
             var config = new TemplateServiceConfiguration
             {
                 Language = Language.CSharp,
-                DisableTempFileLocking = true,
+                DisableTempFileLocking = false,
                 EncodedStringFactory = new HtmlEncodedStringFactory(),
                 Debug = false,
                 TemplateManager = new ResolvePathTemplateManager(_viewsLocations),
@@ -29,15 +29,16 @@ namespace Dashboard.Infrastructure.Razor
             _logger.Info(m => m("Razor Engine created"));
         }
 
-        public string Execute(string viewPath, object model, string layoutPath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ExecutePartial(string viewPath, object model)
+        public string Execute(string viewPath, object model, dynamic viewBag, string layoutPath)
         {
             return _razorEngineService.RunCompile(new FullPathTemplateKey(viewPath, viewPath, ResolveType.Global, null),
-                 model.GetType(), model);
+                        model.GetType(), model, new DynamicViewBag((ExpandoObject)viewBag));
+        }
+
+        public string ExecutePartial(string viewPath, object model, dynamic viewBag)
+        {
+            return _razorEngineService.RunCompile(new FullPathTemplateKey(viewPath, viewPath, ResolveType.Global, null),
+                model.GetType(), model, new DynamicViewBag((ExpandoObject)viewBag));
         }
     }
 }

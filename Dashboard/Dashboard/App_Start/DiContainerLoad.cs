@@ -7,6 +7,7 @@ using Dashboard.DI.CompositionRoot;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Filters;
 using Dashboard.Infrastructure.Razor;
+using Dashboard.Infrastructure.Services.Abstract;
 using Module = Autofac.Module;
 
 namespace Dashboard
@@ -16,6 +17,7 @@ namespace Dashboard
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<RazorEngineViewsExec>().As<IExecuteRazorViews>().SingleInstance();
+            builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().InstancePerRequest();
         }
 
         internal static IContainer CreateContainer(HttpConfiguration configuration)
@@ -26,6 +28,10 @@ namespace Dashboard
                 {
                     ((RazorController)args.Instance).ExecuteRazorViews
                         = args.Context.Resolve<IExecuteRazorViews>();
+                }).AssignableTo<BaseController>().OnActivated(args =>
+                {
+                    ((BaseController)args.Instance).Environment
+                        = args.Context.Resolve<IEnvironment>();
                 });
 
             builder.RegisterWebApiFilterProvider(configuration);

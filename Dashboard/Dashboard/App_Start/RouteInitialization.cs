@@ -7,11 +7,12 @@ namespace Dashboard
         public static void Register(HttpRouteCollection routes)
         {
             routes.MapHttpRoute(
-                    name: "HomeRoute",
+                    name: "IndexRoute",
                     routeTemplate: "",
                     defaults: new
                     {
-                        controller = "Home"
+                        controller = "Admin",
+                        action = "Index"
                     });
         }
     }

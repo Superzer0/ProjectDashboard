@@ -1,7 +1,10 @@
 ﻿
-var app = angular.module('AngularAuthApp', ['ngRoute', 'LocalStorageModule', 'angular-loading-bar']);
+var app = angular.module('angularAdmin',
+    ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'growlNotifications', 'ngAnimate']);
 
-app.config(function ($routeProvider) {
+app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider, cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+    cfpLoadingBarProvider.latencyThreshold = 5;
 
     $routeProvider.when("/home", {
         controller: "homeController",
@@ -18,11 +21,6 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/signup.html"
     });
 
-    $routeProvider.when("/orders", {
-        controller: "ordersController",
-        templateUrl: "/app/views/orders.html"
-    });
-
     $routeProvider.when("/refresh", {
         controller: "refreshController",
         templateUrl: "/app/views/refresh.html"
@@ -33,21 +31,56 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/tokens.html"
     });
 
-    $routeProvider.when("/associate", {
-        controller: "associateController",
-        templateUrl: "/app/views/associate.html"
+    //---- user
+
+    $routeProvider.when("/user/index", {
+        controller: "indexUserController",
+        templateUrl: "/app/views/user/index.html"
     });
+
+    $routeProvider.when("/user/settings", {
+        controller: "indexUserController",
+        templateUrl: "/app/views/user/settings.html"
+    });
+
+    $routeProvider.when("/user/plugins", {
+        controller: "indexUserController",
+        templateUrl: "/app/views/user/plugins.html"
+    });
+
+    //---- instance
+
+    $routeProvider.when("/instance/index", {
+        controller: "indexInstanceController",
+        templateUrl: "/app/views/instance/index.html"
+    });
+
+    $routeProvider.when("/instance/settings", {
+        controller: "indexInstanceController",
+        templateUrl: "/app/views/instance/settings.html"
+    });
+
+    $routeProvider.when("/instance/users", {
+        controller: "indexInstanceController",
+        templateUrl: "/app/views/instance/users.html"
+    });
+
+    //---- plugins
+
+    $routeProvider.when("/plugins/index", {
+        controller: "indexPluginsController",
+        templateUrl: "/app/views/plugins/index.html"
+    });
+
+    $routeProvider.when("/plugins/upload", {
+        controller: "indexPluginsController",
+        templateUrl: "/app/views/plugins/upload.html"
+    });
+
 
     $routeProvider.otherwise({ redirectTo: "/home" });
 
-});
-
-var serviceBase = 'http://localhost:9096/';
-//var serviceBase = 'http://ngauthenticationapi.azurewebsites.net/';
-app.constant('ngAuthSettings', {
-    apiServiceBaseUri: serviceBase,
-    clientId: 'ngAuthApp'
-});
+}]);
 
 app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Common.Logging;
 using Dashboard.DataAccess;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Models.Home;
-using Dashboard.UI.Objects.DataObjects;
-using Microsoft.AspNet.Identity;
 
 namespace Dashboard.Controllers.MVC
 {
+    [Authorize]
+    [RoutePrefix("Home")]
     public class HomeController : RazorController
     {
         private readonly PluginsContext _pluginsContext;
@@ -20,40 +20,14 @@ namespace Dashboard.Controllers.MVC
             _pluginsContext = pluginsContext;
         }
 
-        // GET: api/Home
-        public IHttpActionResult Index()
+        [HttpGet]
+        [Route("", Name = "DashboardHome")]
+        public async Task<IHttpActionResult> Index()
         {
-            var plugin = new Plugin { Id = Guid.NewGuid(), AddedBy = "Kuba", Added = DateTime.Now, Xml = "hehe" };
-            _pluginsContext.Plugins.Add(plugin);
-            _pluginsContext.SaveChanges();
-            var elements = _pluginsContext.Plugins.Count();
+            var user = await UserManager.FindByNameAsync(User.Identity.Name);
 
-            _log.Info(p => p((_pluginsContext.Database.CurrentTransaction != null).ToString()));
-            var userId = User.Identity.GetUserId();
-
-
-            return View("../Views/Home.cshtml", new HomeViewModel { Version = userId });
-        }
-
-        // GET: api/Home/5
-        public string Index(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Home
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Home/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Home/5
-        public void Delete(int id)
-        {
+            return View("~/Views/Home.cshtml",
+                new HomeViewModel { User = user, Plugins = new List<PluginViewModel>() });
         }
     }
 }

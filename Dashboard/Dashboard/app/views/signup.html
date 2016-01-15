@@ -1,10 +1,43 @@
-﻿<form class="form-login" role="form">
-    <h2 class="form-login-heading">Sign up</h2>
-    <input type="text" class="form-control" placeholder="Username" data-ng-model="registration.userName" required autofocus>
-    <input type="password" class="form-control" placeholder="Password" data-ng-model="registration.password" required>
-    <input type="password" class="form-control" placeholder="Confirm Password" data-ng-model="registration.confirmPassword" required>
-    <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()">Submit</button>
-    <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
-        {{message}}
-    </div>
-</form>
+﻿<article id="signup">
+    <form class="form-login" role="form" novalidate name="signUpForm">
+        <div data-wow-duration="1s" data-ng-class="formClass">
+            <h2 class="form-login-heading">Sign up</h2>
+            <div>
+                <input type="text" class="form-control" placeholder="Username" name="username"
+                       data-ng-model="registration.userName" required autofocus ng-minlength="3">
+                <p data-ng-show="!signUpForm.username.$pristine && signUpForm.username.$invalid" class="help-block">You name is required.</p>
+            </div>
+
+            <div>
+                <input type="email" class="form-control" placeholder="Email" name="email"
+                       data-ng-model="registration.email" required>
+                <p data-ng-show="!signUpForm.email.$pristine && signUpForm.email.$invalid" class="help-block">Enter a valid email.</p>
+            </div>
+            <div>
+                <input type="password" class="form-control" placeholder="Password" name="password"
+                       data-ng-model="registration.password" required ng-minlength="6">
+                <p data-ng-show="!signUpForm.password.$pristine && signUpForm.password.$error.minlength" class="help-block">Password mst hae at least 6 characters.</p>
+            </div>
+            <div>
+                <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword"
+                       data-ng-model="registration.confirmPassword">
+                <p data-ng-show="!signUpForm.confirmPassword.$pristine && passNotMatch()"
+                   class="help-block">Passwords does not match</p>
+            </div>
+            <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()"
+                    data-ng-disabled="submitNotPermitted()">
+                Submit
+            </button>
+
+            <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+                <span>{{message}}</span>
+                <br />
+                <ul data-ng-show="errors">
+                    <li data-ng-repeat="error in errors">
+                        {{error}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</article>

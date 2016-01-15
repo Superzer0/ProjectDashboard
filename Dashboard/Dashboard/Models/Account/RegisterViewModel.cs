@@ -5,6 +5,11 @@ namespace Dashboard.Models.Account
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {3} characters long.", MinimumLength = 3)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -19,8 +24,5 @@ namespace Dashboard.Models.Account
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name = "Hometown")]
-        public string Hometown { get; set; }
     }
 }

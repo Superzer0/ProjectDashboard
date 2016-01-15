@@ -1,16 +1,17 @@
 ﻿using System.Web.Http;
 using Dashboard.Infrastructure.Controllers;
+using Dashboard.Models.Admin;
 
 namespace Dashboard.Controllers.MVC
 {
-    [RoutePrefix("admin")]
+    [Authorize]
     public class AdminController : RazorController
     {
-        [Route("")]
         [HttpGet]
+        [AllowAnonymous]
         public IHttpActionResult Index()
         {
-            return View("../Views/Admin.cshtml", new object());
+            return View("~/Views/Admin.cshtml", new AdminViewModel());
         }
     }
 }

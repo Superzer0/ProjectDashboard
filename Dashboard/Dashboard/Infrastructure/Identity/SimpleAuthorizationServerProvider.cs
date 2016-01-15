@@ -1,6 +1,6 @@
-﻿using System.Net.Mime;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.OAuth;
 
 namespace Dashboard.Infrastructure.Identity
@@ -25,6 +25,7 @@ namespace Dashboard.Infrastructure.Identity
                     return;
                 }
 
+                await GetSignInManager(context).SignInAsync(user, false, false);
                 var userIdentity = await authRepository.GetUserClaims(user);
                 //userIdentity.AuthenticationType = context.Options.AuthenticationType;
                 userIdentity.AddClaim(new Claim("sub", context.UserName));
@@ -32,6 +33,15 @@ namespace Dashboard.Infrastructure.Identity
 
                 context.Validated(userIdentity);
             }
+        }
+        private ApplicationSignInManager GetSignInManager(OAuthGrantResourceOwnerCredentialsContext context)
+        {
+            return context.OwinContext.Get<ApplicationSignInManager>();
+        }
+
+        private ApplicationUserManager GetUserManager(OAuthGrantResourceOwnerCredentialsContext context)
+        {
+            return context.OwinContext.GetUserManager<ApplicationUserManager>();
         }
     }
 }

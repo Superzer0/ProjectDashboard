@@ -1,0 +1,264 @@
+﻿@app-theme: #1A6ECC;
+@app-theme-light: #4a99f1;
+@app-theme-dark: #063262;
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    padding-top: 40px;
+    padding-bottom: 10px;
+
+    &.application {
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    #container {
+        min-height: 450px;
+    }
+
+    growl-notifications {
+        position: fixed;
+        top: 65px;
+        right: 10px;
+    }
+
+    growl-notification {
+        padding: 5px 30px;
+        margin-bottom: 15px;
+        background-color: #3fb618;
+        border-radius: 3px;
+        color: #ffffff;
+        display: block;
+        opacity: 0.7;
+        min-width: 200px;
+        max-width: 300px;
+        font-size: smaller;
+
+        .click {
+            cursor: pointer;
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+
+        hr {
+            margin-top: 3px;
+            margin-bottom: 7px;
+        }
+
+        h5 {
+            margin-top: 5px;
+        }
+    }
+
+    growl-notification.error {
+        background-color: #ff0000;
+    }
+
+    growl-notification.warrning {
+        background-color: #ff6a00;
+    }
+
+    growl-notification.fading.ng-move {
+        opacity: 0;
+        -webkit-transition: 1s linear all; /* Safari/Chrome */
+        -moz-transition: 1s linear all;
+        -o-transition: 1s linear all;
+        transition: 1s linear all; /* All other modern browsers and IE10+ */
+    }
+
+    growl-notification.fading.ng-move.ng-move-active {
+        opacity: 1;
+    }
+
+    growl-notification.fading.ng-leave {
+        opacity: 1;
+        -webkit-transition: 1s linear all; /* Safari/Chrome */
+        -moz-transition: 1s linear all;
+        -o-transition: 1s linear all;
+        transition: 1s linear all; /* All other modern browsers and IE10+ */
+    }
+
+    growl-notification.fading.ng-leave.ng-leave-active {
+        opacity: 0;
+    }
+
+    #loading-bar {
+        .bar {
+            background: @app-theme-dark;
+            height: 3px;
+        }
+    }
+
+    #loading-bar-spinner .spinner-icon {
+        border-top-color: @app-theme-light;
+        border-left-color: @app-theme-light;
+    }
+}
+
+.navbar {
+
+    .navbar-brand {
+        float: left;
+        padding: 3px 15px;
+        font-size: 18px;
+        line-height: 20px;
+        height: 50px;
+    }
+
+    .container {
+        .navbar-header {
+            #logo-img {
+                border: 0;
+            }
+        }
+    }
+}
+
+#home {
+    #carousel {
+        .item {
+            text-align: center;
+
+            i {
+                font-size: 240px;
+            }
+
+            span {
+                font-size: 30px;
+            }
+        }
+    }
+
+    hr {
+        border-top: 1px solid white;
+        width: 95%;
+    }
+
+    #info {
+        text-align: center;
+
+        a {
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.login {
+    input {
+        margin-bottom: 10px;
+    }
+}
+
+#login {
+    padding-top: 20px;
+    .login;
+
+
+    #login-img {
+        text-align: center;
+    }
+}
+
+#signup {
+    padding-top: 20px;
+    .login;
+}
+
+footer#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 70px;
+    background-color: #f5f5f5;
+
+    p {
+        a {
+            margin: 10px;
+        }
+    }
+}
+
+.text-muted {
+    margin: 20px 0;
+}
+
+.form-login {
+    max-width: 330px;
+    padding: 0 15px 5px 15px;
+    margin: 0 auto;
+
+    .form-login-heading {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .form-control:focus {
+        z-index: 2;
+    }
+
+    input[type="password"] {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+}
+
+
+.fade {
+    opacity: 1;
+
+    .transition-prop {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        width: 90%;
+        height: 100%;
+    }
+
+    &.ng-leave {
+        -webkit-transition: all 1s ease;
+        transition: all 1s ease;
+        opacity: 1;
+        .transition-prop;
+    }
+
+    &.ng-enter {
+        opacity: 0;
+        .transition-prop;
+    }
+
+    &.ng-enter-active {
+        opacity: 1;
+        .transition-prop;
+    }
+
+    &.ng-leave-active {
+        opacity: 0;
+        .transition-prop;
+    }
+}
