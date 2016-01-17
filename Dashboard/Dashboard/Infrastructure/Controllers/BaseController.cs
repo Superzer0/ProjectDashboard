@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
+using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.UI.Objects.Services;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
@@ -11,6 +13,7 @@ namespace Dashboard.Infrastructure.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private IAuthenticationManager _authenticationManager;
+        private ApplicationRoleManager _roleManager;
         //public properties for unit testing
         // ReSharper disable  MemberCanBeProtected.Global
         public IEnvironment Environment { get; set; } // DI injected
@@ -19,6 +22,12 @@ namespace Dashboard.Infrastructure.Controllers
         {
             get { return _authenticationManager = _authenticationManager ?? Request.GetOwinContext().Authentication; }
             set { _authenticationManager = value; }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get { return _roleManager = _roleManager ?? Request.GetOwinContext().Get<ApplicationRoleManager>(); }
+            set { _roleManager = value; }
         }
 
         public ApplicationSignInManager SignInManager

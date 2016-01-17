@@ -1,6 +1,6 @@
 ﻿'use strict';
-app.controller('signupController', ['$scope', '$location', '$timeout', 'authService', 'notificationService',
-    function ($scope, $location, $timeout, authService, notificationService) {
+app.controller('signupController', ['$scope', '$location', '$timeout', 'authService', 'notificationService', 'utilsService',
+    function ($scope, $location, $timeout, authService, notificationService, utilsService) {
 
         var startTimer = function () {
             var timer = $timeout(function () {
@@ -42,17 +42,12 @@ app.controller('signupController', ['$scope', '$location', '$timeout', 'authServ
             },
              function (response) {
                  if (response.status === 400) {
-                     var errors = [];
-                     for (var key in response.data.ModelState) {
-                         if (response.data.ModelState.hasOwnProperty(key)) {
-                             for (var i = 0; i < response.data.ModelState[key].length; i++) {
-                                 errors.push(response.data.ModelState[key][i]);
-                             }
-                         }
+                     $scope.errors = utilsService.parseModelStateErrors(response.data);
+                     if ($scope.errors.length > 0) {
+                         $scope.message = "Failed to register user. Correct erros listed below: ";
+                     } else {
+                         $scope.message = "Failed to register user. Form contains errors.";
                      }
-                     $scope.message = "Failed to register user. Correct erros listed below: ";
-                     $scope.errors = errors;
-
                  } else {
                      $scope.message = "Internal error, try again later";
                  }

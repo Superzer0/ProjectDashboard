@@ -69,10 +69,10 @@ body {
 
     growl-notification.fading.ng-move {
         opacity: 0;
-        -webkit-transition: 1s linear all; /* Safari/Chrome */
-        -moz-transition: 1s linear all;
-        -o-transition: 1s linear all;
-        transition: 1s linear all; /* All other modern browsers and IE10+ */
+        -webkit-transition: 0.5s linear all; /* Safari/Chrome */
+        -moz-transition: 0.5s linear all;
+        -o-transition: 0.5s linear all;
+        transition: 0.5s linear all; /* All other modern browsers and IE10+ */
     }
 
     growl-notification.fading.ng-move.ng-move-active {
@@ -81,10 +81,10 @@ body {
 
     growl-notification.fading.ng-leave {
         opacity: 1;
-        -webkit-transition: 1s linear all; /* Safari/Chrome */
-        -moz-transition: 1s linear all;
-        -o-transition: 1s linear all;
-        transition: 1s linear all; /* All other modern browsers and IE10+ */
+        -webkit-transition: 0.5s linear all; /* Safari/Chrome */
+        -moz-transition: 0.5s linear all;
+        -o-transition: 0.5s linear all;
+        transition: 0.5s linear all; /* All other modern browsers and IE10+ */
     }
 
     growl-notification.fading.ng-leave.ng-leave-active {
@@ -225,10 +225,22 @@ footer#footer {
     }
 }
 
+.badge-icon {
+    width: 30px;
+    height: 30px;
+    color: white;
+    display: block;
+    background: green;
+    border-radius: 100px;
+    text-align: center;
+    vertical-align: text-top;
+    text-transform: uppercase;
+    font-size: large;
+}
 
 .fade {
     opacity: 1;
-
+/*
     .transition-prop {
         position: absolute;
         top: 60px;
@@ -261,4 +273,5 @@ footer#footer {
         opacity: 0;
         .transition-prop;
     }
+    */
 }

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Models.Account;
+using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;

@@ -3,16 +3,15 @@
 
     angular
         .module('angularAdmin')
-        .controller('indexUserController', indexUserController);
+        .controller('indexUserController', ['$scope', 'authService', 'notificationService', 'utilsService',
+            indexUserController]);
 
-    indexUserController.$inject = ['$scope'];
-    indexUserController.$inject = ['authService'];
-    indexUserController.$inject = ['notificationService'];
-
-    function indexUserController($scope, authService, notificationService) {
+    function indexUserController($scope, authService, notificationService, utilsService) {
         var isWorking = false;
 
-        $scope.message = "";
+        $scope.userProfile = {}
+
+        $scope.changePasswordResult = null;
 
         $scope.changePassData = {
             oldPass: "",
@@ -25,25 +24,48 @@
         }
 
         $scope.submitNotPermitted = function () {
-            return $scope.changePassForm.$invalid || $scope.passNotMatch() || $scope.isWorking;
+            return $scope.changePassForm.$invalid || $scope.passNotMatch() || isWorking;
         }
 
         $scope.changePassword = function () {
-            isWorking = true;
-
             if ($scope.submitNotPermitted()) return;
+
+            $scope.changePasswordResult = null;
+            isWorking = true;
 
             authService.changePass($scope.changePassData.oldPass, $scope.changePassData.newPass).success(function () {
                 notificationService.addNotification("password change", "password has been changed successfuly");
                 isWorking = false;
-            }).error(function () {
-                notificationService.addNotification("password change", "error while changing password");
+                $scope.changePassData = {};
+                $scope.changePassForm.$setPristine();
+            }).error(function (err) {
+                $scope.changePasswordResult = {
+                    errors: utilsService.parseModelStateErrors(err),
+                    message: "Correct errors listed below: "
+                };
+
+                notificationService.addNotification("password change", "error while changing password", "error");
+
                 isWorking = false;
             });
         }
 
+        $scope.getUserData = function () {
+            $scope.userProfile = authService.getUserProfile();
+        }
+
+        $scope.refreshUserProfile = function () {
+            $scope.userProfile = authService.getUserProfile(true);
+        }
+
+        $scope.toogleMenu = function () {
+            $("#wrapper").toggleClass("toggled");
+        }
+
         activate();
 
-        function activate() { }
+        function activate() {
+            $scope.getUserData();
+        }
     }
 })();

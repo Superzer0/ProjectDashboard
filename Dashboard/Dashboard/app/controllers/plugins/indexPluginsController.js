@@ -3,13 +3,26 @@
 
     angular
         .module('angularAdmin')
-        .controller('indexPluginsController', indexPluginsController);
+        .controller('indexPluginsController', ['$scope', 'FileUploader', indexPluginsController]);
 
-    indexPluginsController.$inject = ['$scope']; 
+    function indexPluginsController($scope, FileUploader) {
 
-    function indexPluginsController($scope) {
+        $scope.uploader = new FileUploader({
+            url: 'api/plugins/upload'
+        });
+
+        $scope.uploader.filters.push({
+            name: 'fileCountFilter',
+            fn: function (item, options) {
+                return this.queue.length < 2;
+            }
+        });
 
         activate();
+
+        $scope.toogleMenu = function () {
+            $("#wrapper").toggleClass("toggled");
+        }
 
         function activate() { }
     }

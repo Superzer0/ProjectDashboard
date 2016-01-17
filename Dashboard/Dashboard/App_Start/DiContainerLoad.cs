@@ -6,8 +6,10 @@ using Dashboard.DataAccess;
 using Dashboard.DI.CompositionRoot;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Filters;
+using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Razor;
 using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.UI.Objects.Services;
 using Module = Autofac.Module;
 
 namespace Dashboard
@@ -18,21 +20,29 @@ namespace Dashboard
         {
             builder.RegisterType<RazorEngineViewsExec>().As<IExecuteRazorViews>().SingleInstance();
             builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().InstancePerRequest();
+            builder.RegisterType<AuthRepository>().AsSelf().InstancePerRequest();
         }
 
         internal static IContainer CreateContainer(HttpConfiguration configuration)
         {
             var builder = new ContainerBuilder();
+            //builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly())
-                .AssignableTo<RazorController>().OnActivated(args =>
+                .OnActivating(args =>
                 {
-                    ((RazorController)args.Instance).ExecuteRazorViews
-                        = args.Context.Resolve<IExecuteRazorViews>();
-                }).AssignableTo<BaseController>().OnActivated(args =>
-                {
-                    ((BaseController)args.Instance).Environment
+                    if (args.Instance is RazorController)
+                    {
+                        ((RazorController)args.Instance).ExecuteRazorViews
+                       = args.Context.Resolve<IExecuteRazorViews>();
+                    }
+
+                    if (args.Instance is BaseController)
+                    {
+                        ((BaseController)args.Instance).Environment
                         = args.Context.Resolve<IEnvironment>();
-                });
+                    }
+
+                }).InstancePerRequest();
 
             builder.RegisterWebApiFilterProvider(configuration);
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
@@ -45,6 +55,10 @@ namespace Dashboard
         {
             builder.Register(p => new DbSessionFilter(p.Resolve<PluginsContext>()))
                 .AsWebApiActionFilterFor<ApiController>()
+                .InstancePerRequest();
+
+            builder.Register(p => new ErrorHandlingFilter())
+                .AsWebApiExceptionFilterFor<ApiController>()
                 .InstancePerRequest();
         }
     }

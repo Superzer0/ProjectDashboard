@@ -2,7 +2,7 @@
 <article class="jumbotron" id="home">
     <div class="container">
         <div class="row">
-            <div class="col-md-6" >
+            <div class="col-md-6">
                 <div class="page-header text-center">
                     <h1>Project Dashboard</h1>
                 </div>
@@ -42,21 +42,21 @@
                             <div>
                                 <br />
                                 <i class="fa fa-plug fa-2x"></i>
-                                <br/>
+                                <br />
                                 <span>Plugin based</span>
                             </div>
                         </div>
                         <div class="item">
                             <br />
                             <i class="fa fa-cogs fa-2x"></i>
-                            <br/>
+                            <br />
                             <span>Technology invariant</span>
                         </div>
                         <div class="item">
                             <div>
                                 <br />
                                 <i class="fa fa-creative-commons fa-2x"></i>
-                                <br/>
+                                <br />
                                 <span>Open Source</span>
                             </div>
                         </div>
@@ -72,16 +72,33 @@
     <div class="col-md-2">
         &nbsp;
     </div>
-    <div class="col-md-4">
+
+    <div class="col-md-4" data-ng-hide="isAuth()">
         <h2>Login</h2>
         <p class="text-primary">Token & Cookies based Authentication</p>
         <p><a class="btn btn-info" href="#/login" role="button">Login &raquo;</a></p>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" data-ng-hide="isAuth()">
         <h2>Sign Up</h2>
         <p class="text-primary">Create your own Project View</p>
-        <p><a class="btn btn-info" href="#/signup" role="button">Sign Up &raquo;</a></p>
+        <p>
+            <a class="btn btn-info" href="#/signup" role="button">Sign Up &raquo;</a>
+        </p>
     </div>
+
+    <div class="col-md-4" data-ng-show="isAuth()">
+        <h2>My Dashboard</h2>
+        <p class="text-primary">Plugins Dashboard</p>
+        <p><a class="btn btn-info" href="/home" role="button">go &raquo;</a></p>
+    </div>
+    <div class="col-md-4" data-ng-show="isAuth()">
+        <h2>Settings</h2>
+        <p class="text-primary">Manage your plugins & settings</p>
+        <p>
+            <a class="btn btn-info" href="#/user/index" role="button">more &raquo;</a>
+        </p>
+    </div>
+
     <div class="col-md-2">
         &nbsp;
     </div>

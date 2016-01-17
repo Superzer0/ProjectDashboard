@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Dashboard.Models.Account
+namespace Dashboard.UI.Objects.Auth
 {
     public class DashboardUser : IdentityUser
     {

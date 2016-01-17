@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Dashboard.Models.Account;
+using Dashboard.UI.Objects.Auth;
 
 namespace Dashboard.Models.Home
 {

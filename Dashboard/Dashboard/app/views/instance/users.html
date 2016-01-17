@@ -1,5 +1,5 @@
 ﻿<article id="user_index" class="sidebar-content">
-    <div id="wrapper" data-ng-controller="adminMenuController">
+    <div id="wrapper">
         <!-- Sidebar -->
         <div data-ng-include="'app/views/instance/sidebar.html'"></div>
         <div id="page-content-wrapper">
@@ -10,49 +10,120 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1>manage users</h1>
-                        <hr/>
+                        <hr />
                         <p>you can manage users their roles here</p>
                         <div class="row">
                             <div class="col-md-offset-1 col-md-10">
-                                
-                                    <div class="panel-body">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <td>name</td>
-                                                    <td>email</td>
-                                                    <td>actions</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>heheh</td>
-                                                    <td>1.02</td>
-                                                    <td>some some</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>heheh</td>
-                                                    <td>1.02</td>
-                                                    <td>some some</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>heheh</td>
-                                                    <td>1.02</td>
-                                                    <td>some some</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>heheh</td>
-                                                    <td>1.02</td>
-                                                    <td>some some</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <button data-ng-click="refreshUserList()" class="pull-right btn btn-success btn-xs">
+                                    <i class="fa fa-refresh"></i>
+                                    refresh
+                                </button>
+                                <div class="panel-body">
+                                    <table class="table table-striped" data-ng-show="userList">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td>name</td>
+                                                <td>email</td>
+                                                <td>roles</td>
+                                                <td>actions</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr data-ng-repeat="user in userList">
+                                                <td>
+                                                    <span class="badge-icon">
+                                                        {{user.userName.charAt(0)}}
+                                                    </span>
+                                                </td>
+                                                <td>{{user.userName}}</td>
+                                                <td>{{user.email}}</td>
+                                                <td>
+                                                    <span class="label label-primary" data-ng-repeat="role in user.roles">
+                                                        {{role}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-xs btn-warning" data-ng-disabled="isWorking"
+                                                            data-ng-click="deleteUser(user.id,user.userName)">
+                                                        delete
+                                                    </button>
+                                                    <button class="btn btn-xs btn-warning" data-ng-disabled="isWorking"
+                                                            data-ng-click="manageRoles(user.id, user.userName, user.roles)">
+                                                        roles
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>
+                            other settings
+                            <button data-ng-click="getAdminPartyState()" class="pull-right btn btn-success btn-xs">
+                                <i class="fa fa-refresh"></i>
+                                refresh
+                            </button>
+                        </h1>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-offset-1 col-md-6">
+                                <p>admin party. value indicates whether all logged users shoud have same rights</p>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="checkbox" bs-switch data-ng-model="adminPartyState"
+                                       name="adminPartySwitch" id="adminPartySwitch"
+                                        />
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary btn-sm" style="padding: 6px 10px;" data-ng-click="setAdminPartyState()">Save changes</button>
+                            </div>
+                        </div>
+                        <!--<p class="alert alert-danger"></p>-->
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 </article>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="manage-roles-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">manage roles for {{manageRoleModel.userName}}</h4>
+            </div>
+            <div class="modal-body" style="margin-bottom: 30px;">
+                <div class="col-md-3">
+                    <label for="adminRoleCheckbox" class="pull-right">admin role: </label>
+                </div>
+                <div class="col-md-3">
+                    <input bs-switch switch-active="true"
+                           data-ng-model="manageRoleModel.isAdmin" type="checkbox" name="adminRoleCheckbox" id="adminRoleCheckbox" />
+                </div>
+                <div class="col-md-3">
+                    <label for="adminpluginsCheckbox" class="pull-right">plugins role: </label>
+                </div>
+                <div class="col-md-3">
+                    <input bs-switch switch-active="true"
+                           data-ng-model="manageRoleModel.isPluginsManager" type="checkbox" name="adminpluginsCheckbox" id="adminpluginsCheckbox" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-ng-click="updateUserRoles()" data-ng-disabled="isWorking">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

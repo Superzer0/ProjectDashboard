@@ -1,17 +1,14 @@
-﻿using System;
-using System.Reflection;
-using System.Security;
-using System.Security.Permissions;
-using System.Security.Policy;
+﻿using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using Autofac.Integration.WebApi;
-using Common.Logging;
 using Dashboard;
-using Dashboard.Controllers.MVC;
+using Dashboard.Infrastructure.Middleware;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
+using Newtonsoft.Json.Serialization;
 using Owin;
 
 [assembly: OwinStartup(typeof(Application))]
@@ -23,12 +20,13 @@ namespace Dashboard
         public void Configuration(IAppBuilder app)
         {
             var configuration = new HttpConfiguration();
+            app.Use<GlobalExceptionLoggerMiddleware>();
             RouteInitialization.Register(configuration.Routes);
             configuration.MapHttpAttributeRoutes();
-            ConfigureAuth(app);
             var container = DiContainerLoad.CreateContainer(configuration);
             configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             app.UseAutofacMiddleware(container);
+            ConfigureAuth(app);
             app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(configuration);
             app.UseFileServer(new FileServerOptions
@@ -38,6 +36,10 @@ namespace Dashboard
             });
             app.UseDefaultFiles();
             app.UseErrorPage();
+            AddStandardRoles();
+
+            var jsonMediaTypeFormatter = configuration.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonMediaTypeFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

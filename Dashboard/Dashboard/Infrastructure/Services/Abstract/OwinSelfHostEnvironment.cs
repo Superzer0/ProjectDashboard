@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Dashboard.UI.Objects.Services;
 
 namespace Dashboard.Infrastructure.Services.Abstract
 {

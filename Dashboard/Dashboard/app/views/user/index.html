@@ -1,5 +1,5 @@
 ﻿<article id="user_index" class="sidebar-content">
-    <div id="wrapper" data-ng-controller="adminMenuController">
+    <div id="wrapper">
         <!-- Sidebar -->
         <div data-ng-include="'app/views/user/sidebar.html'"></div>
         <div id="page-content-wrapper">
@@ -9,22 +9,33 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>Statistics </h1>
+                        <h1>stats </h1>
                         <hr />
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         Basic Info
+                                        <span class="pull-right" style="cursor: pointer"
+                                              data-ng-click="refreshUserProfile()">
+                                            <i class="fa fa-refresh"></i>
+                                        </span>
                                     </div>
                                     <div class="panel-body">
                                         <ul>
-                                            <li>kuba.kawa@hotmail.com</li>
-                                            <li>Last password change: 234234</li>
                                             <li>
-                                                Roles <ul>
-                                                    <li>
-                                                        user
+                                                user:
+                                                <i>{{userProfile.userName}}</i>
+                                            </li>
+                                            <li>
+                                                email:
+                                                <i>{{userProfile.email}}</i>
+                                            </li>
+                                            <li>
+                                                Roles:
+                                                <ul>
+                                                    <li ng-repeat="role in userProfile.roles">
+                                                        {{role}}
                                                     </li>
                                                 </ul>
                                             </li>
@@ -32,7 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         Your plugins
@@ -42,11 +53,42 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-
-                            </div>
                         </div>
 
+                        <h1>settings</h1>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 login">
+                                <form name="changePassForm" id="changePassForm" novalidate>
+                                    <div data-wow-duration="1s" data-ng-class="formClass">
+                                        <h2 class="form-login-heading">change password</h2>
+
+                                        <input type="password" class="form-control" placeholder="old password" data-ng-model="changePassData.oldPass" name="oldPassword" required>
+                                        <p data-ng-show="!changePassForm.oldPassword.$pristine && changePassForm.oldPassword.$invalid" class="help-block">Old password is required.</p>
+
+                                        <input type="password" class="form-control" placeholder="new password" data-ng-model="changePassData.newPass" name="newPass" required ng-minlength="6">
+                                        <p data-ng-show="!changePassForm.newPass.$pristine && changePassForm.newPass.$error.minlength" class="help-block">Password must hae at least 6 characters.</p>
+
+                                        <input type="password" class="form-control" placeholder="confirm new password" data-ng-model="changePassData.confirmNewPass" name="confirmPassword" required>
+                                        <p data-ng-show="!changePassForm.confirmPassword.$pristine && passNotMatch()"
+                                           class="help-block">Passwords does not match</p>
+                                        <button class="btn btn-md btn-info btn-block" type="submit"
+                                                data-ng-disabled="submitNotPermitted()" data-ng-click="changePassword()">
+                                            change
+                                        </button>
+                                        <div data-ng-show="changePasswordResult" class="alert alert-danger">
+                                            <span>{{changePasswordResult.message}}</span>
+                                            <br />
+                                            <ul data-ng-show="changePasswordResult.errors.length >0">
+                                                <li data-ng-repeat="error in changePasswordResult.errors">
+                                                    {{error}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -33,4 +33,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Dashboard.Tests")]
-
+[assembly: InternalsVisibleTo("Dashboard.DI.CompositionRoot")]

@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using Dashboard.Models.Account;
+using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Dashboard.Infrastructure.Identity

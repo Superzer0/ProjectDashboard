@@ -1,6 +1,6 @@
 ﻿'use strict';
-app.controller('loginController', ['$scope', '$location', 'authService',
-    function ($scope, $location, authService) {
+app.controller('loginController', ['$scope', '$location', 'authService', 'notificationService',
+    function ($scope, $location, authService, notificationService) {
 
         $scope.loginData = {
             userName: "",
@@ -15,7 +15,8 @@ app.controller('loginController', ['$scope', '$location', 'authService',
             $scope.isLogging = true;
             $scope.formClass = "";
             authService.login($scope.loginData).then(function (response) {
-                $location.path('/user');
+                notificationService.removeAll();
+                $location.path('/user/index');
             },
              function (err) {
                  $scope.isLogging = false;

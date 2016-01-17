@@ -1,4 +1,4 @@
-﻿namespace Dashboard.Infrastructure.Services.Abstract
+﻿namespace Dashboard.UI.Objects.Services
 {
     public interface IEnvironment
     {

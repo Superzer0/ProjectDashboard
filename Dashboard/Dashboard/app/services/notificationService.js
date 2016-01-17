@@ -18,15 +18,18 @@
         return service;
 
         function addNotification(title, body, type) {
+            if (internalNotificationList.length > 5) {
+                internalNotificationList.shift();
+            }
             internalNotificationList.push({ "title": title, "body": body, "type": type });
         }
 
         function removeLast() {
-            internalNotificationList.pop();
+            internalNotificationList.shift();
         }
 
         function removeAll() {
-            internalNotificationList = [];
+            //internalNotificationList.length = 0;
         }
 
         function init(notificationList) {

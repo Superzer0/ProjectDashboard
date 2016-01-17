@@ -12,5 +12,6 @@ namespace Dashboard.DataAccess
 
         public DbSet<Plugin> Plugins { get; set; }
         public DbSet<PluginUiConfiguration> PluginUiConfigurations { get; set; }
+        public DbSet<InstanceSetting> InstanceSettings { get; set; }
     }
 }

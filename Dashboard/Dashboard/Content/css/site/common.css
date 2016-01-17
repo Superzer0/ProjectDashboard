@@ -54,11 +54,11 @@ body growl-notification.warrning {
 }
 body growl-notification.fading.ng-move {
   opacity: 0;
-  -webkit-transition: 1s linear all;
+  -webkit-transition: 0.5s linear all;
   /* Safari/Chrome */
-  -moz-transition: 1s linear all;
-  -o-transition: 1s linear all;
-  transition: 1s linear all;
+  -moz-transition: 0.5s linear all;
+  -o-transition: 0.5s linear all;
+  transition: 0.5s linear all;
   /* All other modern browsers and IE10+ */
 }
 body growl-notification.fading.ng-move.ng-move-active {
@@ -66,11 +66,11 @@ body growl-notification.fading.ng-move.ng-move-active {
 }
 body growl-notification.fading.ng-leave {
   opacity: 1;
-  -webkit-transition: 1s linear all;
+  -webkit-transition: 0.5s linear all;
   /* Safari/Chrome */
-  -moz-transition: 1s linear all;
-  -o-transition: 1s linear all;
-  transition: 1s linear all;
+  -moz-transition: 0.5s linear all;
+  -o-transition: 0.5s linear all;
+  transition: 0.5s linear all;
   /* All other modern browsers and IE10+ */
 }
 body growl-notification.fading.ng-leave.ng-leave-active {
@@ -171,62 +171,52 @@ footer#footer p a {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.badge-icon {
+  width: 30px;
+  height: 30px;
+  color: white;
+  display: block;
+  background: green;
+  border-radius: 100px;
+  text-align: center;
+  vertical-align: text-top;
+  text-transform: uppercase;
+  font-size: large;
+}
 .fade {
   opacity: 1;
-}
-.fade .transition-prop {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-  width: 90%;
-  height: 100%;
-}
-.fade.ng-leave {
-  -webkit-transition: all 1s ease;
-  transition: all 1s ease;
-  opacity: 1;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-  width: 90%;
-  height: 100%;
-}
-.fade.ng-enter {
-  opacity: 0;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-  width: 90%;
-  height: 100%;
-}
-.fade.ng-enter-active {
-  opacity: 1;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-  width: 90%;
-  height: 100%;
-}
-.fade.ng-leave-active {
-  opacity: 0;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-  width: 90%;
-  height: 100%;
+  /*
+    .transition-prop {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        width: 90%;
+        height: 100%;
+    }
+
+    &.ng-leave {
+        -webkit-transition: all 1s ease;
+        transition: all 1s ease;
+        opacity: 1;
+        .transition-prop;
+    }
+
+    &.ng-enter {
+        opacity: 0;
+        .transition-prop;
+    }
+
+    &.ng-enter-active {
+        opacity: 1;
+        .transition-prop;
+    }
+
+    &.ng-leave-active {
+        opacity: 0;
+        .transition-prop;
+    }
+    */
 }

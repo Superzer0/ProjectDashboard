@@ -1,5 +1,5 @@
 ﻿<article id="user_settings" class="sidebar-content">
-    <div id="wrapper" data-ng-controller="adminMenuController">
+    <div id="wrapper">
         <!-- Sidebar -->
         <div data-ng-include="'app/views/plugins/sidebar.html'"></div>
         <div id="page-content-wrapper">
@@ -12,8 +12,53 @@
                         <h1>add new & update</h1>
                         <hr />
                         <div class="row">
-                            <div class="col-md-offset-4 col-md-4 login">
-                                here loader
+                            <div class="col-md-offset-1 col-md-10 login">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="well well-lg" nv-file-drop nv-file-over uploader="uploader">
+                                            Drop files here
+                                        </div>
+                                        <input type="file" nv-file-select uploader="uploader" /><br />
+                                    </div>
+                                    <div class="col-md-offset-1 col-md-5">
+                                        <div ng-repeat="item in uploader.queue">
+                                            <span ng-bind="item.file.name"></span>
+                                            <br />
+                                            <span ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</span>
+                                            <br />
+                                            <br />
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressBar" data-ng-style="{'width' : item.progress + '%'}">
+                                                </div>
+                                            </div>
+                                            <span class="text-center">
+                                                <span ng-show="item.isSuccess">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                    upload ok
+                                                </span>
+                                                <span ng-show="item.isCancel">
+                                                    <i class="glyphicon glyphicon-ban-circle">
+                                                    </i>user canceled
+                                                </span>
+                                                <span ng-show="item.isError">
+                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                    server error
+                                                </span>
+                                            </span>
+                                            <div>
+                                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                </button>
+                                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

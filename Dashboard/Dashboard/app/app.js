@@ -1,6 +1,7 @@
 ﻿
 var app = angular.module('angularAdmin',
-    ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'growlNotifications', 'ngAnimate']);
+    ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'growlNotifications',
+        'ngAnimate', 'frapontillo.bootstrap-switch', 'angularFileUpload']);
 
 app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider, cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
@@ -38,11 +39,6 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
         templateUrl: "/app/views/user/index.html"
     });
 
-    $routeProvider.when("/user/settings", {
-        controller: "indexUserController",
-        templateUrl: "/app/views/user/settings.html"
-    });
-
     $routeProvider.when("/user/plugins", {
         controller: "indexUserController",
         templateUrl: "/app/views/user/plugins.html"
@@ -53,11 +49,6 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
     $routeProvider.when("/instance/index", {
         controller: "indexInstanceController",
         templateUrl: "/app/views/instance/index.html"
-    });
-
-    $routeProvider.when("/instance/settings", {
-        controller: "indexInstanceController",
-        templateUrl: "/app/views/instance/settings.html"
     });
 
     $routeProvider.when("/instance/users", {
