@@ -67,6 +67,10 @@
       <Project>{31b18f4a-ab97-4fb4-a044-86c39b091f03}</Project>
       <Name>Dashboard.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dashboard.Services\Dashboard.Services.csproj">
+      <Project>{8544D787-599A-483A-B91F-8C91466BEC19}</Project>
+      <Name>Dashboard.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.UI.Objects\Dashboard.UI.Objects.csproj">
       <Project>{b9cbabe8-8025-40d5-b458-ee661340e1a3}</Project>
       <Name>Dashboard.UI.Objects</Name>

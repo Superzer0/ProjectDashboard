@@ -171,6 +171,8 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.99.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -297,6 +299,7 @@
     <Content Include="scripts\loading-bar.min.js" />
     <Content Include="scripts\modernizr-custom.js" />
     <Content Include="scripts\wow.js" />
+    <Content Include="tempPlugins\placeholder.txt" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

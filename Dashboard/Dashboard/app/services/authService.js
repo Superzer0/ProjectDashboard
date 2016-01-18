@@ -1,6 +1,6 @@
 ﻿'use strict';
-app.factory('authService', ['$http', '$q', 'localStorageService',
-    function ($http, $q, localStorageService) {
+app.factory('authService', ['$http', '$q', 'localStorageService', 'dashboardRoles',
+    function ($http, $q, localStorageService, roles) {
         var authorizationDataKey = 'authorizationData';
         var userProfileDataKey = 'userProfileData';
         var authServiceFactory = {};
@@ -10,11 +10,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService',
             userName: ""
         };
 
-        var dashboardRoles = {
-            user: "user",
-            admin: "admin",
-            plugins: "plugin_manager"
-        };
+        var dashboardRoles = angular.copy(roles);
 
         var userProfileData = null;
 
@@ -145,7 +141,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService',
         }
 
         authServiceFactory.saveRegistration = saveRegistration;
-        authServiceFactory.login = login;   
+        authServiceFactory.login = login;
         authServiceFactory.logOut = logOut;
         authServiceFactory.fillAuthData = fillAuthData;
         authServiceFactory.authentication = authData;

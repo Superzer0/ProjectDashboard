@@ -45,11 +45,13 @@ namespace Dashboard.Infrastructure.Services.Abstract
 
         public string AppVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
+        public string PluginsPath => GetSetting("pluginsPath") ?? (RootPathIndicator + "/plugins");
+
+        public string PluginsUploadPath => GetSetting("uploadPluginsPath") ?? (RootPathIndicator + "/tempPlugins");
+
         private string GetSetting(string key)
         {
             return ConfigurationManager.AppSettings[key];
         }
-
-
     }
 }

@@ -36,7 +36,12 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
 
     $routeProvider.when("/user/index", {
         controller: "indexUserController",
-        templateUrl: "/app/views/user/index.html"
+        templateUrl: "/app/views/user/index.html",
+        resolve: {
+            userProfile: ['authService', function (authService) {
+                return authService.getUserProfile();
+            }]
+        }
     });
 
     $routeProvider.when("/user/plugins", {

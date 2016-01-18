@@ -3,13 +3,13 @@
 
     angular
         .module('angularAdmin')
-        .controller('indexUserController', ['$scope', 'authService', 'notificationService', 'utilsService',
+        .controller('indexUserController', ['$scope', 'authService', 'notificationService', 'utilsService', 'userProfile',
             indexUserController]);
 
-    function indexUserController($scope, authService, notificationService, utilsService) {
+    function indexUserController($scope, authService, notificationService, utilsService, userProfile) {
         var isWorking = false;
 
-        $scope.userProfile = {}
+        $scope.userProfile = userProfile;
 
         $scope.changePasswordResult = null;
 
@@ -18,6 +18,8 @@
             newPass: "",
             confirmNewPass: ""
         };
+
+        
 
         $scope.passNotMatch = function () {
             return $scope.changePassData.newPass !== $scope.changePassData.confirmNewPass;
@@ -62,10 +64,12 @@
             $("#wrapper").toggleClass("toggled");
         }
 
+       
+
         activate();
 
         function activate() {
-            $scope.getUserData();
+            //$scope.getUserData();
         }
     }
 })();
