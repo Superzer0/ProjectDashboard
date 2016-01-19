@@ -11,5 +11,6 @@ namespace Dashboard.UI.Objects.Services.Plugins
         bool AddToValidationQueue(string fileId, string filePath);
         Task<ConsolidatedPluginValidationResult> ValidatePluginAsync(string fileId);
         Task<PluginInformation> GetPluginInstallableInformationAsync(string fileId);
+        Task InstallPluginAsync(string fileId);
     }
 }

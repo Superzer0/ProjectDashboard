@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Common.Logging;
 using Dashboard.Services.Plugins.Validation.Validators;
 using Dashboard.UI.Objects.DataObjects;
@@ -42,11 +43,15 @@ namespace Dashboard.Services.Plugins.Validation
         public IEnumerable<PluginValidationResult> Validate(ProcessedPlugin plugin)
         {
             var validationResults = new List<PluginValidationResult>();
+
+            if (!Actions.Any()) throw new InvalidOperationException("No validators were added. To add validators user Configure method");
+
             foreach (var validator in Actions)
             {
                 try
                 {
                     validationResults.Add(validator.Validate(plugin));
+                    plugin.ResetState();
                 }
                 catch (Exception e)
                 {

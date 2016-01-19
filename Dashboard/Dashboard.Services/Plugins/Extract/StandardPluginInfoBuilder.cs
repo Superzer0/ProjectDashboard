@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Common.Logging;
 using Dashboard.Services.Plugins.Extract.Builders;
 using Dashboard.Services.Plugins.Validation;
@@ -37,11 +38,15 @@ namespace Dashboard.Services.Plugins.Extract
         public IEnumerable<BasePluginInformation> Build(ProcessedPlugin plugin)
         {
             var buildersResults = new List<BasePluginInformation>();
+
+            if (!Actions.Any()) throw new InvalidOperationException("No builders were added. To add builders user Configure method");
+
             foreach (var validator in Actions)
             {
                 try
                 {
                     buildersResults.Add(validator.Extract(plugin));
+                    plugin.ResetState();
                 }
                 catch (Exception e)
                 {

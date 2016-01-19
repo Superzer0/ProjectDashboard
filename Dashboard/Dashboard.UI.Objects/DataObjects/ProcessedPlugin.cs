@@ -9,7 +9,7 @@ namespace Dashboard.UI.Objects.DataObjects
         public string FileId { get; set; }
         public Stream PluginZipStream { get; set; }
 
-        public void Reset()
+        public void ResetState()
         {
             PluginZipStream.Position = 0;
         }

@@ -6,7 +6,7 @@ namespace Dashboard.UI.Objects.DataObjects.Extract
     {
         public override void Accept(IProcessPluginInformationVisitor visitor)
         {
-            throw new System.NotImplementedException();
+            visitor.Visit(this);
         }
     }
 }

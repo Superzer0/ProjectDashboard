@@ -24,8 +24,8 @@ namespace Dashboard.Controllers.API
             _pluginsFacade = pluginsFacade;
         }
 
-        [Route("upload")]
         [HttpPost]
+        [Route("upload")]
         public async Task<IHttpActionResult> UploadPlugin()
         {
             // Check if the request contains multipart/form-data.
@@ -66,8 +66,8 @@ namespace Dashboard.Controllers.API
             }
         }
 
-        [Route("validate/{fileId}")]
         [HttpPost]
+        [Route("validate/{fileId}")]
         public async Task<IHttpActionResult> ValidatePlugin(string fileId)
         {
             if (string.IsNullOrWhiteSpace(fileId)) return BadRequest("fileId must not be empty");
@@ -80,13 +80,24 @@ namespace Dashboard.Controllers.API
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, pluginValidationResults));
         }
 
-        [Route("info/{fileId}")]
         [HttpPost]
-        public IHttpActionResult CheckPluginInformation(string fileId)
+        [Route("info/{fileId}")]
+        public async Task<IHttpActionResult> CheckPluginInformation(string fileId)
         {
             if (string.IsNullOrWhiteSpace(fileId)) return BadRequest("fileId must not be empty");
-            var pluginInfo = _pluginsFacade.GetPluginInstallableInformationAsync(fileId);
+            var pluginInfo = await _pluginsFacade.GetPluginInstallableInformationAsync(fileId);
             return Ok(pluginInfo);
+        }
+
+        [HttpPost]
+        [Route("install/{fileId}")]
+        public async Task<IHttpActionResult> InstallPlugin(string fileId)
+        {
+            if (string.IsNullOrWhiteSpace(fileId)) return BadRequest("fileId must not be empty");
+
+            await _pluginsFacade.InstallPluginAsync(fileId);
+
+            return Ok();
         }
     }
 }

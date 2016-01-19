@@ -10,7 +10,7 @@ namespace Dashboard.Services.Plugins.Extract.Builders
 
         public PluginZipBasicInformation Extract(ProcessedPlugin plugin)
         {
-            return new PluginZipBasicInformation();
+            return new PluginZipBasicInformation {IssuerName = Name};
         }
     }
 }

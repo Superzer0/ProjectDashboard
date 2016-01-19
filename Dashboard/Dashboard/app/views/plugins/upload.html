@@ -6,27 +6,30 @@
             <div data-ng-click="toogleMenu()" class="showSidebar">
                 <i class="fa fa-bars fa-2x"></i>
             </div>
-            <div class="container-fluid">
+            <div class="container-fluid" data-ng-controller="pluginUploadWizardController">
                 <div class="row">
                     <div class="col-lg-12">
                         <h1>add new & update</h1>
                         <hr />
                         <div class="row">
+                            <h3>1. Upload plugin</h3>
+                            <hr />
                             <div class="col-md-offset-1 col-md-10 login">
                                 <div class="row">
+
                                     <div class="col-md-6">
                                         <div class="well well-lg" nv-file-drop nv-file-over uploader="uploader">
                                             Drop files here
                                         </div>
-                                        <input type="file" accept="application/zip, application/octetstream" nv-file-select uploader="uploader"/><br/>
+                                        <input type="file" accept="application/zip, application/octetstream" nv-file-select uploader="uploader" /><br />
                                     </div>
                                     <div class="col-md-offset-1 col-md-5">
                                         <div ng-repeat="item in uploader.queue">
                                             <span ng-bind="item.file.name"></span>
-                                            <br/>
+                                            <br />
                                             <span ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</span>
-                                            <br/>
-                                            <br/>
+                                            <br />
+                                            <br />
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressBar" data-ng-style="{'width' : item.progress + '%'}">
                                                 </div>
@@ -63,13 +66,49 @@
                         </div>
 
                         <div class="row" data-ng-show="pluginUpload.fileId">
-                            {{pluginUpload.fileId}}
-                            Upload ok, next step is to validate your plugin. (this will be done automatically)
+                            <h3>2. Validate plugin</h3>
+                            <hr />
+                            <br />
+                            <div class="well well-sm">
+                                {{pluginUpload.fileId}}
+                            </div>
+                            <br />
                             <button class="btn btn-primary" data-ng-click="validatePlugin()">Validate plugin</button>
-                            <br/>
-                            {{pluginUpload.validationResults}}
                         </div>
 
+                        <div class="row" data-ng-show="pluginUpload.validationResults">
+                            <h3>3. Load info about plugin</h3>
+                            <hr />
+                            <br />
+                            <div class="well well-sm">
+                                {{pluginUpload.validationResults}}
+                            </div>
+                            <br />
+                            <button class="btn btn-primary" data-ng-click="getInformation()">Get plugin info</button>
+                        </div>
+
+                        <div class="row" data-ng-show="pluginUpload.pluginInfo">
+                            <h3>4. Install plugin</h3>
+                            <hr />
+                            <br />
+                            <div class="well well-sm">
+                                {{pluginUpload.pluginInfo}}
+                            </div>
+
+                            <br />
+                            <button class="btn btn-primary" data-ng-click="installPlugin()">Install plugin</button>
+                        </div>
+
+                        <div class="row" data-ng-show="pluginUpload.installationResult">
+                            <h3>5. Installation Completed!</h3>
+                            <hr />
+                            <br />
+                            <div class="well well-sm">
+                                {{pluginUpload.installationResult}}
+                            </div>
+                            <br />
+                            <button class="btn btn-primary" data-ng-click="startOver()">Start over</button>
+                        </div>
                     </div>
                 </div>
             </div>

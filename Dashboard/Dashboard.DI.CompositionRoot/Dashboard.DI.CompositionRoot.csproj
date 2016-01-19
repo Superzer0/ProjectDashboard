@@ -71,6 +71,10 @@
       <Project>{8544D787-599A-483A-B91F-8C91466BEC19}</Project>
       <Name>Dashboard.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dashboard.UI.BrokerIntegration\Dashboard.UI.BrokerIntegration.csproj">
+      <Project>{22133E14-2C53-42C0-92BD-68519574FEFF}</Project>
+      <Name>Dashboard.UI.BrokerIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.UI.Objects\Dashboard.UI.Objects.csproj">
       <Project>{b9cbabe8-8025-40d5-b458-ee661340e1a3}</Project>
       <Name>Dashboard.UI.Objects</Name>

@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
+using Dashboard.Controllers.API;
 using Dashboard.DataAccess;
 using Dashboard.DI.CompositionRoot;
 using Dashboard.Infrastructure.Controllers;
@@ -54,7 +55,7 @@ namespace Dashboard
         private static void RegisterFilters(ContainerBuilder builder)
         {
             builder.Register(p => new DbSessionFilter(p.Resolve<PluginsContext>()))
-                .AsWebApiActionFilterFor<ApiController>()
+                .AsWebApiActionFilterFor<PluginsController>()
                 .InstancePerRequest();
 
             builder.Register(p => new ErrorHandlingFilter())

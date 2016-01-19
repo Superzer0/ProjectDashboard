@@ -10,7 +10,7 @@ namespace Dashboard.Services.Plugins.Extract.Builders
 
         public PluginConfigurationInfo Extract(ProcessedPlugin plugin)
         {
-            return new PluginConfigurationInfo();
+            return new PluginConfigurationInfo { IssuerName = Name };
         }
     }
 }

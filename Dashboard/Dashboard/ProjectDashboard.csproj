@@ -222,6 +222,7 @@
     <Content Include="app\controllers\navigationController.js" />
     <Content Include="app\controllers\loginController.js" />
     <Content Include="app\controllers\plugins\indexPluginsController.js" />
+    <Content Include="app\controllers\plugins\pluginUploadWizardController.js" />
     <Content Include="app\controllers\refreshController.js" />
     <Content Include="app\controllers\signupController.js" />
     <Content Include="app\controllers\tokensManagerController.js" />
