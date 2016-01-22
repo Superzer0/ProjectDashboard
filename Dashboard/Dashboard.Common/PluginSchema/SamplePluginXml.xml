@@ -3,6 +3,7 @@
   <name>TestApp</name>
   <pluginId>3F2504E0-4F89-41D3-9A0C-0305E82C3301</pluginId>
   <communicationType>Plain</communicationType>
+  <startingProgram>Dashboard.exe</startingProgram>
   <api>
     <method name="GetData">
       <inputType>String</inputType>

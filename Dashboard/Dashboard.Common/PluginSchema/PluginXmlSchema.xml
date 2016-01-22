@@ -32,6 +32,7 @@
         <xs:element type="pluginName" name="name"/>
         <xs:element type="guid" name="pluginId"/>
         <xs:element type="communicationType" name="communicationType"/>
+        <xs:element type="xs:string" name="startingProgram"/>
         <xs:element name="api">
           <xs:complexType>
             <xs:all>

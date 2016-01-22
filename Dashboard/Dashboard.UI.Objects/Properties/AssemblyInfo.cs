@@ -35,3 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Dashboard.Tests")]
 [assembly: InternalsVisibleTo("Dashboard.DI.CompositionRoot")]
+[assembly: InternalsVisibleTo("Dashboard.Services")]

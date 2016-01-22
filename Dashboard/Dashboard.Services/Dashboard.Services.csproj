@@ -34,8 +34,13 @@
       <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +58,7 @@
     <Compile Include="Plugins\Install\Visitors\PersistPluginInformationVisitor.cs" />
     <Compile Include="Plugins\StandardPluginFacade.cs" />
     <Compile Include="Plugins\Validation\StandardPluginValidationBuilder.cs" />
+    <Compile Include="Plugins\Validation\Validators\BasePluginValidator.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginZipStructureValidator.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginJsonConfigurationValidator.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginXmlValidator.cs" />
@@ -62,6 +68,10 @@
     <Folder Include="Plugins\Uninstall\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Common\Dashboard.Common.csproj">
+      <Project>{5FCB46A1-3BB5-4498-B8F5-4A9F6456C084}</Project>
+      <Name>Dashboard.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.DataAccess\Dashboard.DataAccess.csproj">
       <Project>{31B18F4A-AB97-4FB4-A044-86C39B091F03}</Project>
       <Name>Dashboard.DataAccess</Name>
