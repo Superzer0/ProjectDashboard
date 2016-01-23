@@ -80,6 +80,7 @@
     <Compile Include="Services\ConfigurationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sql\Plugins.sql" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

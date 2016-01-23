@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Dashboard.UI.Objects.DataObjects.Extract;
+﻿using System.Threading.Tasks;
 using Dashboard.UI.Objects.DataObjects.Validation;
 using Dashboard.UI.Objects.Services.Plugins.Install;
 

@@ -1,12 +1,11 @@
-﻿using System;
-using Common.Logging;
+﻿using Common.Logging;
 using Dashboard.DataAccess;
 using Dashboard.UI.Objects.DataObjects.Extract;
 using Dashboard.UI.Objects.Services.Plugins.Extract.Visitors;
 
 namespace Dashboard.Services.Plugins.Install.Visitors
 {
-    class PersistPluginInformationVisitor : IProcessPluginInformationVisitor
+    internal class PersistPluginInformationVisitor : IProcessPluginInformationVisitor
     {
         private readonly PluginsContext _pluginsContext;
         private readonly ILog _logger = LogManager.GetLogger<PersistPluginInformationVisitor>();

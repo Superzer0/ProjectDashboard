@@ -11,6 +11,10 @@ namespace Dashboard.Services.Plugins.Validation
 {
     class StandardPluginValidationBuilder : BaseBuilder<IValidatePlugin>, IBuildValidationResult
     {
+        private readonly ZipSizeValidator _zipSizeValidator;
+        private readonly PluginZipStructureValidator _zipStructureValidator;
+        private readonly PluginJsonConfigurationValidator _pluginJsonConfigurationValidator;
+        private readonly PluginXmlValidator _xmlValidator;
         private readonly ILog _logger = LogManager.GetLogger<StandardPluginValidationBuilder>();
         private const string ValidatorExceptionStandardMessage = "Error occurred while validation. Contact system administrator";
 
@@ -20,16 +24,21 @@ namespace Dashboard.Services.Plugins.Validation
             set { base.AllowDuplicateValidators = value; }
         }
 
-        public StandardPluginValidationBuilder(bool allowDuplicateValidators = false)
+        public StandardPluginValidationBuilder(ZipSizeValidator zipSizeValidator, PluginZipStructureValidator zipStructureValidator,
+            PluginJsonConfigurationValidator pluginJsonConfigurationValidator, PluginXmlValidator xmlValidator)
         {
-            AllowDuplicateValidators = allowDuplicateValidators;
+            _zipSizeValidator = zipSizeValidator;
+            _zipStructureValidator = zipStructureValidator;
+            _pluginJsonConfigurationValidator = pluginJsonConfigurationValidator;
+            _xmlValidator = xmlValidator;
         }
 
         public void ConfigureStandard()
         {
-            AppendValidatorToList(new PluginZipStructureValidator());
-            AppendValidatorToList(new PluginJsonConfigurationValidator());
-            AppendValidatorToList(new PluginXmlValidator());
+            AppendValidatorToList(_zipSizeValidator);
+            AppendValidatorToList(_zipStructureValidator);
+            AppendValidatorToList(_pluginJsonConfigurationValidator);
+            AppendValidatorToList(_xmlValidator);
         }
 
         public void ConfigureBuilder(IEnumerable<IValidatePlugin> validators)

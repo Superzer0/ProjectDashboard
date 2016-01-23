@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccessHandler.cs" />
+    <Compile Include="PluginInstallationHandler.cs" />
     <Compile Include="ServicesHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

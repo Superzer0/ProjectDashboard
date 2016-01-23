@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Compression;
 using System.Linq;
 using Dashboard.Common.PluginSchema;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.DataObjects.Validation;
+using Dashboard.UI.Objects.Services.Plugins.Validation;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
-    internal class PluginZipStructureValidator : BasePluginValidator
+    internal class PluginZipStructureValidator : IValidatePlugin
     {
-        public override string Name => "PluginZipStructureValidator";
+        private readonly ZipHelper _zipHelper;
+        public string Name => "PluginZipStructureValidator";
 
-        public override PluginValidationResult Validate(ProcessedPlugin processedPlugin)
+        public PluginZipStructureValidator(ZipHelper zipHelper)
         {
-            using (var zipArchive = new ZipArchive(processedPlugin.PluginZipStream, ZipArchiveMode.Read, true))
+            _zipHelper = zipHelper;
+        }
+
+        public PluginValidationResult Validate(ProcessedPlugin processedPlugin)
+        {
+            using (var zipArchive = _zipHelper.GetZipArchiveFromStream(processedPlugin.PluginZipStream))
             {
                 var requiredFilesExist = true;
                 var validationResults = new List<string>();
@@ -30,10 +36,10 @@ namespace Dashboard.Services.Plugins.Validation.Validators
                 }
 
                 //check pluginxml content length
-                var pluginXmlFileSizeOk = CheckEntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
+                var pluginXmlFileSizeOk = _zipHelper.CheckEntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
 
                 //check index.html content length
-                var presentationEntryFileSizeOk = CheckEntryNonEmpty(zipArchive,
+                var presentationEntryFileSizeOk = _zipHelper.CheckEntryNonEmpty(zipArchive,
                     PluginZipStructure.PresentationEntryFile, validationResults);
 
                 var validationResult = new PluginValidationResult

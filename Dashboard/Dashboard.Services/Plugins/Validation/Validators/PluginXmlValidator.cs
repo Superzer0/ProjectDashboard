@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -8,27 +7,35 @@ using System.Xml.Schema;
 using Dashboard.Common.PluginSchema;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.DataObjects.Validation;
+using Dashboard.UI.Objects.Services.Plugins.Validation;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
-    internal class PluginXmlValidator : BasePluginValidator
+    internal class PluginXmlValidator : IValidatePlugin
     {
-        public override string Name => "PluginXmlValidator";
+        private readonly ZipHelper _zipHelper;
 
-        public override PluginValidationResult Validate(ProcessedPlugin processedPlugin)
+        public PluginXmlValidator(ZipHelper zipHelper)
         {
-            using (var zipArchive = new ZipArchive(processedPlugin.PluginZipStream, ZipArchiveMode.Read, true))
+            _zipHelper = zipHelper;
+        }
+
+        public string Name => "PluginXmlValidator";
+
+        public PluginValidationResult Validate(ProcessedPlugin processedPlugin)
+        {
+            using (var zipArchive = _zipHelper.GetZipArchiveFromStream(processedPlugin.PluginZipStream))
             {
                 var validationResults = new List<string>();
 
-                var pluginXmlZipEntryValid = CheckEntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
+                var pluginXmlZipEntryValid = _zipHelper.CheckEntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
                 var xmlValid = false;
                 if (pluginXmlZipEntryValid)
                 {
                     var zipEntry = zipArchive.Entries.First(p => p.FullName.Equals(PluginZipStructure.PluginXml));
                     using (var stringReader = new StreamReader(zipEntry.Open()))
                     {
-                        var xsdSchema = GetPluginXsdSchema();
+                        var xsdSchema = _zipHelper.GetPluginXsdSchema();
                         var schema = new XmlSchemaSet();
                         schema.Add("", XmlReader.Create(new StringReader(xsdSchema)));
 

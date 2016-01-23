@@ -10,9 +10,20 @@ using Dashboard.UI.Objects.Services.Plugins.Extract;
 
 namespace Dashboard.Services.Plugins.Extract
 {
-    class StandardPluginInfoBuilder : BaseBuilder<IExtractPluginInformation<BasePluginInformation>>, IBuildPluginInfo
+    internal class StandardPluginInfoBuilder : BaseBuilder<IExtractPluginInformation<BasePluginInformation>>, IBuildPluginInfo
     {
+        private readonly PluginBasicZipInformationExtractor _zipInformationExtractor;
+        private readonly PluginXmlExtractor _xmlExtractor;
+        private readonly PluginJsonConfigurationExtactor _pluginJsonConfigurationExtactor;
         private readonly ILog _logger = LogManager.GetLogger<StandardPluginValidationBuilder>();
+
+        public StandardPluginInfoBuilder(PluginBasicZipInformationExtractor zipInformationExtractor,
+            PluginXmlExtractor xmlExtractor, PluginJsonConfigurationExtactor pluginJsonConfigurationExtactor)
+        {
+            _zipInformationExtractor = zipInformationExtractor;
+            _xmlExtractor = xmlExtractor;
+            _pluginJsonConfigurationExtactor = pluginJsonConfigurationExtactor;
+        }
 
         public new bool AllowDuplicateValidators
         {
@@ -22,9 +33,9 @@ namespace Dashboard.Services.Plugins.Extract
 
         public void ConfigureStandard()
         {
-            AppendValidatorToList(new PluginBasicZipInformationExtractor());
-            AppendValidatorToList(new PluginXmlExtractor());
-            AppendValidatorToList(new PluginJsonConfigurationExtactor());
+            AppendValidatorToList(_zipInformationExtractor);
+            AppendValidatorToList(_xmlExtractor);
+            AppendValidatorToList(_pluginJsonConfigurationExtactor);
         }
 
         public void ConfigureBuilder(IEnumerable<IExtractPluginInformation<BasePluginInformation>> builders)

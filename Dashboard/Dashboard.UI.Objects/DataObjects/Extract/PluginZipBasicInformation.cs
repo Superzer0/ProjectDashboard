@@ -4,7 +4,9 @@ namespace Dashboard.UI.Objects.DataObjects.Extract
 {
     public class PluginZipBasicInformation : BasePluginInformation
     {
-        public double  FileSize { get; set; }
+        public long ArchiveSize { get; set; }
+        public int FilesCount { get; set; }
+        public long UncompressedSize { get; set; }
 
         public override void Accept(IProcessPluginInformationVisitor visitor)
         {

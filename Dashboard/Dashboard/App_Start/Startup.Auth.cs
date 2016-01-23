@@ -2,7 +2,6 @@
 using System.Linq;
 using Common.Logging;
 using Dashboard.Infrastructure.Identity;
-using Dashboard.Models.Account;
 using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -64,6 +63,7 @@ namespace Dashboard
             }
             catch (Exception e)
             {
+                LogManager.GetLogger<Application>().Error(e);
                 LogManager.GetLogger<Application>().Error(m => m("Error while creating standard roles", e));
             }
         }

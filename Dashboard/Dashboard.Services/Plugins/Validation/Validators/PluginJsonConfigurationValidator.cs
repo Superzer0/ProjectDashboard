@@ -1,44 +1,58 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using Dashboard.Common.PluginSchema;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.DataObjects.Validation;
+using Dashboard.UI.Objects.Services.Plugins.Validation;
 using Newtonsoft.Json.Linq;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
-    internal class PluginJsonConfigurationValidator : BasePluginValidator
+    internal class PluginJsonConfigurationValidator : IValidatePlugin
     {
-        public override string Name => "PluginJsonConfigurationValidator";
+        private readonly ZipHelper _zipHelper;
 
-        public override PluginValidationResult Validate(ProcessedPlugin processedPlugin)
+        public PluginJsonConfigurationValidator(ZipHelper zipHelper)
         {
-            using (var zipArchive = new ZipArchive(processedPlugin.PluginZipStream, ZipArchiveMode.Read, true))
+            _zipHelper = zipHelper;
+        }
+
+        public string Name => "PluginJsonConfigurationValidator";
+
+        public PluginValidationResult Validate(ProcessedPlugin processedPlugin)
+        {
+            using (var zipArchive = _zipHelper.GetZipArchiveFromStream(processedPlugin.PluginZipStream))
             {
                 var validationResults = new List<string>();
-                var jsonValid = false;
+                bool jsonValid;
 
-                var jsonFileNonEmpty = CheckEntryNonEmpty(zipArchive, PluginZipStructure.ConfigurationFile,
+                var jsonFileNonEmpty = _zipHelper.CheckEntryNonEmpty(zipArchive, PluginZipStructure.ConfigurationFile,
                     validationResults);
 
-                if (jsonFileNonEmpty)
+                if (!jsonFileNonEmpty)
                 {
-                    var jsonFileZipEntry = GetEntry(zipArchive, PluginZipStructure.ConfigurationFile);
-                    using (var streamReader = new StreamReader(jsonFileZipEntry.Open()))
+                    return new PluginValidationResult
                     {
-                        var jsonConfiguration = streamReader.ReadToEnd();
+                        IsSuccess = false,
+                        ValidationResults = validationResults,
+                        ValidatorName = Name
+                    };
+                }
 
-                        try
-                        {
-                            var jObject = JObject.Parse(jsonConfiguration);
-                            jsonValid = jObject != null;
-                        }
-                        catch
-                        {
-                            validationResults.Add("not valid json file");
-                            jsonValid = false;
-                        }
+                var jsonFileZipEntry = _zipHelper.GetEntry(zipArchive, PluginZipStructure.ConfigurationFile);
+                using (var streamReader = new StreamReader(jsonFileZipEntry.Open()))
+                {
+                    var jsonConfiguration = streamReader.ReadToEnd();
+
+                    try
+                    {
+                        var jObject = JObject.Parse(jsonConfiguration);
+                        jsonValid = jObject != null;
+                    }
+                    catch
+                    {
+                        validationResults.Add("not valid json file");
+                        jsonValid = false;
                     }
                 }
 

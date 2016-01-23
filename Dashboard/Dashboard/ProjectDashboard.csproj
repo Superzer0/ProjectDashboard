@@ -346,6 +346,7 @@
     <Compile Include="Infrastructure\ActionResults\RazorResult.cs" />
     <Compile Include="Infrastructure\Controllers\BaseController.cs" />
     <Compile Include="Infrastructure\Controllers\RazorController.cs" />
+    <Compile Include="Infrastructure\Filters\DbLoggingFIlter.cs" />
     <Compile Include="Infrastructure\Filters\DbSessionFilter.cs" />
     <Compile Include="Infrastructure\Filters\ErrorHandlingFilter.cs" />
     <Compile Include="Infrastructure\Identity\ApplicationRoleManager.cs" />
@@ -371,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infrastructure\MediaFormatters\" />
+    <Folder Include="logs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dashboard.DataAccess\Dashboard.DataAccess.csproj">

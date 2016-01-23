@@ -41,6 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PluginSchema\PluginZipStructure.cs" />
+    <Compile Include="PluginXml\PluginMethod.cs" />
+    <Compile Include="PluginXml\PluginApi.cs" />
+    <Compile Include="PluginXml\PluginXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

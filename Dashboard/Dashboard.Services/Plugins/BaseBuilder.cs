@@ -6,7 +6,7 @@ namespace Dashboard.Services.Plugins
     internal abstract class BaseBuilder<T>
     {
         protected readonly List<T> Actions = new List<T>();
-        protected readonly List<Type> ActionTypes = new List<Type>();
+        private readonly List<Type> _actionTypes = new List<Type>();
         protected bool AllowDuplicateValidators { get; set; }
 
         protected void AppendValidatorToList(T actionToExecute)
@@ -17,16 +17,22 @@ namespace Dashboard.Services.Plugins
 
             if (!AllowDuplicateValidators)
             {
-                if (ActionTypes.Contains(actionType))
+                if (_actionTypes.Contains(actionType))
                 {
                     throw new InvalidOperationException(
                         $"Action list already contains {actionType}. Set {nameof(AllowDuplicateValidators)} to allow duplicates in builder actions.");
                 }
             }
 
-            ActionTypes.Add(actionType);
+            _actionTypes.Add(actionType);
 
             Actions.Add(actionToExecute);
+        }
+
+        protected void ClearConfiguration()
+        {
+            _actionTypes.Clear();
+            Actions.Clear();
         }
     }
 }

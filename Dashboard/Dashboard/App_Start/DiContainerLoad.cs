@@ -27,7 +27,7 @@ namespace Dashboard
         internal static IContainer CreateContainer(HttpConfiguration configuration)
         {
             var builder = new ContainerBuilder();
-            //builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
+
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly())
                 .OnActivating(args =>
                 {
@@ -54,6 +54,10 @@ namespace Dashboard
 
         private static void RegisterFilters(ContainerBuilder builder)
         {
+            builder.Register(p => new DbLoggingFilter(p.Resolve<PluginsContext>()))
+             .AsWebApiActionFilterFor<BaseController>()
+             .InstancePerRequest();
+            
             builder.Register(p => new DbSessionFilter(p.Resolve<PluginsContext>()))
                 .AsWebApiActionFilterFor<PluginsController>()
                 .InstancePerRequest();

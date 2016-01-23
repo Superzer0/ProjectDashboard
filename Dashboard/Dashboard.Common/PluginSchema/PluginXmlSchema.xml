@@ -6,6 +6,13 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="version">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
   <xs:simpleType name="pluginName">
     <xs:restriction base="xs:string">
       <xs:minLength value="2"/>
@@ -26,11 +33,13 @@
     </xs:restriction>
   </xs:simpleType>
   
+  
   <xs:element name="plugin">
     <xs:complexType>
       <xs:sequence>
         <xs:element type="pluginName" name="name"/>
         <xs:element type="guid" name="pluginId"/>
+        <xs:element type="version" name="version"/>
         <xs:element type="communicationType" name="communicationType"/>
         <xs:element type="xs:string" name="startingProgram"/>
         <xs:element name="api">

@@ -60,6 +60,7 @@
     <Compile Include="Auth\DashboardRoles.cs" />
     <Compile Include="Auth\DashboardUser.cs" />
     <Compile Include="BrokerIntegration\IManageBrokerFacade.cs" />
+    <Compile Include="CommunicationType.cs" />
     <Compile Include="DataObjects\Extract\PluginConfigurationInfo.cs" />
     <Compile Include="DataObjects\Extract\PluginXmlInfo.cs" />
     <Compile Include="DataObjects\Extract\PluginZipBasicInformation.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="DataObjects\PluginUiConfiguration.cs" />
     <Compile Include="DataObjects\ProcessedPlugin.cs" />
     <Compile Include="DataObjects\Validation\ConsolidatedPluginValidationResult.cs" />
+    <Compile Include="DataObjects\PluginMethod.cs" />
+    <Compile Include="InputType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IConfigureDashboard.cs" />
     <Compile Include="Services\IEnvironment.cs" />
@@ -88,6 +91,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Plugins\Uninstall\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Common\Dashboard.Common.csproj">
+      <Project>{5FCB46A1-3BB5-4498-B8F5-4A9F6456C084}</Project>
+      <Name>Dashboard.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

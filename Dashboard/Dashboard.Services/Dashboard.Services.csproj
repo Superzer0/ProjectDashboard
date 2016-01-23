@@ -58,10 +58,12 @@
     <Compile Include="Plugins\Install\Visitors\PersistPluginInformationVisitor.cs" />
     <Compile Include="Plugins\StandardPluginFacade.cs" />
     <Compile Include="Plugins\Validation\StandardPluginValidationBuilder.cs" />
-    <Compile Include="Plugins\Validation\Validators\BasePluginValidator.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginZipStructureValidator.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginJsonConfigurationValidator.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginXmlValidator.cs" />
+    <Compile Include="Plugins\Validation\Validators\PreviousVersionValidator.cs" />
+    <Compile Include="Plugins\Validation\Validators\ZipSizeValidator.cs" />
+    <Compile Include="Plugins\ZipHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

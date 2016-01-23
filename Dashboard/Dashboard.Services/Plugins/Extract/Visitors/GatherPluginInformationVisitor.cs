@@ -15,12 +15,15 @@ namespace Dashboard.Services.Plugins.Extract.Visitors
 
         public void Visit(PluginXmlInfo leaf)
         {
-            _pluginInformation.XmlInfo = leaf;
+            _pluginInformation.Name = leaf.PluginXml?.Name;
+            _pluginInformation.PluginId = leaf.PluginXml?.PluginId;
+            _pluginInformation.CommunicationType = leaf.PluginXml?.CommunicationType;
+            _pluginInformation.StartingProgram = leaf.PluginXml?.StartingProgram;
         }
 
         public void Visit(PluginConfigurationInfo leaf)
         {
-            _pluginInformation.ConfigInfo = leaf;
+            _pluginInformation.ConfigurationJson = leaf.ConfigurationJson;
         }
 
         public PluginInformation Result => _pluginInformation;
