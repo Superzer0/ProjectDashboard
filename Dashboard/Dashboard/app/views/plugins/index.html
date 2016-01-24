@@ -15,35 +15,28 @@
                         <div class="row">
                             <div class="col-md-offset-1 col-md-10">
                                 <div class="panel-body">
-                                    <table class="table table-striped">
+                                    <table class="table table-striped" data-ng-show="plugins">
                                         <thead>
                                             <tr>
                                                 <td>Name</td>
                                                 <td>Version</td>
-                                                <td>Actions</td>
+                                                <td>Added</td>
+                                                <td>Size</td>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>heheh</td>
-                                                <td>1.02</td>
-                                                <td>some some</td>
+                                            <tr data-ng-repeat="plugin in plugins">
+                                                <td>
+                                                    <img src="{{plugin.icon}}" widht="30" height="30" alt="{{plugin.name}} icon" />
+                                                    <a href="#/plugins/{{plugin.id}}/{{plugin.version}}">
+                                                        {{plugin.name}}
+                                                    </a>
+                                                </td>
+                                                <td>{{plugin.version}}</td>
+                                                <td>{{plugin.added}}</td>
+                                                <td>{{roundPluginSize(plugin.uncompressedSize)}} mb</td>
                                             </tr>
-                                            <tr>
-                                                <td>heheh</td>
-                                                <td>1.02</td>
-                                                <td>some some</td>
-                                            </tr>
-                                            <tr>
-                                                <td>heheh</td>
-                                                <td>1.02</td>
-                                                <td>some some</td>
-                                            </tr>
-                                            <tr>
-                                                <td>heheh</td>
-                                                <td>1.02</td>
-                                                <td>some some</td>
-                                            </tr>
+                                           
                                         </tbody>
                                     </table>
                                 </div>

@@ -9,7 +9,7 @@ using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Models.Account;
 using Dashboard.UI.Objects.Auth;
-using Dashboard.UI.Objects.Services;
+using Dashboard.UI.Objects.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -59,7 +59,7 @@ namespace Dashboard.Controllers.API
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = await UserManager.FindByNameAsync(User.Identity.Name);
+            var user = await GetCurrentUser();
 
             var actionResult =
                 await
@@ -179,7 +179,7 @@ namespace Dashboard.Controllers.API
 
             if (changeStatus)
             {
-                var dashboardUser = await UserManager.FindByNameAsync(User.Identity.Name);
+                var dashboardUser = await GetCurrentUser();
 
                 if (!await UserManager.IsInRoleAsync(dashboardUser.Id, DashboardRoles.Admin))
                 {

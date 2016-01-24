@@ -7,10 +7,11 @@ namespace Dashboard.UI.Objects.DataObjects
     public class PluginMethod
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
         [Column("Plugin_Id", Order = 0)]
-        public Guid PluginId { get; set; }
+        public string PluginId { get; set; }
 
         [Column("Plugin_Version", Order = 1)]
         public string PluginVersion { get; set; }

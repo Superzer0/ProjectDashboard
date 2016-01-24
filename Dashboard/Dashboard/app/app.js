@@ -45,8 +45,13 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
     });
 
     $routeProvider.when("/user/plugins", {
-        controller: "indexUserController",
+        controller: "userPluginsController",
         templateUrl: "/app/views/user/plugins.html"
+    });
+
+    $routeProvider.when("/user/plugins/:id/:version", {
+        controller: "userPluginConfigurationController",
+        templateUrl: "/app/views/user/configure.html"
     });
 
     //---- instance
@@ -63,16 +68,20 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
 
     //---- plugins
 
-    $routeProvider.when("/plugins/index", {
+    $routeProvider.when("/plugins", {
         controller: "indexPluginsController",
         templateUrl: "/app/views/plugins/index.html"
+    });
+
+    $routeProvider.when("/plugins/:id/:version", {
+        controller: "pluginController",
+        templateUrl: "/app/views/plugins/plugin.html"
     });
 
     $routeProvider.when("/plugins/upload", {
         controller: "indexPluginsController",
         templateUrl: "/app/views/plugins/upload.html"
     });
-
 
     $routeProvider.otherwise({ redirectTo: "/home" });
 

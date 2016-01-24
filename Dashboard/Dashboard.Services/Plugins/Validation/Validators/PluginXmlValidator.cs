@@ -28,7 +28,7 @@ namespace Dashboard.Services.Plugins.Validation.Validators
             {
                 var validationResults = new List<string>();
 
-                var pluginXmlZipEntryValid = _zipHelper.CheckEntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
+                var pluginXmlZipEntryValid = _zipHelper.EntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
                 var xmlValid = false;
                 if (pluginXmlZipEntryValid)
                 {

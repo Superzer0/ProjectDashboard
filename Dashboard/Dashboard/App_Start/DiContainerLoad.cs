@@ -59,7 +59,7 @@ namespace Dashboard
              .InstancePerRequest();
             
             builder.Register(p => new DbSessionFilter(p.Resolve<PluginsContext>()))
-                .AsWebApiActionFilterFor<PluginsController>()
+                .AsWebApiActionFilterFor<PluginInstallationController>()
                 .InstancePerRequest();
 
             builder.Register(p => new ErrorHandlingFilter())

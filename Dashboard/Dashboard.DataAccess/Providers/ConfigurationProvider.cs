@@ -1,9 +1,8 @@
 ﻿using System;
 using Common.Logging;
-using Dashboard.UI.Objects.DataObjects;
-using Dashboard.UI.Objects.Services;
+using Dashboard.UI.Objects.Providers;
 
-namespace Dashboard.DataAccess.Services
+namespace Dashboard.DataAccess.Providers
 {
     internal class ConfigurationProvider : IConfigureDashboard
     {

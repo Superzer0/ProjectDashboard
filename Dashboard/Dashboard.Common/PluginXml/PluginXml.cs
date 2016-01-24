@@ -22,8 +22,12 @@ namespace Dashboard.Common.PluginXml
         [XmlElement("startingProgram")]
         public string StartingProgram { get; set; }
 
-        [XmlElement("api")]
-        public PluginApi Api { get; set; }
+        [XmlElement("icon")]
+        public string Icon { get; set; }
+
+        [XmlArray("api")]
+        [XmlArrayItem("method")]
+        public PluginXmlMethod[] XmlMethods { get; set; }
 
         public static PluginXml Deserialize(string inputXml)
         {

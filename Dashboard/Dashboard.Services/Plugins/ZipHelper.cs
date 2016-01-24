@@ -12,7 +12,7 @@ namespace Dashboard.Services.Plugins
     {
         private const string SchemaResourceLocation = "Dashboard.Common.PluginSchema.PluginXmlSchema.xml";
 
-        public virtual bool CheckEntryNonEmpty(ZipArchive zipArchive, string entryName, ICollection<string> validationResults)
+        public virtual bool EntryNonEmpty(ZipArchive zipArchive, string entryName, ICollection<string> validationResults)
         {
             var zipEntry = zipArchive.Entries.FirstOrDefault(p => p.FullName.Equals(entryName));
             if (zipEntry?.Length > 0) return true;

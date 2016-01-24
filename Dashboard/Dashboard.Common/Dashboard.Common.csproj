@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PluginSchema\PluginZipStructure.cs" />
-    <Compile Include="PluginXml\PluginMethod.cs" />
+    <Compile Include="PluginXml\PluginXmlMethod.cs" />
     <Compile Include="PluginXml\PluginApi.cs" />
     <Compile Include="PluginXml\PluginXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,6 +49,7 @@
   <ItemGroup>
     <EmbeddedResource Include="PluginSchema\PluginXmlSchema.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="PluginSchema\SamplePluginXml.xml" />
   </ItemGroup>

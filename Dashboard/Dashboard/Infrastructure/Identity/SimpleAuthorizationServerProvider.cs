@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.Owin;
 using Common.Logging;
+using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;

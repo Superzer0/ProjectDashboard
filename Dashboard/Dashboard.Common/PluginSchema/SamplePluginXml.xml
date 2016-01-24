@@ -5,6 +5,7 @@
   <version>1.1.1.1111</version>
   <communicationType>Plain</communicationType>
   <startingProgram>Dashboard.exe</startingProgram>
+  <icon>icon.ico</icon>
   <api>
     <method name="GetData">
       <inputType>String</inputType>

@@ -17,8 +17,11 @@ namespace Dashboard.Services.Plugins.Extract.Visitors
         {
             _pluginInformation.Name = leaf.PluginXml?.Name;
             _pluginInformation.PluginId = leaf.PluginXml?.PluginId;
+            _pluginInformation.Version = leaf.PluginXml?.Version;
             _pluginInformation.CommunicationType = leaf.PluginXml?.CommunicationType;
             _pluginInformation.StartingProgram = leaf.PluginXml?.StartingProgram;
+            _pluginInformation.MethodsCount = leaf.PluginXml?.XmlMethods?.Length ?? 0;
+            _pluginInformation.RawXml = leaf.RawXml;
         }
 
         public void Visit(PluginConfigurationInfo leaf)

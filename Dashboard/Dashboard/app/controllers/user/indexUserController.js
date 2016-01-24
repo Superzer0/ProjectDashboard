@@ -3,10 +3,11 @@
 
     angular
         .module('angularAdmin')
-        .controller('indexUserController', ['$scope', 'authService', 'notificationService', 'utilsService', 'userProfile',
+        .controller('indexUserController', ['$scope', 'authService', 'notificationService',
+            'utilsService', 'userProfile', 'dashboardRolesNames', 'instancePluginsService',
             indexUserController]);
 
-    function indexUserController($scope, authService, notificationService, utilsService, userProfile) {
+    function indexUserController($scope, authService, notificationService, utilsService, userProfile, dashboardRolesNames, instancePluginsService) {
         var isWorking = false;
 
         $scope.userProfile = userProfile;
@@ -19,7 +20,11 @@
             confirmNewPass: ""
         };
 
-        
+        $scope.activePlugins = null;
+
+        $scope.getRoleName = function (role) {
+            return dashboardRolesNames[role];
+        }
 
         $scope.passNotMatch = function () {
             return $scope.changePassData.newPass !== $scope.changePassData.confirmNewPass;
@@ -27,6 +32,19 @@
 
         $scope.submitNotPermitted = function () {
             return $scope.changePassForm.$invalid || $scope.passNotMatch() || isWorking;
+        }
+
+        $scope.loadActiveUserPlugins = function () {
+            instancePluginsService.loadActiveUserPlugins()
+                .success(function (data) {
+                    if (!angular.equals([], data)) {
+                        $scope.activePlugins = data;
+                    }
+
+                }).error(function (err) {
+                    notificationService.addNotification('active plugins', 'error while loading active plugins list', 'error');
+                    console.log(err);
+                });
         }
 
         $scope.changePassword = function () {
@@ -64,12 +82,6 @@
             $("#wrapper").toggleClass("toggled");
         }
 
-       
-
-        activate();
-
-        function activate() {
-            //$scope.getUserData();
-        }
+        $scope.loadActiveUserPlugins();
     }
 })();

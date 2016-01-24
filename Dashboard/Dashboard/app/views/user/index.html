@@ -15,7 +15,7 @@
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Basic Info
+                                        basic info
                                         <span class="pull-right" style="cursor: pointer"
                                               data-ng-click="refreshUserProfile()">
                                             <i class="fa fa-refresh"></i>
@@ -32,10 +32,10 @@
                                                 <i>{{userProfile.email}}</i>
                                             </li>
                                             <li>
-                                                Roles:
+                                                roles:
                                                 <ul>
-                                                    <li ng-repeat="role in userProfile.roles">
-                                                        {{role}}
+                                                    <li ng-repeat="role in userProfile.roles | uniqueArray">
+                                                        {{getRoleName(role)}}
                                                     </li>
                                                 </ul>
                                             </li>
@@ -46,10 +46,34 @@
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Your plugins
+                                        active plugins
+                                        <span class="pull-right" style="cursor: pointer"
+                                              data-ng-click="loadActiveUserPlugins()">
+                                            <i class="fa fa-refresh"></i>
+                                        </span>
                                     </div>
                                     <div class="panel-body">
-                                        6
+                                        <table class="table table-striped" data-ng-show="activePlugins">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Version</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="plugin in activePlugins">
+                                                    <td>
+                                                        <img src="{{plugin.icon}}" widht="30" height="30" alt="{{plugin.name}} icon" />
+                                                        <a href="#/plugins/{{plugin.id}}/{{plugin.version}}">
+                                                            {{plugin.name}}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{plugin.version}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <span style="text-align: center" class="text-muted"
+                                              data-ng-hide="activePlugins">no plugins activated :( </span>
                                     </div>
                                 </div>
                             </div>

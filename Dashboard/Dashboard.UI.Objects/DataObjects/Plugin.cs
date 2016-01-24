@@ -14,10 +14,12 @@ namespace Dashboard.UI.Objects.DataObjects
         }
 
         [Key, Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Id { get; set; }
 
         [Key, Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [MaxLength(19)]
         public string Version { get; set; }
@@ -41,7 +43,21 @@ namespace Dashboard.UI.Objects.DataObjects
         [MaxLength(100)]
         public string AddedBy { get; set; }
 
+        public bool Disabled { get; set; }
+
+        public string Icon { get; set; }
+
+        public long ArchiveSize { get; set; }
+
+        public int FilesCount { get; set; }
+
+        public long UncompressedSize { get; set; }
+
         public virtual ICollection<PluginMethod> PluginMethods { get; set; }
+
+        public string UrlName => GetUrlName(Name, Id, Version);
+
+        public static string GetUrlName(string name, string id, string version) => $"{name.Replace(" ", "-")}_{id}_{version.Replace(".", "-")}";
 
         public override string ToString()
         {

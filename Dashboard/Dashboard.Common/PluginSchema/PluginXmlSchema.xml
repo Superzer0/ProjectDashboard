@@ -42,9 +42,10 @@
         <xs:element type="version" name="version"/>
         <xs:element type="communicationType" name="communicationType"/>
         <xs:element type="xs:string" name="startingProgram"/>
+        <xs:element type="xs:string" name="icon"/>
         <xs:element name="api">
           <xs:complexType>
-            <xs:all>
+            <xs:choice maxOccurs="unbounded">
               <xs:element name="method">
                 <xs:complexType>
                   <xs:sequence>
@@ -54,7 +55,7 @@
                   <xs:attribute name="name"></xs:attribute>
                 </xs:complexType>
               </xs:element>
-            </xs:all>
+            </xs:choice>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

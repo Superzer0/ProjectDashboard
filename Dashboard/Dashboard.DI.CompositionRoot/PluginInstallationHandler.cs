@@ -1,9 +1,6 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Dashboard.Services.Plugins.Extract.Builders;
 using Dashboard.Services.Plugins.Validation.Validators;
-using Dashboard.UI.Objects.Services.Plugins.Extract;
-using Dashboard.UI.Objects.Services.Plugins.Validation;
 using Module = Autofac.Module;
 
 namespace Dashboard.DI.CompositionRoot

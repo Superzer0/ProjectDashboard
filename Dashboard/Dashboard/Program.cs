@@ -5,6 +5,7 @@ using System.Security.Permissions;
 using System.Security.Policy;
 using Common.Logging;
 using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.UI.Objects.DataObjects.Install.AutoMapping;
 using Dashboard.UI.Objects.Services;
 using Microsoft.Owin.Hosting;
 
@@ -15,6 +16,8 @@ namespace Dashboard
         private const string ShutDownCommand = "-shutdown";
         static void Main(string[] args)
         {
+            AutoMapperConfiguration.Configure();
+
             if (AppDomain.CurrentDomain.IsDefaultAppDomain())
             {
                 // RazorEngine cannot clean up from the default appdomain...

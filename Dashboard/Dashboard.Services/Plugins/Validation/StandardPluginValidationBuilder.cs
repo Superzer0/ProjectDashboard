@@ -15,6 +15,7 @@ namespace Dashboard.Services.Plugins.Validation
         private readonly PluginZipStructureValidator _zipStructureValidator;
         private readonly PluginJsonConfigurationValidator _pluginJsonConfigurationValidator;
         private readonly PluginXmlValidator _xmlValidator;
+        private readonly PreviousVersionValidator _previousVersionValidator;
         private readonly ILog _logger = LogManager.GetLogger<StandardPluginValidationBuilder>();
         private const string ValidatorExceptionStandardMessage = "Error occurred while validation. Contact system administrator";
 
@@ -25,12 +26,13 @@ namespace Dashboard.Services.Plugins.Validation
         }
 
         public StandardPluginValidationBuilder(ZipSizeValidator zipSizeValidator, PluginZipStructureValidator zipStructureValidator,
-            PluginJsonConfigurationValidator pluginJsonConfigurationValidator, PluginXmlValidator xmlValidator)
+            PluginJsonConfigurationValidator pluginJsonConfigurationValidator, PluginXmlValidator xmlValidator, PreviousVersionValidator previousVersionValidator)
         {
             _zipSizeValidator = zipSizeValidator;
             _zipStructureValidator = zipStructureValidator;
             _pluginJsonConfigurationValidator = pluginJsonConfigurationValidator;
             _xmlValidator = xmlValidator;
+            _previousVersionValidator = previousVersionValidator;
         }
 
         public void ConfigureStandard()
@@ -39,6 +41,7 @@ namespace Dashboard.Services.Plugins.Validation
             AppendValidatorToList(_zipStructureValidator);
             AppendValidatorToList(_pluginJsonConfigurationValidator);
             AppendValidatorToList(_xmlValidator);
+            AppendValidatorToList(_previousVersionValidator);
         }
 
         public void ConfigureBuilder(IEnumerable<IValidatePlugin> validators)

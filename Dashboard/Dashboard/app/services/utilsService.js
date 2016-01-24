@@ -27,4 +27,19 @@
             return errors;
         }
     }
+
+    angular.module('angularAdmin').filter('uniqueArray', function () {
+
+        return function (collection) {
+            var output = [];
+            angular.forEach(collection, function (item) {
+                if (output.indexOf(item) === -1) {
+                    output.push(item);
+                }
+            });
+
+            return output;
+        };
+    });
+
 })();

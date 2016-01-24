@@ -2,7 +2,7 @@
 
 namespace Dashboard.Common.PluginXml
 {
-    public class PluginMethod
+    public class PluginXmlMethod
     {
         [XmlAttribute("name")]
         public string Name { get; set; }

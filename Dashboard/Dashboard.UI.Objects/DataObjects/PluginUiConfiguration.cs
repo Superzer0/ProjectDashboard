@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dashboard.UI.Objects.DataObjects
@@ -8,13 +7,18 @@ namespace Dashboard.UI.Objects.DataObjects
     public class PluginUiConfiguration
     {
         [Key, Column(Order = 0)]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Id { get; set; }
 
         [Key, Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Version { get; set; }
 
         [Key, Column(Order = 2)]
-        public Guid UserId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string UserId { get; set; }
+
+        public bool Disabled { get; set; }
 
         [MaxLength(4000)]
         public string JsonConfiguration { get; set; }

@@ -1,7 +1,10 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.UI.Objects.Auth;
+using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.Services;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -45,6 +48,16 @@ namespace Dashboard.Infrastructure.Controllers
             set { _userManager = value; }
         }
 
+        protected async Task<DashboardUser> GetCurrentUser()
+        {
+            return await UserManager.FindByNameAsync(User.Identity.Name);
+        }
+
+        // TODO: move somewhere else
+        protected string GetPluginIconUrl(Plugin plugin)
+        {
+            return $"{Environment.PluginsPath}/{plugin.UrlName}/{plugin.Icon}".TrimStart('~');
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

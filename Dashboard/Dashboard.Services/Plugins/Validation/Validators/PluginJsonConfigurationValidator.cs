@@ -26,7 +26,7 @@ namespace Dashboard.Services.Plugins.Validation.Validators
                 var validationResults = new List<string>();
                 bool jsonValid;
 
-                var jsonFileNonEmpty = _zipHelper.CheckEntryNonEmpty(zipArchive, PluginZipStructure.ConfigurationFile,
+                var jsonFileNonEmpty = _zipHelper.EntryNonEmpty(zipArchive, PluginZipStructure.ConfigurationFile,
                     validationResults);
 
                 if (!jsonFileNonEmpty)

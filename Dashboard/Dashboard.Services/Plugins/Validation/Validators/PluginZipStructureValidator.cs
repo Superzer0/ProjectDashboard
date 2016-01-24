@@ -36,10 +36,10 @@ namespace Dashboard.Services.Plugins.Validation.Validators
                 }
 
                 //check pluginxml content length
-                var pluginXmlFileSizeOk = _zipHelper.CheckEntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
+                var pluginXmlFileSizeOk = _zipHelper.EntryNonEmpty(zipArchive, PluginZipStructure.PluginXml, validationResults);
 
                 //check index.html content length
-                var presentationEntryFileSizeOk = _zipHelper.CheckEntryNonEmpty(zipArchive,
+                var presentationEntryFileSizeOk = _zipHelper.EntryNonEmpty(zipArchive,
                     PluginZipStructure.PresentationEntryFile, validationResults);
 
                 var validationResult = new PluginValidationResult

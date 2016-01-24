@@ -221,11 +221,13 @@
     <Content Include="app\controllers\instance\indexInstanceController.js" />
     <Content Include="app\controllers\navigationController.js" />
     <Content Include="app\controllers\loginController.js" />
+    <Content Include="app\controllers\plugins\pluginController.js" />
     <Content Include="app\controllers\plugins\indexPluginsController.js" />
     <Content Include="app\controllers\plugins\pluginUploadWizardController.js" />
     <Content Include="app\controllers\refreshController.js" />
     <Content Include="app\controllers\signupController.js" />
     <Content Include="app\controllers\tokensManagerController.js" />
+    <Content Include="app\controllers\user\userPluginsController.js" />
     <Content Include="app\controllers\user\indexUserController.js" />
     <Content Include="app\services\authInterceptorService.js" />
     <Content Include="app\services\authService.js" />
@@ -238,11 +240,13 @@
     <Content Include="app\views\instance\sidebar.html" />
     <Content Include="app\views\login.html" />
     <Content Include="app\views\plugins\index.html" />
+    <Content Include="app\views\plugins\plugin.html" />
     <Content Include="app\views\plugins\upload.html" />
     <Content Include="app\views\plugins\sidebar.html" />
     <Content Include="app\views\refresh.html" />
     <Content Include="app\views\signup.html" />
     <Content Include="app\views\tokens.html" />
+    <Content Include="app\views\user\configure.html" />
     <Content Include="app\views\user\index.html" />
     <Content Include="app\views\user\plugins.html" />
     <Content Include="app\views\user\sidebar.html" />
@@ -251,6 +255,9 @@
     <Content Include="content\css\bootstrap.min.css" />
     <Content Include="content\css\font-awesome.min.css" />
     <Content Include="content\css\loading-bar.min.css" />
+    <Content Include="content\css\shCore.css" />
+    <Content Include="content\css\shCoreDefault.css" />
+    <Content Include="content\css\shThemeDefault.css" />
     <Content Include="content\css\site\common.css">
       <DependentUpon>common.less</DependentUpon>
     </Content>
@@ -299,6 +306,11 @@
     <Content Include="scripts\jquery-2.2.0.min.js" />
     <Content Include="scripts\loading-bar.min.js" />
     <Content Include="scripts\modernizr-custom.js" />
+    <Content Include="scripts\moment.js" />
+    <Content Include="scripts\shAutoloader.js" />
+    <Content Include="scripts\shBrushJScript.js" />
+    <Content Include="scripts\shBrushXml.js" />
+    <Content Include="scripts\shCore.js" />
     <Content Include="scripts\wow.js" />
     <Content Include="tempPlugins\placeholder.txt" />
     <None Include="app.config">
@@ -338,9 +350,11 @@
     <Compile Include="Controllers\API\InstanceController.cs" />
     <Compile Include="Controllers\API\OrdersController.cs" />
     <Compile Include="Controllers\API\ConfigureController.cs" />
+    <Compile Include="Controllers\API\PluginInstallationController.cs" />
     <Compile Include="Controllers\API\PluginsController.cs" />
     <Compile Include="Controllers\API\RolesController.cs" />
     <Compile Include="Controllers\API\UserController.cs" />
+    <Compile Include="Controllers\API\UserPluginsController.cs" />
     <Compile Include="Controllers\MVC\AdminController.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
     <Compile Include="Infrastructure\ActionResults\RazorResult.cs" />

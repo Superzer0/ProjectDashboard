@@ -1,9 +1,12 @@
-﻿namespace Dashboard.UI.Objects.Services.Plugins.Install
+﻿using System;
+
+namespace Dashboard.UI.Objects.Services.Plugins.Install
 {
     public class PluginInstallation
     {
         public string FilePath { get; set; }
         public PluginInstallationState State { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public enum PluginInstallationState

@@ -18,7 +18,14 @@ namespace Dashboard.Infrastructure.Filters
 
         public void OnActionExecuting(HttpActionContext actionContext)
         {
-            _pluginsContext.Database.Log = message => _logger.Debug(m => m(message));
+            try
+            {
+                _pluginsContext.Database.Log = message => _logger.Debug(message);
+            }
+            catch
+            { // on purpose
+            }
+
         }
 
         public void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)

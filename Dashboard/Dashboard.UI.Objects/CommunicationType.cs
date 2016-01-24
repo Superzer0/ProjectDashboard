@@ -2,6 +2,6 @@
 {
     public enum CommunicationType
     {
-        Basic, Json
+        Plain
     }
 }

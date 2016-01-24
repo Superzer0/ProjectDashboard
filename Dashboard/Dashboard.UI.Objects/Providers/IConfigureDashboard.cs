@@ -1,4 +1,4 @@
-﻿namespace Dashboard.UI.Objects.Services
+﻿namespace Dashboard.UI.Objects.Providers
 {
     public interface IConfigureDashboard
     {
