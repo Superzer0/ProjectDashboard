@@ -1,4 +1,6 @@
-﻿using Dashboard.UI.Objects.DataObjects.Extract;
+﻿using System;
+using Dashboard.UI.Objects;
+using Dashboard.UI.Objects.DataObjects.Extract;
 using Dashboard.UI.Objects.Services.Plugins.Extract.Visitors;
 using Dashboard.UI.Objects.Services.Plugins.Install;
 
@@ -18,7 +20,7 @@ namespace Dashboard.Services.Plugins.Extract.Visitors
             _pluginInformation.Name = leaf.PluginXml?.Name;
             _pluginInformation.PluginId = leaf.PluginXml?.PluginId;
             _pluginInformation.Version = leaf.PluginXml?.Version;
-            _pluginInformation.CommunicationType = leaf.PluginXml?.CommunicationType;
+            _pluginInformation.CommunicationType = (CommunicationType)Enum.Parse(typeof(CommunicationType), leaf.PluginXml?.CommunicationType);
             _pluginInformation.StartingProgram = leaf.PluginXml?.StartingProgram;
             _pluginInformation.MethodsCount = leaf.PluginXml?.XmlMethods?.Length ?? 0;
             _pluginInformation.RawXml = leaf.RawXml;
@@ -27,6 +29,11 @@ namespace Dashboard.Services.Plugins.Extract.Visitors
         public void Visit(PluginConfigurationInfo leaf)
         {
             _pluginInformation.ConfigurationJson = leaf.ConfigurationJson;
+        }
+
+        public void Visit(CheckSumPluginInformation leaf)
+        {
+            _pluginInformation.CheckSum = leaf.CheckSum;
         }
 
         public PluginInformation Result => _pluginInformation;

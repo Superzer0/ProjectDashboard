@@ -65,5 +65,10 @@ namespace Dashboard.Services.Plugins.Install.Visitors
             _plugin.Configuration = leaf.ConfigurationJson;
             _resultReady = true;
         }
+
+        public void Visit(CheckSumPluginInformation leaf)
+        {
+            // no action here
+        }
     }
 }

@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\BaseBuilder.cs" />
+    <Compile Include="Plugins\Extract\Builders\PluginBasicZipInformationExtractor - Copy.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginBasicZipInformationExtractor.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginJsonConfigurationExtactor.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginXmlExtractor.cs" />

@@ -15,14 +15,16 @@ namespace Dashboard.Services.Plugins.Extract
         private readonly PluginBasicZipInformationExtractor _zipInformationExtractor;
         private readonly PluginXmlExtractor _xmlExtractor;
         private readonly PluginJsonConfigurationExtactor _pluginJsonConfigurationExtactor;
+        private readonly CheckSumExtractor _checkSumExtractor;
         private readonly ILog _logger = LogManager.GetLogger<StandardPluginValidationBuilder>();
 
         public StandardPluginInfoBuilder(PluginBasicZipInformationExtractor zipInformationExtractor,
-            PluginXmlExtractor xmlExtractor, PluginJsonConfigurationExtactor pluginJsonConfigurationExtactor)
+            PluginXmlExtractor xmlExtractor, PluginJsonConfigurationExtactor pluginJsonConfigurationExtactor, CheckSumExtractor checkSumExtractor)
         {
             _zipInformationExtractor = zipInformationExtractor;
             _xmlExtractor = xmlExtractor;
             _pluginJsonConfigurationExtactor = pluginJsonConfigurationExtactor;
+            _checkSumExtractor = checkSumExtractor;
         }
 
         public new bool AllowDuplicateValidators
@@ -36,6 +38,7 @@ namespace Dashboard.Services.Plugins.Extract
             AppendValidatorToList(_zipInformationExtractor);
             AppendValidatorToList(_xmlExtractor);
             AppendValidatorToList(_pluginJsonConfigurationExtactor);
+            AppendValidatorToList(_checkSumExtractor);
         }
 
         public void ConfigureBuilder(IEnumerable<IExtractPluginInformation<BasePluginInformation>> builders)

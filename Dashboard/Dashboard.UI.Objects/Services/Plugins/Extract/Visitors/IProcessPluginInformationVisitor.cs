@@ -7,5 +7,6 @@ namespace Dashboard.UI.Objects.Services.Plugins.Extract.Visitors
         void Visit(PluginZipBasicInformation leaf);
         void Visit(PluginXmlInfo leaf);
         void Visit(PluginConfigurationInfo leaf);
+        void Visit(CheckSumPluginInformation leaf);
     }
 }

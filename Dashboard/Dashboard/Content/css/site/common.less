@@ -1,9 +1,11 @@
 ﻿@app-theme: #1A6ECC;
 @app-theme-light: #4a99f1;
 @app-theme-dark: #063262;
+@error-color: #ff0000;
+@success-color: #3fb618;
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
+    display: none !important;
 }
 
 html {
@@ -36,7 +38,7 @@ body {
     growl-notification {
         padding: 5px 30px;
         margin-bottom: 15px;
-        background-color: #3fb618;
+        background-color: @success-color;
         border-radius: 3px;
         color: #ffffff;
         display: block;
@@ -64,7 +66,7 @@ body {
     }
 
     growl-notification.error {
-        background-color: #ff0000;
+        background-color: @error-color;
     }
 
     growl-notification.warrning {
@@ -158,6 +160,84 @@ body {
     }
 }
 
+
+#installation {
+    #installation-progress {
+        text-align: center;
+
+        .fa-check-square {
+            color: @success-color;
+        }
+
+        .fa-times-circle {
+            color: @error-color;
+        }
+    }
+
+    #file-drop-zone {
+        .nv-file-over {
+            background-color: white;
+            border: dashed 3px #bebdbd;
+        }
+
+        .well {
+            min-height: 200px;
+            text-align: center;
+        }
+
+        #drop-zone-icon {
+            font-size: 120px;
+            color: #bebdbd;
+        }
+    }
+
+    #upload-results {
+        #upload-ok {
+            .glyphicon {
+                font-size: 50px;
+            }
+
+            .glyphicon-ok {
+                color: @success-color;
+            }
+
+            .glyphicon-remove {
+                color: @error-color;
+            }
+        }
+    }
+
+    #step1{
+        #validation-results{
+            >div{
+                text-align: center;
+            }
+            .fa-check-circle, .glyphicon-ok{
+                color: @success-color;
+            }
+            .fa-times-circle, .glyphicon-remove{
+                color: @error-color;
+            }
+        }
+    }
+
+    #some-errors {
+        text-align: center;
+
+        > div {
+            margin: auto 0;
+
+            > div {
+                margin-bottom: 15px;
+
+                .text-muted {
+                    font-size: 100px;
+                }
+            }
+        }
+    }
+}
+
 .login {
     input {
         margin-bottom: 10px;
@@ -234,7 +314,7 @@ footer#footer {
     height: 30px;
     color: white;
     display: block;
-    background: green;
+    background: @success-color;
     border-radius: 100px;
     text-align: center;
     vertical-align: text-top;
@@ -242,9 +322,34 @@ footer#footer {
     font-size: large;
 }
 
+
+.file-span {
+    position: relative;
+    overflow: hidden;
+    text-decoration: underline;
+    cursor: pointer;
+    color: @app-theme;
+
+    input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+}
+
 .fade {
     opacity: 1;
-/*
+    /*
     .transition-prop {
         position: absolute;
         top: 60px;

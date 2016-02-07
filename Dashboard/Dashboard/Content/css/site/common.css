@@ -121,6 +121,59 @@ body #loading-bar-spinner .spinner-icon {
 #home #info a:hover {
   text-decoration: none;
 }
+#installation #installation-progress {
+  text-align: center;
+}
+#installation #installation-progress .fa-check-square {
+  color: #3fb618;
+}
+#installation #installation-progress .fa-times-circle {
+  color: #ff0000;
+}
+#installation #file-drop-zone .nv-file-over {
+  background-color: white;
+  border: dashed 3px #bebdbd;
+}
+#installation #file-drop-zone .well {
+  min-height: 200px;
+  text-align: center;
+}
+#installation #file-drop-zone #drop-zone-icon {
+  font-size: 120px;
+  color: #bebdbd;
+}
+#installation #upload-results #upload-ok .glyphicon {
+  font-size: 50px;
+}
+#installation #upload-results #upload-ok .glyphicon-ok {
+  color: #3fb618;
+}
+#installation #upload-results #upload-ok .glyphicon-remove {
+  color: #ff0000;
+}
+#installation #step1 #validation-results > div {
+  text-align: center;
+}
+#installation #step1 #validation-results .fa-check-circle,
+#installation #step1 #validation-results .glyphicon-ok {
+  color: #3fb618;
+}
+#installation #step1 #validation-results .fa-times-circle,
+#installation #step1 #validation-results .glyphicon-remove {
+  color: #ff0000;
+}
+#installation #some-errors {
+  text-align: center;
+}
+#installation #some-errors > div {
+  margin: auto 0;
+}
+#installation #some-errors > div > div {
+  margin-bottom: 15px;
+}
+#installation #some-errors > div > div .text-muted {
+  font-size: 100px;
+}
 .login input {
   margin-bottom: 10px;
 }
@@ -184,12 +237,34 @@ footer#footer p a {
   height: 30px;
   color: white;
   display: block;
-  background: green;
+  background: #3fb618;
   border-radius: 100px;
   text-align: center;
   vertical-align: text-top;
   text-transform: uppercase;
   font-size: large;
+}
+.file-span {
+  position: relative;
+  overflow: hidden;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #1A6ECC;
+}
+.file-span input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
 }
 .fade {
   opacity: 1;

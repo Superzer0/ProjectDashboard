@@ -18,6 +18,8 @@ namespace Dashboard.DI.CompositionRoot
             builder.RegisterType<PluginBasicZipInformationExtractor>().AsSelf();
             builder.RegisterType<PluginJsonConfigurationExtactor>().AsSelf();
             builder.RegisterType<PluginXmlExtractor>().AsSelf();
+            builder.RegisterType<CheckSumExtractor>().AsSelf();
+            
         }
     }
 }

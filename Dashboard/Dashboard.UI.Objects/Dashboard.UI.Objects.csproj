@@ -69,6 +69,7 @@
     <Compile Include="Auth\DashboardUser.cs" />
     <Compile Include="BrokerIntegration\IManageBrokerFacade.cs" />
     <Compile Include="CommunicationType.cs" />
+    <Compile Include="DataObjects\Extract\CheckSumPluginInformation.cs" />
     <Compile Include="DataObjects\Install\AutoMapping\AutoMapperConfiguration.cs" />
     <Compile Include="DataObjects\Extract\PluginConfigurationInfo.cs" />
     <Compile Include="DataObjects\Extract\PluginXmlInfo.cs" />
