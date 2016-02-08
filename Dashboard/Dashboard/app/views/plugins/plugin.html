@@ -10,8 +10,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1>
-                            <img src="{{plugin.icon}}" widht="50" height="50" alt="{{plugin.name}} icon" />
-                            {{plugin.name}}
+                            <span>
+                                <img src="{{plugin.icon}}" widht="50" height="50" alt="{{plugin.name}} icon" />
+                                {{plugin.name}}
+                            </span>
+
                             <span class="pull-right">
                                 <span data-ng-if="!plugin.disabled">
                                     <i class="fa fa-check-circle fa-3x" title="plugin enabled"></i>
@@ -29,6 +32,14 @@
                                 <div class="panel-body">
                                     <h2 style="margin-top: 0;">
                                         basic information
+                                        <span class="pull-right">
+                                            <input type="checkbox" bs-switch data-ng-model="pluginState"
+                                                   switch-on-text="{{ 'plugin on' }}"
+                                                   switch-off-text="{{ 'plugin off' }}"
+                                                   ng-change="onPluginStateChange(pluginState)"
+                                                   ng-disabled="!pluginState"
+                                                   name="pluginState" id="pluginStateSwitch" />
+                                        </span>
                                     </h2>
                                     <hr />
                                     <div class="row">

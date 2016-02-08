@@ -4,7 +4,7 @@
     angular
         .module('angularAdmin')
         .controller('indexPluginsController', ['$scope', 'instancePluginsService', 'notificationService', indexPluginsController])
-        .factory('instancePluginsService', ['$http', instancePluginsService]);
+        .factory('instancePluginsService', ['$http', 'authService', instancePluginsService]);
 
     function indexPluginsController($scope, instancePluginsService, notificationService) {
         $scope.plugins = [];
@@ -30,7 +30,7 @@
         $scope.reloadPlugins();
     }
 
-    function instancePluginsService($http) {
+    function instancePluginsService($http, authService) {
         var pluginsService = {};
 
         pluginsService.loadPlugins = function () {
@@ -52,6 +52,21 @@
         pluginsService.loadUserPluginConfiguration = function (pluginId, version) {
             return $http.get('api/user/plugins/get/' + pluginId + '/' + version);
         }
+
+        pluginsService.setPluginStateForInstance = function (pluginId, version, state) {
+            return $http.post('api/instance/plugins/switch/' + pluginId + '/' + version, state);
+        };
+
+        pluginsService.setPluginStateForUser = function (pluginId, version, state) {
+            var userProfile = authService.getUserProfile();
+            return $http.post('api/user/plugins/switch/' + pluginId + '/' + version + '/' + userProfile.id, state);
+        };
+
+        pluginsService.configureUserPlugin = function (pluginId, version, configuration) {
+            var userProfile = authService.getUserProfile();
+            return $http.post('api/user/plugins/configuration/' + pluginId + '/' + version + '/' + userProfile.id,
+               configuration);
+        };
 
         return pluginsService;
     }

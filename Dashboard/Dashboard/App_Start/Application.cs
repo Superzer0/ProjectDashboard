@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using Autofac;
 using Autofac.Integration.WebApi;
 using Dashboard;
 using Dashboard.Infrastructure.Middleware;
+using Dashboard.UI.Objects;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.FileSystems;
@@ -40,6 +43,15 @@ namespace Dashboard
 
             var jsonMediaTypeFormatter = configuration.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonMediaTypeFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            configuration.EnsureInitialized();
+
+            BootstrapStartup(container);
+        }
+
+        private static void BootstrapStartup(IContainer container)
+        {
+            var tasks = container.Resolve<IEnumerable<IExecuteAtStartup>>().ToList();
+            tasks.ForEach(p=> p.Execute());
         }
     }
 }

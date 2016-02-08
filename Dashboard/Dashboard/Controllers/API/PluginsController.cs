@@ -13,10 +13,12 @@ namespace Dashboard.Controllers.API
     public class PluginsController : BaseController
     {
         private readonly IProvidePlugins _providePlugins;
+        private readonly IManagePlugins _managePlugins;
 
-        public PluginsController(IProvidePlugins providePlugins)
+        public PluginsController(IProvidePlugins providePlugins, IManagePlugins managePlugins)
         {
             _providePlugins = providePlugins;
+            _managePlugins = managePlugins;
         }
 
         [HttpGet]
@@ -68,10 +70,18 @@ namespace Dashboard.Controllers.API
         }
 
         [HttpPost]
-        [Route("change/configuration/{appId:guid}/{version}")]
-        public async Task<IHttpActionResult> ChangePluginConfiguration(Guid appId, string version)
+        [Route("switch/{appId:guid}/{version}")]
+        public async Task<IHttpActionResult> SwitchInstancePluginState(string appId, string version, [FromBody] bool state)
         {
-            return Ok(); //TODO
+            try
+            {
+                await _managePlugins.SwitchPluginInstanceState(appId, version, state);
+                return Ok();
+            }
+            catch (ArgumentNullException e)
+            {
+                return BadRequest("Plugin not found");
+            }
         }
     }
 }

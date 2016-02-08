@@ -105,8 +105,9 @@ namespace Dashboard.Services.Plugins
             {
                 _pluginInfoBuilder.ConfigureStandard();
                 var infoCollection = _pluginInfoBuilder.Build(processedPlugin).ToList();
-                var infoVisitor = new GatherPluginInformationVisitor();
+                var infoVisitor = new GatherPluginInformationVisitor(_pluginsProvider);
                 infoCollection.ForEach(l => l.Accept(infoVisitor));
+                infoVisitor.CombineData();
                 return infoVisitor.Result;
             }
         }
@@ -129,8 +130,9 @@ namespace Dashboard.Services.Plugins
                 var persistenceVisitor = new CombinePluginInformationVisitor();
                 infoCollection.ForEach(l => l.Accept(persistenceVisitor));
 
-                var infoVisitor = new GatherPluginInformationVisitor();
+                var infoVisitor = new GatherPluginInformationVisitor(_pluginsProvider);
                 infoCollection.ForEach(l => l.Accept(infoVisitor));
+                    
                 var infoAboutPlugin = infoVisitor.Result;
 
                 var plugin = persistenceVisitor.Plugin;

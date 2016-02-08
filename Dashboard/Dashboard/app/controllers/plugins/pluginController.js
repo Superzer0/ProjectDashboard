@@ -18,7 +18,7 @@
             instancePluginsService.loadPlugin($routeParams.id, $routeParams.version)
                 .success(function (data) {
                     $scope.plugin = data;
-
+                    $scope.pluginState = !data.disabled;
                     $timeout(function () {
                         SyntaxHighlighter.highlight();
                     }, 0);
@@ -29,12 +29,23 @@
                 });
         }
 
+        $scope.onPluginStateChange = function (state) {
+            var valueToChange = !state;
+            instancePluginsService.setPluginStateForInstance($scope.plugin.id, $scope.plugin.version, valueToChange)
+                .success(function () {
+                    $scope.plugin.disabled = valueToChange;
+                }).error(function () {
+                    notificationService.addNotification('plugin state', 'error while changing state for ' + $scope.plugin.name, 'error');
+                    $scope.pluginState = !$scope.plugin.disabled;
+                });
+        };
+
         $scope.roundPluginSize = function (size) {
             var number = new Number(size * 0.000001);
             return number.toFixed(2);
         }
 
-        $scope.formatDate = function(date) {
+        $scope.formatDate = function (date) {
             return moment(date, "YYYYMMDD");
         }
 

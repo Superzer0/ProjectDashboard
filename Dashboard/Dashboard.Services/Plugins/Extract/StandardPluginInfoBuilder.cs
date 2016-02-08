@@ -55,16 +55,16 @@ namespace Dashboard.Services.Plugins.Extract
 
             if (!Actions.Any()) throw new InvalidOperationException("No builders were added. To add builders user Configure method");
 
-            foreach (var validator in Actions)
+            foreach (var extractor in Actions)
             {
                 try
                 {
-                    buildersResults.Add(validator.Extract(plugin));
+                    buildersResults.Add(extractor.Extract(plugin));
                     plugin.ResetState();
                 }
                 catch (Exception e)
                 {
-                    _logger.Warn($"exception when executing {validator.Name} builder", e);
+                    _logger.Warn($"exception when executing {extractor.Name} builder", e);
                 }
             }
 

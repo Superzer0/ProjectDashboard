@@ -23,6 +23,7 @@ namespace Dashboard.DI.CompositionRoot
             builder.RegisterType<StandardPluginFacade>().As<IManagePluginsFacade>().InstancePerRequest();
             builder.RegisterType<StandardPluginInfoBuilder>().As<IBuildPluginInfo>().InstancePerRequest();
             builder.RegisterType<BrokerFacade>().As<IManageBrokerFacade>().InstancePerRequest();
+            builder.RegisterType<PluginsManager>().As<IManagePlugins>().InstancePerRequest();
             builder.RegisterType<CombinePluginInformationVisitor>()
                 .AsSelf()
                 .InstancePerDependency();
@@ -30,8 +31,6 @@ namespace Dashboard.DI.CompositionRoot
             builder.RegisterType<ZipHelper>()
                 .AsSelf()
                 .InstancePerDependency();
-
-            
         }
     }
 }

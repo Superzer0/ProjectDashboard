@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Dashboard.Common.PluginSchema;
 using Dashboard.Common.PluginXml;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.DataObjects.Validation;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services.Plugins.Validation;
+using static System.String;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
@@ -43,21 +46,41 @@ namespace Dashboard.Services.Plugins.Validation.Validators
                     var rawXml = streamReader.ReadToEnd();
                     var deserializedPluginXml = PluginXml.Deserialize(rawXml);
 
-                    var versionAndIdValid = !(string.IsNullOrWhiteSpace(deserializedPluginXml.PluginId) ||
-                                          string.IsNullOrWhiteSpace(deserializedPluginXml.Version));
+                    var versionAndIdValid = !(IsNullOrWhiteSpace(deserializedPluginXml.PluginId) ||
+                                          IsNullOrWhiteSpace(deserializedPluginXml.Version));
 
                     if (versionAndIdValid)
                     {
-                        var plugin = _providePlugins.GetPluginAsync(deserializedPluginXml.PluginId,
-                            deserializedPluginXml.Version);
+                        var versions = _providePlugins.GetPluginVersions(deserializedPluginXml.PluginId);
 
-                        if (plugin == null) // plugin not found so ok
+                        if (versions == null || !versions.Any()) // no previous plugins
                         {
                             result.IsSuccess = true;
                         }
                         else
                         {
-                            validationResults.Add($"Plugin {deserializedPluginXml.PluginId}_{deserializedPluginXml.Version} already exist");
+                            if (versions.Any(p => p.Version == deserializedPluginXml.Version))
+                            {
+                                validationResults.Add(
+                                    $"Plugin {deserializedPluginXml.PluginId}_{deserializedPluginXml.Version} already exist");
+                            }
+                            else
+                            {
+                                if (
+                                    versions.Any(
+                                        p =>
+                                            Compare(p.Version, deserializedPluginXml.Version,
+                                                StringComparison.InvariantCultureIgnoreCase) >
+                                            0))
+                                {
+                                    validationResults.Add(
+                                        "Plugin version is lower than already existing one");
+                                }
+                                else
+                                {
+                                    result.IsSuccess = true;
+                                }
+                            }
                         }
                     }
                     else

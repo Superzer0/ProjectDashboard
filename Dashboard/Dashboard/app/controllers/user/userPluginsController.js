@@ -23,6 +23,7 @@
                 });
         }
 
+
         $scope.toogleMenu = function () {
             $("#wrapper").toggleClass("toggled");
         }
@@ -33,10 +34,10 @@
     angular
         .module('angularAdmin')
         .controller('userPluginConfigurationController', ['$scope', 'notificationService',
-            'utilsService', 'instancePluginsService', '$routeParams', '$timeout', '$location', userPluginConfigurationController]);
+            'utilsService', 'instancePluginsService', '$routeParams', '$timeout', '$location', '$route', userPluginConfigurationController]);
 
     function userPluginConfigurationController($scope, notificationService, utilsService,
-        instancePluginsService, $routeParams, $timeout, $location) {
+        instancePluginsService, $routeParams, $timeout, $location, $route) {
 
         $scope.plugin = null;
 
@@ -49,6 +50,8 @@
                 .success(function (data) {
                     if (!angular.equals([], data)) {
                         $scope.plugin = data;
+                        $scope.pluginState = !data.disabled;
+                        $scope.plugin.configuration = JSON.parse($scope.plugin.configuration);
                         $timeout(function () {
                             SyntaxHighlighter.highlight();
                         }, 0);
@@ -59,6 +62,29 @@
                     console.log(err);
                 });
         }
+
+        $scope.onPluginStateChange = function (state) {
+            var valueToChange = !state;
+            instancePluginsService.setPluginStateForUser($scope.plugin.id, $scope.plugin.version, valueToChange)
+                .success(function () {
+                    $scope.plugin.disabled = valueToChange;
+                }).error(function () {
+                    notificationService.addNotification('plugin state', 'error while changing state for ' + $scope.plugin.name, 'error');
+                    $scope.pluginState = !$scope.plugin.disabled;
+                });
+        };
+
+        $scope.jsonEditorOptions = { mode: 'tree' };
+
+        $scope.configureUserPlugin = function () {
+            var stringifiedJson = JSON.stringify($scope.plugin.configuration);
+            instancePluginsService.configureUserPlugin($scope.plugin.id, $scope.plugin.version, stringifiedJson)
+                .success(function () {
+                    $route.reload();
+                }).error(function () {
+                    notificationService.addNotification('plugin configuration', 'error while changing configuration for ' + $scope.plugin.name, 'error');
+                });;
+        };
 
         $scope.toogleMenu = function () {
             $("#wrapper").toggleClass("toggled");

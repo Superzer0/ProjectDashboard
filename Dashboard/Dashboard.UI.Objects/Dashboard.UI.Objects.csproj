@@ -82,9 +82,11 @@
     <Compile Include="DataObjects\ProcessedPlugin.cs" />
     <Compile Include="DataObjects\Validation\ConsolidatedPluginValidationResult.cs" />
     <Compile Include="DataObjects\PluginMethod.cs" />
+    <Compile Include="IExecuteAtStartup.cs" />
     <Compile Include="InputType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IConfigureDashboard.cs" />
+    <Compile Include="Providers\IManagePlugins.cs" />
     <Compile Include="Providers\IManagePluginsStorage.cs" />
     <Compile Include="Providers\IProvidePlugins.cs" />
     <Compile Include="Services\IEnvironment.cs" />

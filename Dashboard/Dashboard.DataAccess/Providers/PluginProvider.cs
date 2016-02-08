@@ -41,9 +41,35 @@ namespace Dashboard.DataAccess.Providers
             }
         }
 
+        public async Task AddPluginUiConfiguration(PluginUiConfiguration pluginUiConfiguration)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(pluginUiConfiguration.Id)
+                    || string.IsNullOrEmpty(pluginUiConfiguration.UserId)
+                    || string.IsNullOrEmpty(pluginUiConfiguration.Version))
+
+                    throw new
+                        ArgumentException($"{nameof(pluginUiConfiguration.Id)} or {nameof(pluginUiConfiguration.UserId)} or {nameof(pluginUiConfiguration.Version)} is empty");
+
+                _pluginsContext.PluginUiConfigurations.Add(pluginUiConfiguration);
+                await _pluginsContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                throw;
+            }
+        }
+
         public Plugin GetPluginAsync(string pluginId, string version)
         {
             return _pluginsContext.Plugins.Find(pluginId, version);
+        }
+
+        public IEnumerable<Plugin> GetPluginVersions(string pluginId)
+        {
+            return _pluginsContext.Plugins.Where(p => p.Id == pluginId).ToList();
         }
 
         public async Task<IEnumerable<Plugin>> GetPluginsAsync()
@@ -68,6 +94,26 @@ namespace Dashboard.DataAccess.Providers
         public async Task<PluginUiConfiguration> GetUserPluginConfiguration(string pluginId, string version, string userId)
         {
             return await _pluginsContext.PluginUiConfigurations.FindAsync(pluginId, version, userId);
+        }
+
+        public async Task SavePluginInfo(Plugin plugin)
+        {
+            if (_pluginsContext.Set<Plugin>().Local.All(p => p != plugin))
+            {
+                _pluginsContext.Plugins.Attach(plugin);
+            }
+
+            await _pluginsContext.SaveChangesAsync();
+        }
+
+        public async Task SavePluginConfiguration(PluginUiConfiguration pluginConfiguration)
+        {
+            if (_pluginsContext.Set<PluginUiConfiguration>().Local.All(p => p != pluginConfiguration))
+            {
+                _pluginsContext.PluginUiConfigurations.Attach(pluginConfiguration);
+            }
+
+            await _pluginsContext.SaveChangesAsync();
         }
     }
 }

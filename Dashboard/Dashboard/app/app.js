@@ -1,7 +1,7 @@
 ﻿
 var app = angular.module('angularAdmin',
     ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'growlNotifications',
-        'ngAnimate', 'frapontillo.bootstrap-switch', 'angularFileUpload']);
+        'ngAnimate', 'frapontillo.bootstrap-switch', 'angularFileUpload', 'ng.jsoneditor']);
 
 app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider, cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;

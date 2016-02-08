@@ -10,6 +10,8 @@ using Dashboard.Infrastructure.Filters;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Razor;
 using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.Infrastructure.Startup;
+using Dashboard.UI.Objects;
 using Dashboard.UI.Objects.Services;
 using Module = Autofac.Module;
 
@@ -20,7 +22,7 @@ namespace Dashboard
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<RazorEngineViewsExec>().As<IExecuteRazorViews>().SingleInstance();
-            builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().InstancePerRequest();
+            builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().SingleInstance();
             builder.RegisterType<AuthRepository>().AsSelf().InstancePerRequest();
         }
 
@@ -49,6 +51,7 @@ namespace Dashboard
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
             builder.RegisterAssemblyModules(Assembly.GetAssembly(typeof(ServicesHandler)));
             RegisterFilters(builder);
+            RegisterStartup(builder);
             return builder.Build();
         }
 
@@ -65,6 +68,11 @@ namespace Dashboard
             builder.Register(p => new ErrorHandlingFilter())
                 .AsWebApiExceptionFilterFor<ApiController>()
                 .InstancePerRequest();
+        }
+
+        private static void RegisterStartup(ContainerBuilder builder)
+        {
+            builder.RegisterType<CleanUpTempDirectory>().As<IExecuteAtStartup>().InstancePerDependency();
         }
     }
 }

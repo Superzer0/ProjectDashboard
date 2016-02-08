@@ -13,6 +13,7 @@ namespace Dashboard.UI.Objects.Services.Plugins.Install
         public string CheckSum { get; set; }
         public string ConfigurationJson { get; set; }
         public string RawXml { get; set; }
+        public bool IsUpdate { get; set; }
         public PluginZipBasicInformation ZipInfo { get; set; }
     }
 }

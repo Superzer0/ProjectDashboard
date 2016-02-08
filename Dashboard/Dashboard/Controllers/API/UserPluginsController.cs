@@ -5,6 +5,7 @@ using System.Web.Http;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.UI.Objects.Providers;
+using Newtonsoft.Json.Linq;
 
 namespace Dashboard.Controllers.API
 {
@@ -13,10 +14,11 @@ namespace Dashboard.Controllers.API
     public class UserPluginsController : BaseController
     {
         private readonly IProvidePlugins _providePlugins;
-
-        public UserPluginsController(IProvidePlugins providePlugins)
+        private readonly IManagePlugins _managePlugins;
+        public UserPluginsController(IProvidePlugins providePlugins, IManagePlugins managePlugins)
         {
             _providePlugins = providePlugins;
+            _managePlugins = managePlugins;
         }
 
         [HttpGet]
@@ -83,6 +85,41 @@ namespace Dashboard.Controllers.API
         public async Task<IHttpActionResult> ChangeUserPluginConfiguration(Guid appId, string version)
         {
             return Ok();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = DashboardRoles.User)]
+        [Route("switch/{appId:guid}/{version}/{user:guid}")]
+        public async Task<IHttpActionResult> ChangePluginConfiguration(string appId, string version, string user, [FromBody] bool state)
+        {
+            try
+            {
+                await _managePlugins.SwitchPluginUserState(appId, version, user, state);
+                return Ok();
+            }
+            catch (ArgumentNullException e)
+            {
+                return BadRequest("Plugin or user not found");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = DashboardRoles.User)]
+        [Route("configuration/{appId:guid}/{version}/{user:guid}")]
+        public async Task<IHttpActionResult> ChangePluginConfiguration(string appId, string version, string user, [FromBody] JToken configuration)
+        {
+            try
+            {
+                var configurationString = configuration?.ToString();
+                if (string.IsNullOrWhiteSpace(configurationString)) return BadRequest(nameof(configuration));
+
+                await _managePlugins.ChangeUserPluginConfiguration(appId, version, user, configurationString);
+                return Ok();
+            }
+            catch (ArgumentNullException e)
+            {
+                return BadRequest("Plugin or user not found");
+            }
         }
 
     }

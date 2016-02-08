@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Dashboard.UI.Objects;
 using Dashboard.UI.Objects.DataObjects.Extract;
+using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services.Plugins.Extract.Visitors;
 using Dashboard.UI.Objects.Services.Plugins.Install;
 
@@ -8,7 +10,13 @@ namespace Dashboard.Services.Plugins.Extract.Visitors
 {
     internal class GatherPluginInformationVisitor : IProcessPluginInformationVisitor
     {
+        private readonly IProvidePlugins _providePlugins;
         private readonly PluginInformation _pluginInformation = new PluginInformation();
+
+        public GatherPluginInformationVisitor(IProvidePlugins providePlugins)
+        {
+            _providePlugins = providePlugins;
+        }
 
         public void Visit(PluginZipBasicInformation leaf)
         {
@@ -34,6 +42,19 @@ namespace Dashboard.Services.Plugins.Extract.Visitors
         public void Visit(CheckSumPluginInformation leaf)
         {
             _pluginInformation.CheckSum = leaf.CheckSum;
+        }
+
+        public void CombineData()
+        {
+            var versions = _providePlugins.GetPluginVersions(_pluginInformation.PluginId);
+            if (versions == null || !versions.Any())
+            {
+                _pluginInformation.IsUpdate = false;
+            }
+            else
+            {
+                _pluginInformation.IsUpdate = true;
+            }
         }
 
         public PluginInformation Result => _pluginInformation;

@@ -13,5 +13,9 @@ namespace Dashboard.UI.Objects.Providers
         Task<IEnumerable<Plugin>> GetActivePluginsAsync();
         Task<IEnumerable<Plugin>> GetActiveUserPluginsAsync(string userId);
         Task<PluginUiConfiguration> GetUserPluginConfiguration(string pluginId, string version, string userId);
+        Task SavePluginInfo(Plugin plugin);
+        Task SavePluginConfiguration(PluginUiConfiguration pluginConfiguration);
+        Task AddPluginUiConfiguration(PluginUiConfiguration pluginUiConfiguration);
+        IEnumerable<Plugin> GetPluginVersions(string pluginId);
     }
 }

@@ -304,6 +304,9 @@
     <Content Include="scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="scripts\jquery-2.2.0.js" />
     <Content Include="scripts\jquery-2.2.0.min.js" />
+    <Content Include="scripts\jsoneditor\jsoneditor.css" />
+    <Content Include="scripts\jsoneditor\jsoneditor.js" />
+    <Content Include="scripts\jsoneditor\ng-jsoneditor.js" />
     <Content Include="scripts\loading-bar.min.js" />
     <Content Include="scripts\modernizr-custom.js" />
     <Content Include="scripts\moment.js" />
@@ -336,6 +339,7 @@
     <None Include="scripts\angular-route.min.js.map" />
     <None Include="scripts\angular.min.js.map" />
     <None Include="scripts\jquery-2.2.0.min.map" />
+    <None Include="scripts\jsoneditor\jsoneditor.map" />
     <None Include="Shared\_AdminLayout.cshtml" />
     <None Include="Shared\_HomeLayout.cshtml" />
     <None Include="Views\Home.cshtml" />
@@ -371,6 +375,7 @@
     <Compile Include="Infrastructure\Razor\IExecuteRazorViews.cs" />
     <Compile Include="Infrastructure\Razor\RazorEngineViewsExec.cs" />
     <Compile Include="Infrastructure\Services\Abstract\OwinSelfHostEnvironment.cs" />
+    <Compile Include="Infrastructure\Startup\CleanUpTempDirectory.cs" />
     <Compile Include="Models\Account\ChangeRolesViewModel.cs" />
     <Compile Include="Models\Account\UsersInRoleModel.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
@@ -387,6 +392,7 @@
   <ItemGroup>
     <Folder Include="Infrastructure\MediaFormatters\" />
     <Folder Include="logs\" />
+    <Folder Include="scripts\jsoneditor\img\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dashboard.DataAccess\Dashboard.DataAccess.csproj">

@@ -176,6 +176,16 @@
                                                 <dd>{{stepContext.information.pluginInfo.pluginId}}</dd>
                                                 <dt>version: </dt>
                                                 <dd>{{stepContext.information.pluginInfo.version}}</dd>
+                                                <dt>version status: </dt>
+                                                <dd>
+                                                    <span ng-if="stepContext.information.pluginInfo.isUpdate">
+                                                        <span class="label label-warning">upgrade</span>
+                                                    </span>
+                                                    <span ng-if="!stepContext.information.pluginInfo.isUpdate">
+                                                        <span class="label label-info">new version</span>
+                                                    </span>
+                                                </dd>
+
                                             </dl>
                                             <br />
                                             <dl class="dl-horizontal">
@@ -232,13 +242,22 @@
                             <h3>plugin installation</h3>
                             <hr />
                             <br />
-                            <div class="progress" ng-hide="stepContext.installation.errors">
-                                <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    <span class="sr-only">100% Complete</span>
+                            <div ng-hide="stepContext.installation.errors">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                        <span class="sr-only">100% Complete</span>
+                                    </div>
                                 </div>
+                                <h4 style="text-align: center;">installing plugin...</h4>
                             </div>
-                            <h4 style="text-align: center;">installing plugin...</h4>
+
+                            <div ng-show="stepContext.installation.errors">
+                                <i class="fa fa-times-circle fa-4x"></i>
+                                <br />
+                                server error has occured
+                                <br />
+                            </div>
 
                             <div ng-show="stepContext.installation.errors">
                                 <div>

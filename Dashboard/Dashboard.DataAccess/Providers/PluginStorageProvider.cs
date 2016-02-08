@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using Common.Logging;
@@ -35,7 +36,22 @@ namespace Dashboard.DataAccess.Providers
         {
             await Task.Run(() =>
             {
+                var tempUploadPath = _environment.MapPath(_environment.PluginsUploadPath);
+                _logger.Info($"cleaning up temp directory {tempUploadPath} ...");
 
+                var di = new DirectoryInfo(tempUploadPath);
+                foreach (var fileInfo in di.GetFiles())
+                {
+                    try
+                    {
+                        fileInfo.Delete();
+                    }
+                    catch (Exception)
+                    {
+                        _logger.Warn($"error while removing {fileInfo.Name}");
+                    }
+                }
+                _logger.Info($"cleaned up temp directory {tempUploadPath}.");
             });
         }
 

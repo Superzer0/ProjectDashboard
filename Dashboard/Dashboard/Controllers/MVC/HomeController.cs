@@ -9,7 +9,7 @@ using Dashboard.Models.Home;
 namespace Dashboard.Controllers.MVC
 {
     [Authorize]
-    [RoutePrefix("Home")]
+    [RoutePrefix("home")]
     public class HomeController : RazorController
     {
         private readonly PluginsContext _pluginsContext;

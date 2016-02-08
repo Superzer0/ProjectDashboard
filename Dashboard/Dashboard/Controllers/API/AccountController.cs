@@ -162,7 +162,7 @@ namespace Dashboard.Controllers.API
 
         [HttpGet]
         [Route("admin-party/state")]
-        //[Authorize(Roles = DashboardRoles.Admin)]
+        [Authorize(Roles = DashboardRoles.Admin)]
         [AllowAnonymous]
         public bool AdminPartyState()
         {

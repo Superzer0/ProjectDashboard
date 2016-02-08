@@ -54,13 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\BaseBuilder.cs" />
-    <Compile Include="Plugins\Extract\Builders\PluginBasicZipInformationExtractor - Copy.cs" />
+    <Compile Include="Plugins\Extract\Builders\CheckSumExtractor.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginBasicZipInformationExtractor.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginJsonConfigurationExtactor.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginXmlExtractor.cs" />
     <Compile Include="Plugins\Extract\StandardPluginInfoBuilder.cs" />
     <Compile Include="Plugins\Extract\Visitors\GatherPluginInformationVisitor.cs" />
     <Compile Include="Plugins\Install\Visitors\CombinePluginInformationVisitor.cs" />
+    <Compile Include="Plugins\PluginsManager.cs" />
     <Compile Include="Plugins\StandardPluginFacade.cs" />
     <Compile Include="Plugins\Validation\StandardPluginValidationBuilder.cs" />
     <Compile Include="Plugins\Validation\Validators\PluginZipStructureValidator.cs" />
