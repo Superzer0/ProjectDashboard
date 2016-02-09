@@ -5,15 +5,17 @@
     Layout = "../Shared/_HomeLayout.cshtml";
 }
 
-<div class="container">
+<div class="container" ng-app="homeApp">
     @if (Model.Plugins.Any())
     {
-        <div class="row">
-            
+        <div class="row" ng-cloak>
+
             @foreach (var plugin in Model.Plugins)
             {
-                <span>@plugin.Plugin.UrlName</span>
-                @Raw(plugin.Content)
+                <div class="col-md-4">
+                    <span>@plugin.Plugin.Name</span>
+                    @Raw(plugin.Content)
+                </div>
             }
 
         </div>

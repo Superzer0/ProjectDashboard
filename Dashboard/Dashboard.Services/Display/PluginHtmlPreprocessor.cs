@@ -45,7 +45,7 @@ namespace Dashboard.Services.Display
             HtmlProcessingOptions processingOptions)
         {
             var rawContent = await _pluginsStorage.GetPluginIndexFile(plugin);
-            var linkPrefix = $"{processingOptions.BaseAddress}/plugins/{plugin.UrlName}";
+            var linkPrefix = $"{processingOptions.BaseAddress}/plugins/{plugin.UrlName}/front";
             var dispatchLink = $"api/dispatch/{plugin.Id}/{plugin.Version}/";
             var processedContent = UpdateResourceLinks(rawContent, processingOptions.ResourcePrefixTag, linkPrefix);
             processedContent = AddApiLink(processedContent, processingOptions.BaseAddressTag, dispatchLink);

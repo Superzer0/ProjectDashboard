@@ -222,6 +222,7 @@
   <ItemGroup>
     <Content Include="app\app.js" />
     <Content Include="app\controllers\homeController.js" />
+    <Content Include="app\controllers\home\homeapp.js" />
     <Content Include="app\controllers\instance\indexInstanceController.js" />
     <Content Include="app\controllers\navigationController.js" />
     <Content Include="app\controllers\loginController.js" />
