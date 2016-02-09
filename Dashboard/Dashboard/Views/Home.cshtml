@@ -5,20 +5,27 @@
     Layout = "../Shared/_HomeLayout.cshtml";
 }
 
-<div class="container" ng-app="homeApp">
+<div class="container" ng-app="homeApp" ng-cloak>
     @if (Model.Plugins.Any())
     {
-        <div class="row" ng-cloak>
+        int fullRows = (Model.Plugins.Length / 3) + 1;
 
-            @foreach (var plugin in Model.Plugins)
-            {
-                <div class="col-md-4">
-                    <span>@plugin.Plugin.Name</span>
-                    @Raw(plugin.Content)
-                </div>
-            }
-
-        </div>
+        for (int i = 0; i < fullRows; i++)
+        {
+            <div class="row">
+                @for (int j = 0; j < 3 && (i + j) < Model.Plugins.Length; j++)
+                {
+                    <div class="col s12 m6">
+                        <div class="card medium">
+                            <h5 class="card-title" style="text-align: center; padding-top: 20px;">
+                                @Model.Plugins[i + j].Plugin.Name
+                            </h5>
+                            @Raw(Model.Plugins[i + j].Content)
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     }
     else
     {
@@ -34,3 +41,8 @@
     }
 
 </div>
+<script>
+    $(document).ready(function () {
+        update();
+    });
+</script>

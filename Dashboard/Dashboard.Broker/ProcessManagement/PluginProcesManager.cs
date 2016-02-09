@@ -83,7 +83,7 @@ namespace Dashboard.Broker.ProcessManagement
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = Convert.ToBase64String(Encoding.UTF8.GetBytes(configuration))
+                    Arguments = Convert.ToBase64String(Encoding.UTF8.GetBytes(configuration ?? string.Empty))
                 }
             };
 

@@ -5,6 +5,7 @@ using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.UI.Objects.DataObjects.Execution;
 using Dashboard.UI.Objects.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Dashboard.Controllers.API
@@ -37,14 +38,15 @@ namespace Dashboard.Controllers.API
             {
                 Version = version,
                 MethodName = method,
-                Parameters = parameters.ToString(),
+                Parameters = parameters?.ToString() ?? string.Empty,
                 PluginId = pluginId
             };
 
             try
             {
                 var response = await _remoteMethods.CallRemoteMethod(brokerCall, currentUser.Id);
-                return Ok(response);
+                var deserialized = JsonConvert.DeserializeObject(response);
+                return Ok(deserialized);
             }
             catch (ArgumentException e)
             {

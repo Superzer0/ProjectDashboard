@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Common.Logging;
@@ -39,7 +40,7 @@ namespace Dashboard.Controllers.MVC
                     });
 
                 return View("~/Views/Home.cshtml",
-                    new HomeViewModel { User = user, Plugins = processActivePluginsHtml });
+                    new HomeViewModel { User = user, Plugins = processActivePluginsHtml.ToArray() });
             }
             catch (Exception e)
             {

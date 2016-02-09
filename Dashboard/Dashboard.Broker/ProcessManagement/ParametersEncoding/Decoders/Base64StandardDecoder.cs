@@ -8,7 +8,7 @@ namespace Dashboard.Broker.ProcessManagement.ParametersEncoding.Decoders
     {
         public string Decode(string input)
         {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(input));
+            return Encoding.UTF8.GetString(Convert.FromBase64String(input ?? string.Empty));
         }
     }
 }

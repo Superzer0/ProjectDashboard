@@ -1,0 +1,25 @@
+<script dblink src="jenkinsController.js"></script>
+
+<div ng-controller="jenkinsController">
+	<div class="card-content" id="main-div" api-link>
+		<table class="table table-striped " >
+			<thead>
+				<tr>
+					<td>Job</td>
+					<td>Is in queue</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="job in jobs | limitTo:'4'">
+					<td>{{job.Name}}</td>
+					<td>{{job.IsInQueue}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="card-action">
+		<a class="btn-floating btn-medium waves-effect waves-light red" ng-click="fetchJobs()">
+			<i class="fa fa-repeat"></i>
+	 	</a>		
+	</div>
+</div>

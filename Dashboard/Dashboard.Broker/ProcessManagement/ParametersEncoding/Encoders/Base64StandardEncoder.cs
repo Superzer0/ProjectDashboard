@@ -9,8 +9,8 @@ namespace Dashboard.Broker.ProcessManagement.ParametersEncoding.Encoders
     {
         public string Encode(PluginExecutionInfo pluginExecutionInfo)
         {
-            var encodedMethodName = Convert.ToBase64String(Encoding.UTF8.GetBytes(pluginExecutionInfo.MethodName));
-            var encodedParams = Convert.ToBase64String(Encoding.UTF8.GetBytes(pluginExecutionInfo.Parameters));
+            var encodedMethodName = Convert.ToBase64String(Encoding.UTF8.GetBytes(pluginExecutionInfo.MethodName ?? string.Empty));
+            var encodedParams = Convert.ToBase64String(Encoding.UTF8.GetBytes(pluginExecutionInfo.Parameters ?? string.Empty));
 
             return $"{encodedMethodName}.{encodedParams}";
         }

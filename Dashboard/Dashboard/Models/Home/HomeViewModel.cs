@@ -6,7 +6,7 @@ namespace Dashboard.Models.Home
 {
     public class HomeViewModel : BaseViewModel
     {
-        public IEnumerable<ProcessedPluginHtml> Plugins { get; set; }
+        public ProcessedPluginHtml[] Plugins { get; set; }
         public DashboardUser User { get; set; }
     }
 }
