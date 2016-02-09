@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="InstallationService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IInstallPluginsService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Dashboard.Common" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ZippedPlugin">
+    <wsdl:part name="parameters" element="tns:ZippedPlugin" />
+  </wsdl:message>
+  <wsdl:message name="ZippedPlugin_Headers">
+    <wsdl:part name="CheckSum" element="tns:CheckSum" />
+    <wsdl:part name="CommunicationType" element="tns:CommunicationType" />
+    <wsdl:part name="Name" element="tns:Name" />
+    <wsdl:part name="PluginId" element="tns:PluginId" />
+    <wsdl:part name="StartingProgram" element="tns:StartingProgram" />
+    <wsdl:part name="Version" element="tns:Version" />
+  </wsdl:message>
+  <wsdl:message name="InstallationResult">
+    <wsdl:part name="parameters" element="tns:InstallationResult" />
+  </wsdl:message>
+  <wsdl:portType name="IInstallPluginsService">
+    <wsdl:operation name="InstallPlugin">
+      <wsdl:input wsaw:Action="http://tempuri.org/IInstallPluginsService/InstallPlugin" name="ZippedPlugin" message="tns:ZippedPlugin" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IInstallPluginsService/InstallPluginResponse" name="InstallationResult" message="tns:InstallationResult" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IInstallPluginsService" type="tns:IInstallPluginsService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IInstallPluginsService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InstallPlugin">
+      <soap:operation soapAction="http://tempuri.org/IInstallPluginsService/InstallPlugin" style="document" />
+      <wsdl:input name="ZippedPlugin">
+        <soap:header message="tns:ZippedPlugin_Headers" part="CheckSum" use="literal" />
+        <soap:header message="tns:ZippedPlugin_Headers" part="CommunicationType" use="literal" />
+        <soap:header message="tns:ZippedPlugin_Headers" part="Name" use="literal" />
+        <soap:header message="tns:ZippedPlugin_Headers" part="PluginId" use="literal" />
+        <soap:header message="tns:ZippedPlugin_Headers" part="StartingProgram" use="literal" />
+        <soap:header message="tns:ZippedPlugin_Headers" part="Version" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="InstallationResult">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="InstallationService">
+    <wsdl:port name="BasicHttpBinding_IInstallPluginsService" binding="tns:BasicHttpBinding_IInstallPluginsService">
+      <soap:address location="http://localhost:8732/Dashboard.Broker/installation/blob" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

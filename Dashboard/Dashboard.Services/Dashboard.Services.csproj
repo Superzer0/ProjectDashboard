@@ -38,6 +38,10 @@
       <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -53,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Display\PluginHtmlPreprocessor.cs" />
     <Compile Include="Plugins\BaseBuilder.cs" />
     <Compile Include="Plugins\Extract\Builders\CheckSumExtractor.cs" />
     <Compile Include="Plugins\Extract\Builders\PluginBasicZipInformationExtractor.cs" />
@@ -71,6 +76,7 @@
     <Compile Include="Plugins\Validation\Validators\ZipSizeValidator.cs" />
     <Compile Include="Plugins\ZipHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remote\RemoteCallsDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\Uninstall\" />

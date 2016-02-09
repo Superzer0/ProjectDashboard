@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using Common.Logging;
+using Dashboard.Common.PluginSchema;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
@@ -26,9 +27,15 @@ namespace Dashboard.DataAccess.Providers
             {
                 var dirName = GetPluginDirectoryName(pluginInfo);
                 var destinationFolder = Path.Combine(_environment.MapPath(_environment.PluginsPath), dirName);
-
-                ZipFile.ExtractToDirectory(filePath, destinationFolder);
-                _logger.Info($"extracted {pluginInfo.Name} into {destinationFolder}");
+                if (Directory.Exists(destinationFolder))
+                {
+                    _logger.Warn($"plugin  {pluginInfo.Name} already exists in {destinationFolder}");
+                }
+                else
+                {
+                    ZipFile.ExtractToDirectory(filePath, destinationFolder);
+                    _logger.Info($"extracted {pluginInfo.Name} into {destinationFolder}");
+                }
             });
         }
 
@@ -53,6 +60,21 @@ namespace Dashboard.DataAccess.Providers
                 }
                 _logger.Info($"cleaned up temp directory {tempUploadPath}.");
             });
+        }
+
+        public async Task<string> GetPluginIndexFile(Plugin pluginInfo)
+        {
+            var pluginFolder = Path.Combine(_environment.MapPath(_environment.PluginsPath), pluginInfo.UrlName);
+
+            var indexFile = Path.Combine(pluginFolder,
+                PluginZipStructure.PresentationEntryFile.Replace("/", @"\"));
+
+            if (!File.Exists(indexFile)) return string.Empty;
+
+            using (var streamReader = new StreamReader(File.OpenRead(indexFile)))
+            {
+                return await streamReader.ReadToEndAsync();
+            }
         }
 
         private string GetPluginDirectoryName(PluginInformation pluginInfo)

@@ -1,12 +1,15 @@
 ﻿using Autofac;
 using Dashboard.DataAccess.Providers;
+using Dashboard.Services.Display;
 using Dashboard.Services.Plugins;
 using Dashboard.Services.Plugins.Extract;
 using Dashboard.Services.Plugins.Install.Visitors;
 using Dashboard.Services.Plugins.Validation;
+using Dashboard.Services.Remote;
 using Dashboard.UI.BrokerIntegration;
 using Dashboard.UI.Objects.BrokerIntegration;
 using Dashboard.UI.Objects.Providers;
+using Dashboard.UI.Objects.Services;
 using Dashboard.UI.Objects.Services.Plugins;
 using Dashboard.UI.Objects.Services.Plugins.Extract;
 using Dashboard.UI.Objects.Services.Plugins.Validation;
@@ -24,6 +27,8 @@ namespace Dashboard.DI.CompositionRoot
             builder.RegisterType<StandardPluginInfoBuilder>().As<IBuildPluginInfo>().InstancePerRequest();
             builder.RegisterType<BrokerFacade>().As<IManageBrokerFacade>().InstancePerRequest();
             builder.RegisterType<PluginsManager>().As<IManagePlugins>().InstancePerRequest();
+            builder.RegisterType<RemoteCallsDispatcher>().As<ICallRemoteMethods>().InstancePerRequest();
+            builder.RegisterType<PluginHtmlPreprocessor>().As<IPreparePluginHtml>().InstancePerRequest();
             builder.RegisterType<CombinePluginInformationVisitor>()
                 .AsSelf()
                 .InstancePerDependency();

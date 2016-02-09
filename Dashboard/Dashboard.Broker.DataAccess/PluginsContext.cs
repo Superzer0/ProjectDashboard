@@ -11,7 +11,6 @@ namespace Dashboard.Broker.DataAccess
             Database.SetInitializer<PluginsContext>(null);
         }
 
-        public DbSet<Plugin> Plugins { get; set; }
-        public DbSet<PluginInternalConfiguration> PluginInternalConfigurations { get; set; }
+        public DbSet<BrokerPlugin> Plugins { get; set; }
     }
 }

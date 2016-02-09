@@ -54,11 +54,13 @@
                     $scope.stepContext.validation.validationPassed = response.isValidated;
                     $scope.stepContext.validation.validationResults = response.pluginValidationResults;
                     $scope.currentStepPassed();
+                    $scope.stepContext.validation.loading = false;
                 })
                 .error(function (err) {
                     $scope.stepContext.validation.validationPassed = false;
                     $scope.stepContext.validation.validationResults = err.pluginValidationResults;
                     $scope.currentStepError();
+                    $scope.stepContext.validation.loading = false;
                 });
             }
         }
@@ -70,6 +72,7 @@
                        $scope.stepContext.information.pluginInfo = response;
                        $scope.stepContext.information.loadedOk = true;
                        $scope.currentStepPassed();
+                       $scope.stepContext.information.loading = false;
                        $timeout(function () {
                            SyntaxHighlighter.highlight();
                        }, 0);
@@ -77,6 +80,7 @@
                    .error(function (err) {
                        $scope.stepContext.information.loadedOk = false;
                        $scope.stepContext.information.pluginInfo = err;
+                       $scope.stepContext.information.loading = false;
                        $scope.currentStepError();
                    });
             }
@@ -88,12 +92,14 @@
                    .success(function (response) {
                        $scope.currentStepPassed();
                        $scope.stepContext.installation.installedOk = true;
+                       $scope.stepContext.installation.loading = false;
                        $scope.goToNextStep();
                        $scope.currentStepPassed();
                    })
                    .error(function (err) {
                        $scope.currentStepError();
                        $scope.stepContext.installation.installedOk = false;
+                       $scope.stepContext.installation.loading = false;
                        $scope.stepContext.installation.error = err;
                        console.error(err);
                    });
@@ -113,16 +119,20 @@
                 },
                 validation: {
                     validationResults: [],
-                    validationPassed: undefined
+                    validationPassed: undefined,
+                    loading: true
                 },
                 information: {
                     pluginInfo: undefined,
-                    loadedOk: false
+                    loadedOk: false,
+                    loading: true
                 },
                 installation: {
                     installedOk: false,
-                    errors: undefined
+                    errors: undefined,
+                    loading: true
                 },
+
                 fileId: "",
                 validationResults: "",
                 pluginInfo: "",

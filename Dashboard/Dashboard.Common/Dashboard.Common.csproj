@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommunicationType.cs" />
     <Compile Include="PluginSchema\PluginZipStructure.cs" />
     <Compile Include="PluginXml\PluginXmlMethod.cs" />
     <Compile Include="PluginXml\PluginXml.cs" />

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Dashboard.Common;
 
 namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping.Resolvers
 {

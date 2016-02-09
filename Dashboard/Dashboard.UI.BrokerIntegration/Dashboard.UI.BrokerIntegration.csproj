@@ -30,11 +30,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.3.1\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Wcf, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Wcf.4.0.0\lib\net45\Autofac.Integration.Wcf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,12 +59,118 @@
   <ItemGroup>
     <Compile Include="BrokerFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\BrokerExecution\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\BrokerInstallation\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\BrokerInstance\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Common\Dashboard.Common.csproj">
+      <Project>{5FCB46A1-3BB5-4498-B8F5-4A9F6456C084}</Project>
+      <Name>Dashboard.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.UI.Objects\Dashboard.UI.Objects.csproj">
       <Project>{B9CBABE8-8025-40D5-B458-EE661340E1A3}</Project>
       <Name>Dashboard.UI.Objects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Service References\BrokerExecution\Dashboard.Broker.Objects.DataObjects.DataContracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerExecution\service.wsdl" />
+    <None Include="Service References\BrokerExecution\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerExecution\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstallation\Dashboard.Common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstallation\Dashboard.UI.BrokerIntegration.BrokerInstallation.InstallationResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BrokerInstallation\Message.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstallation\service.wsdl" />
+    <None Include="Service References\BrokerInstallation\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstallation\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstance\Dashboard.Broker.Objects.DataObjects.DataContracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstance\Dashboard.UI.BrokerIntegration.BrokerInstance.BrokerInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\BrokerInstance\service.wsdl" />
+    <None Include="Service References\BrokerInstance\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\BrokerInstance\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\BrokerExecution\" />
+    <WCFMetadataStorage Include="Service References\BrokerInstallation\" />
+    <WCFMetadataStorage Include="Service References\BrokerInstance\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerInstance\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerInstance\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerInstance\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerExecution\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerExecution\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerExecution\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerInstallation\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerInstallation\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\BrokerInstallation\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

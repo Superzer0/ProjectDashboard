@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f6e74809-526f-40ae-9524-83bcc9c0fbe0" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8732/Dashboard.Broker/installation/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="79356567-2d9e-4ac5-bb11-c2cccb18d03d" SourceId="1" SourceUrl="http://localhost:8732/Dashboard.Broker/installation/mex" />
+    <MetadataFile FileName="Message.xsd" MetadataType="Schema" ID="45443823-efb8-4a0e-bea3-a3bce5486715" SourceId="1" SourceUrl="http://localhost:8732/Dashboard.Broker/installation/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="f4314709-7ba8-45ca-88e5-15b6cee7f5d8" SourceId="1" SourceUrl="http://localhost:8732/Dashboard.Broker/installation/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="ca83d13a-c2eb-47cc-8469-a1184605ecbc" SourceId="1" SourceUrl="http://localhost:8732/Dashboard.Broker/installation/mex" />
+    <MetadataFile FileName="Dashboard.Common.xsd" MetadataType="Schema" ID="79ae93b7-c36f-4926-bc03-af3b8ee61dfa" SourceId="1" SourceUrl="http://localhost:8732/Dashboard.Broker/installation/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

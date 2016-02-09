@@ -25,20 +25,8 @@
                         </h1>
                         <hr />
                         <div class="row">
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-md-10">
                                 <div class="panel-body">
-                                    <h2 style="margin-top: 0;">
-                                        basic information
-                                        <span class="pull-right">
-                                            <input type="checkbox" bs-switch data-ng-model="pluginState"
-                                                   switch-on-text="{{ 'plugin on' }}"
-                                                   switch-off-text="{{ 'plugin off' }}"
-                                                   ng-change="onPluginStateChange(pluginState)"
-                                                   ng-disabled="!pluginState"
-                                                   name="pluginState" id="pluginStateSwitch" />
-                                        </span>
-                                    </h2>
-                                    <hr />
                                     <div class="row">
                                         <div class="col-md-6">
                                             <dl class="dl-horizontal">
@@ -53,29 +41,45 @@
                                             </dl>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h3>
+                                configuration
+
+                                <span class="pull-right">
+                                    <input type="checkbox" bs-switch data-ng-model="pluginState"
+                                           switch-on-text="{{ 'plugin on' }}"
+                                           switch-off-text="{{ 'plugin off' }}"
+                                           ng-change="onPluginStateChange(pluginState)"
+                                           ng-disabled="!pluginState"
+                                           name="pluginState" id="pluginStateSwitch" />
+                                </span>
+                            </h3>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="col-md-offset-1 col-md-8">
+                                        <div ng-jsoneditor ng-model="plugin.configuration" options="jsonEditorOptions"
+                                             style="width: 400px; height: 300px;"></div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
 
                                     <h5>configuration.js</h5>
                                     <pre class="brush: js; ruler: true;">
-                                        {{plugin.configuration}}
-                                    </pre>
-
-                                    <div class="row">
-                                        <h3>configuration</h3>
-                                        <hr />
-
-                                        <div class="row">
-                                            <div class="col-md-offset-2 col-md-8">
-                                                <div ng-jsoneditor ng-model="plugin.configuration" options="jsonEditorOptions"
-                                                     style="width: 400px; height: 300px;"></div>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-default pull-right" data-ng-click="configureUserPlugin()">
-                                            <i class="fa fa-floppy-o"></i>
-                                             save
-                                        </button>
-                                    </div>
+                                                    {{plugin.configuration}}
+                                                </pre>
                                 </div>
                             </div>
+                        </div>
+                        <div style="margin-top:20px">
+                            <button class="btn btn-default pull-right" style="margin-right: 20px;" data-ng-click="configureUserPlugin()">
+                                <i class="fa fa-floppy-o"></i>
+                                save
+                            </button>
                         </div>
                     </div>
                 </div>

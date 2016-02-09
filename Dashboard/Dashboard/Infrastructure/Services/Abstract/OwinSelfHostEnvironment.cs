@@ -45,9 +45,10 @@ namespace Dashboard.Infrastructure.Services.Abstract
 
         public string AppVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        public string PluginsPath => GetSetting("pluginsPath") ?? (RootPathIndicator + "/plugins");
+        public string PluginsPath => GetSetting("pluginsPath") ?? RootPathIndicator + "/plugins";
 
-        public string PluginsUploadPath => GetSetting("uploadPluginsPath") ?? (RootPathIndicator + "/tempPlugins");
+        public string PluginsUploadPath => GetSetting("uploadPluginsPath") ?? RootPathIndicator + "/tempPlugins";
+        public string EndpointAddress => GetSetting("brokerEndpointAddress") ?? "localhost:8732";
 
         private string GetSetting(string key)
         {

@@ -34,6 +34,15 @@ namespace Dashboard
                 Console.WriteLine("Available commands: ");
                 Console.WriteLine($"1. {ShutDownCommand} stop Dashboard server");
 
+                try
+                {
+                    System.Diagnostics.Process.Start(env.BaseAddress);
+                }
+                catch
+                {
+                    // on purpose
+                }
+
                 while (!ShutDownCommand.Equals(Console.ReadLine(), StringComparison.OrdinalIgnoreCase)) { }
 
                 LogManager.GetLogger<Program>().Info(m => m("Shutting down Dashboard server"));

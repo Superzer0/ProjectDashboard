@@ -57,8 +57,6 @@ namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
                 .ForMember(dest => dest.Xml, opt => opt.Ignore())
                 .ForMember(dest => dest.AddedBy, opt => opt.Ignore());
 
-            Mapper.AssertConfigurationIsValid();
-
             LogManager.GetLogger<AutoMapperConfiguration>().Info("Created objects map for AutoMapper");
         }
     }

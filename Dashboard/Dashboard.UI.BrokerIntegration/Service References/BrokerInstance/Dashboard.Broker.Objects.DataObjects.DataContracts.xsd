@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Dashboard.Broker.Objects.DataObjects.DataContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Dashboard.Broker.Objects.DataObjects.DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="BrokerInformation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExecutionPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PluginsCount" type="xs:int" />
+      <xs:element minOccurs="0" name="SystemInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Uptime" type="ser:duration" />
+      <xs:element minOccurs="0" name="Version" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BrokerInformation" nillable="true" type="tns:BrokerInformation" />
+</xs:schema>

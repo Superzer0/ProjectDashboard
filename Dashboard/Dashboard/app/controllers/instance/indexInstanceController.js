@@ -3,9 +3,9 @@
 
     angular
         .module('angularAdmin')
-        .controller('indexInstanceController', ['$scope', 'authService', 'notificationService', indexInstanceController]);
+        .controller('indexInstanceController', ['$scope', 'authService', 'notificationService', '$http', indexInstanceController]);
 
-    function indexInstanceController($scope, authService, notificationService) {
+    function indexInstanceController($scope, authService, notificationService, $http) {
         $scope.title = 'indexInstanceController';
 
         $scope.userList = [];
@@ -104,7 +104,7 @@
         $scope.getAdminPartyState = function () {
             authService.getAdminPartyState()
                 .success(function (response) {
-                    $scope.adminPartyState =  response;
+                    $scope.adminPartyState = response;
                 }).error(function () {
 
                 });
@@ -118,17 +118,32 @@
                    } else {
                        notificationService.addNotification("roles", "admin party off");
                    }
-                }).error(function () {
+               }).error(function () {
                    notificationService.addNotification("roles", "error occured while setting admin party property", "error");
                    $scope.adminPartyState = !$scope.adminPartyState;
                });
         }
+
+        $scope.brokerInfoLoading = true;
+        $scope.broker = undefined;
+
+        $scope.refreshBrokerInfo = function () {
+            $http.get('api/instance/broker-status').success(function (response) {
+                $scope.broker = response;
+                $scope.brokerInfoLoading = false;
+            }).error(function (response) {
+                notificationService.addNotification('broker info', 'could not fetch broker information', 'error');
+                $scope.broker = undefined;
+                $scope.brokerInfoLoading = false;
+            });
+        };
 
         activate();
 
         function activate() {
             $scope.refreshUserList();
             $scope.getAdminPartyState();
+            $scope.refreshBrokerInfo();
         }
     }
 })();

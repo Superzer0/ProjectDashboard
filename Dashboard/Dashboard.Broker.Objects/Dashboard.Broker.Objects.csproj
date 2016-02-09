@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,13 +51,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\DataContracts\BrokerInformation.cs" />
+    <Compile Include="DataObjects\DataContracts\PluginExecutionInfo.cs" />
+    <Compile Include="DataObjects\DataContracts\InstallationResult.cs" />
+    <Compile Include="DataObjects\DataContracts\ZippedPlugin.cs" />
     <Compile Include="DataObjects\Plugin.cs" />
-    <Compile Include="DataObjects\PluginInternalConfiguration.cs" />
+    <Compile Include="PluginManager\IDecodeProcessOutput.cs" />
+    <Compile Include="PluginManager\IManagePluginProcesses.cs" />
+    <Compile Include="PluginManager\IEncodeExecutionParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\IBrokerEnvironment.cs" />
+    <Compile Include="Providers\IManageBrokerStorage.cs" />
+    <Compile Include="Providers\IProvidePlugins.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Common\Dashboard.Common.csproj">
+      <Project>{5FCB46A1-3BB5-4498-B8F5-4A9F6456C084}</Project>
+      <Name>Dashboard.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

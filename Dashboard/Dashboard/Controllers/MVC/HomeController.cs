@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Common.Logging;
-using Dashboard.DataAccess;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Models.Home;
+using Dashboard.UI.Objects.DataObjects.Display;
+using Dashboard.UI.Objects.Services;
 
 namespace Dashboard.Controllers.MVC
 {
@@ -12,22 +13,39 @@ namespace Dashboard.Controllers.MVC
     [RoutePrefix("home")]
     public class HomeController : RazorController
     {
-        private readonly PluginsContext _pluginsContext;
+        private readonly IEnvironment _environment;
+        private readonly IPreparePluginHtml _preparePluginHtml;
         private readonly ILog _log = LogManager.GetLogger<HomeController>();
 
-        public HomeController(PluginsContext pluginsContext)
+        public HomeController(IPreparePluginHtml preparePluginHtml, IEnvironment environment)
         {
-            _pluginsContext = pluginsContext;
+            _preparePluginHtml = preparePluginHtml;
+            _environment = environment;
         }
 
         [HttpGet]
         [Route("", Name = "DashboardHome")]
         public async Task<IHttpActionResult> Index()
         {
-            var user = await UserManager.FindByNameAsync(User.Identity.Name);
+            try
+            {
+                var user = await UserManager.FindByNameAsync(User.Identity.Name);
+                var processActivePluginsHtml =
+                    await _preparePluginHtml.ProcessActivePluginsHtml(user.Id, new HtmlProcessingOptions
+                    {
+                        BaseAddress = _environment.BaseAddress,
+                        ResourcePrefixTag = "dblink",
+                        BaseAddressTag = "api-link"
+                    });
 
-            return View("~/Views/Home.cshtml",
-                new HomeViewModel { User = user, Plugins = new List<PluginViewModel>() });
+                return View("~/Views/Home.cshtml",
+                    new HomeViewModel { User = user, Plugins = processActivePluginsHtml });
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+                return RedirectToRoute("IndexRoute", null);
+            }
         }
     }
 }

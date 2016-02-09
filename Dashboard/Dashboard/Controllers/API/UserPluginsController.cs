@@ -49,6 +49,7 @@ namespace Dashboard.Controllers.API
                 .Select(
                     p => new
                     {
+                        p.Id,
                         p.Name,
                         p.Version,
                         icon = GetPluginIconUrl(p)

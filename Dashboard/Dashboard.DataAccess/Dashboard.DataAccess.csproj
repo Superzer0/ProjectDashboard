@@ -100,6 +100,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Common\Dashboard.Common.csproj">
+      <Project>{5FCB46A1-3BB5-4498-B8F5-4A9F6456C084}</Project>
+      <Name>Dashboard.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.UI.Objects\Dashboard.UI.Objects.csproj">
       <Project>{B9CBABE8-8025-40D5-B458-EE661340E1A3}</Project>
       <Name>Dashboard.UI.Objects</Name>

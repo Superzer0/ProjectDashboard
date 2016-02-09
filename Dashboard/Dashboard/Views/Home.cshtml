@@ -5,28 +5,17 @@
     Layout = "../Shared/_HomeLayout.cshtml";
 }
 
-<div class="container-fluid">
+<div class="container">
     @if (Model.Plugins.Any())
     {
         <div class="row">
-            <div class="col-sm-3">
-                here dragons
-            </div>
-            <div class="col-sm-6">
-                here dragons
-            </div>
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="col-sm-12">
-                        here dragons
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        here dragons
-                    </div>
-                </div>
-            </div>
+            
+            @foreach (var plugin in Model.Plugins)
+            {
+                <span>@plugin.Plugin.UrlName</span>
+                @Raw(plugin.Content)
+            }
+
         </div>
     }
     else

@@ -8,5 +8,6 @@
         string AppVersion { get; }
         string PluginsPath { get; }
         string PluginsUploadPath { get; }
+        string EndpointAddress { get; }
     }
 }

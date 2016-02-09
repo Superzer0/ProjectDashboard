@@ -9,11 +9,67 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1>Statistics </h1>
+                        <h1>
+                            statistics
+                            <span class="pull-right">
+                                <span>
+                                    <i class="fa fa-windows fa-3x" title="broker running on windows"></i>
+                                    <br />
+                                </span>
+                            </span>
+                        </h1>
                         <hr />
-                        <div class="row">
-                            <p>Some info about wcf endpoint & management</p>
+
+                        <div ng-if="brokerInfoLoading" class="text-muted" style="text-align: center; width: 70%">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressBar"
+                                     style="width: 100%">
+                                </div>
+                            </div>
+                            <h4 style="text-align: center;">loading broker data...</h4>
                         </div>
+
+                        <div ng-if="!brokerInfoLoading">
+                            <div ng-if="!broker" class="text-muted" style="text-align: center">
+                                <h3 style="text-align: center">
+                                    could not fetch information about broker.
+                                    <br /> endpoing might be down.
+                                    <br />
+                                </h3>
+                            </div>
+
+                            <div class="row" ng-if="broker">
+                                <div class="col-md-6">
+                                    <dl class="dl-horizontal">
+                                        <dt>OS</dt>
+                                        <dd>{{broker.systemInfo}}</dd>
+                                        <dt>version: </dt>
+                                        <dd>{{broker.version}}</dd>
+                                        <dt>remote adress</dt>
+                                        <dd>{{broker.endpointAddress}}</dd>
+                                        <dt>execution path </dt>
+                                        <dd>
+                                            {{broker.executionPath}}
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="col-md-6">
+                                    <dl class="dl-horizontal">
+                                        <dt>plugins count</dt>
+                                        <dd>{{broker.pluginsCount}}</dd>
+                                        <dt>uptime</dt>
+                                        <dd>{{broker.uptime}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-default" style="margin: auto 0;" ng-click="refreshBrokerInfo()">
+                                <i class="fa fa-repeat"></i>
+                                refresh
+                            </button>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
