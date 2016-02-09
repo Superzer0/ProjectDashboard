@@ -18,6 +18,10 @@ using Dashboard.UI.Objects.Services.Plugins.Install;
 
 namespace Dashboard.Services.Plugins
 {
+    /// <summary>
+    /// Plugin Installation Facade
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.IManagePluginsFacade" />
     internal class StandardPluginFacade : IManagePluginsFacade
     {
         private readonly IBuildValidationResult _validationResultBuilder;
@@ -39,6 +43,14 @@ namespace Dashboard.Services.Plugins
             _pluginsStorage = pluginsStorage;
         }
 
+        /// <summary>
+        /// Adds to validation queue. File will be addedas see="PluginInstallationState.Uploaded"
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Information if file was added to installation queue</returns>
+        /// <exception cref="System.ArgumentException">Plugin path is not rooted</exception>
         public bool AddToValidationQueue(string fileId, string filePath, Guid userId)
         {
             if (!Path.IsPathRooted(filePath))
@@ -52,6 +64,13 @@ namespace Dashboard.Services.Plugins
             });
         }
 
+        /// <summary>
+        /// Validates the plugin asynchronously.
+        /// 
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>ConsolidatedPluginValidationResult which includes consolidated informations from validators</returns>
         public async Task<ConsolidatedPluginValidationResult> ValidatePluginAsync(string fileId, Guid userId)
         {
             var pluginInstallation = GetInstallationContextFromQueue(fileId, userId);
@@ -91,6 +110,12 @@ namespace Dashboard.Services.Plugins
             }
         }
 
+        /// <summary>
+        /// Gets the plugin installable information asynchronously.
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>PluginInformation that consolidates all relevant information about zipped plugin during installation process</returns>
         public async Task<PluginInformation> GetPluginInstallableInformationAsync(string fileId, Guid userId)
         {
             var pluginInstallation = GetInstallationContextFromQueue(fileId, userId);
@@ -112,6 +137,14 @@ namespace Dashboard.Services.Plugins
             }
         }
 
+        /// <summary>
+        /// Installs plugin asynchronously.
+        /// Plugin is unzipped to both Dashboard UI location and Dashboard Broker location
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException"></exception>
         public async Task InstallPluginAsync(string fileId, Guid userId)
         {
             var pluginInstallation = GetInstallationContextFromQueue(fileId, userId);

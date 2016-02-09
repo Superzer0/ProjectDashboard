@@ -11,6 +11,10 @@ using Dashboard.UI.Objects.Services.Plugins.Validation;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class PluginXmlValidator : IValidatePlugin
     {
         private readonly ZipHelper _zipHelper;
@@ -22,6 +26,11 @@ namespace Dashboard.Services.Plugins.Validation.Validators
 
         public string Name => "PluginXmlValidator";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="processedPlugin"></param>
+        /// <returns></returns>
         public PluginValidationResult Validate(ProcessedPlugin processedPlugin)
         {
             using (var zipArchive = _zipHelper.GetZipArchiveFromStream(processedPlugin.PluginZipStream))

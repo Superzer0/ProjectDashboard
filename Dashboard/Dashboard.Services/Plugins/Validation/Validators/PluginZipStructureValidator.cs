@@ -8,6 +8,10 @@ using Dashboard.UI.Objects.Services.Plugins.Validation;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class PluginZipStructureValidator : IValidatePlugin
     {
         private readonly ZipHelper _zipHelper;
@@ -18,6 +22,11 @@ namespace Dashboard.Services.Plugins.Validation.Validators
             _zipHelper = zipHelper;
         }
 
+        /// <summary>
+        /// Validates the specified processed plugin.
+        /// </summary>
+        /// <param name="processedPlugin">The processed plugin.</param>
+        /// <returns></returns>
         public PluginValidationResult Validate(ProcessedPlugin processedPlugin)
         {
             using (var zipArchive = _zipHelper.GetZipArchiveFromStream(processedPlugin.PluginZipStream))
