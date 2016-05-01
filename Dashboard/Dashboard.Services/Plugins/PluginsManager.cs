@@ -6,7 +6,7 @@ using Dashboard.UI.Objects.Providers;
 namespace Dashboard.Services.Plugins
 {
     /// <summary>
-    /// 
+    /// Manages plugins persistent state
     /// </summary>
     /// <seealso cref="Dashboard.UI.Objects.Providers.IManagePlugins" />
     internal class PluginsManager : IManagePlugins

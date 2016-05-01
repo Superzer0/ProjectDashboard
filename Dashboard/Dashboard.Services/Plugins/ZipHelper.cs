@@ -8,6 +8,7 @@ using Dashboard.Common.PluginSchema;
 
 namespace Dashboard.Services.Plugins
 {
+
     internal class ZipHelper
     {
         private const string SchemaResourceLocation = "Dashboard.Common.PluginSchema.PluginXmlSchema.xml";
@@ -20,7 +21,11 @@ namespace Dashboard.Services.Plugins
             validationResults.Add($"file {entryName} must not be empty.");
             return false;
         }
-
+        /// <summary>
+        /// Gets the zip archive from stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns></returns>
         public virtual ZipArchive GetZipArchiveFromStream(Stream stream)
         {
             return new ZipArchive(stream, ZipArchiveMode.Read, true);
@@ -31,6 +36,11 @@ namespace Dashboard.Services.Plugins
             return zipArchive.Entries.First(p => path.Equals(p.FullName, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Gets the plugin XSD schema.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException"></exception>
         public virtual string GetPluginXsdSchema()
         {
             var commonAssembly = Assembly.GetAssembly(typeof(PluginZipStructure));

@@ -8,6 +8,10 @@ using Dashboard.UI.Objects.Services;
 
 namespace Dashboard.Services.Remote
 {
+    /// <summary>
+    /// Dispatches remote calls to Dashboard Broker
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.ICallRemoteMethods" />
     internal class RemoteCallsDispatcher : ICallRemoteMethods
     {
         private readonly IManageBrokerFacade _brokerFacade;
@@ -19,6 +23,15 @@ namespace Dashboard.Services.Remote
             _providePlugins = providePlugins;
         }
 
+        /// <summary>
+        /// Calls the remote method.
+        /// </summary>
+        /// <param name="brokerExecutionInfo">The broker execution information.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">plugin not active or not found
+        /// or
+        /// called method not found in plugin api</exception>
         public async Task<string> CallRemoteMethod(BrokerExecutionInfo brokerExecutionInfo, string userId)
         {
             var plugins = (await _providePlugins.GetActiveUserPluginsAsync(userId)).ToList();

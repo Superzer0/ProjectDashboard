@@ -9,6 +9,10 @@ using Dashboard.UI.Objects.Services.Plugins.Extract.Visitors;
 
 namespace Dashboard.Services.Plugins.Install.Visitors
 {
+    /// <summary>
+    /// Gathers information about plugin to Plugin class from BasePluginInformation classes
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.Visitors.IProcessPluginInformationVisitor" />
     internal class CombinePluginInformationVisitor : IProcessPluginInformationVisitor
     {
         private readonly ILog _logger = LogManager.GetLogger<CombinePluginInformationVisitor>();

@@ -10,6 +10,11 @@ using Dashboard.UI.Objects.Services.Plugins.Extract;
 
 namespace Dashboard.Services.Plugins.Extract
 {
+    /// <summary>
+    /// Builds information about plugins
+    /// </summary>
+    /// <seealso cref="Dashboard.Services.Plugins.BaseBuilder{Dashboard.UI.Objects.Services.Plugins.Extract.IExtractPluginInformation{Dashboard.UI.Objects.DataObjects.Extract.BasePluginInformation}}" />
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.IBuildPluginInfo" />
     internal class StandardPluginInfoBuilder : BaseBuilder<IExtractPluginInformation<BasePluginInformation>>, IBuildPluginInfo
     {
         private readonly PluginBasicZipInformationExtractor _zipInformationExtractor;

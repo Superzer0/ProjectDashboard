@@ -6,6 +6,10 @@ using Dashboard.UI.Objects.Services.Plugins.Validation;
 
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
+    /// <summary>
+    /// Validates zip archive max size
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class ZipSizeValidator : IValidatePlugin
     {
         private readonly ZipHelper _zipHelper;

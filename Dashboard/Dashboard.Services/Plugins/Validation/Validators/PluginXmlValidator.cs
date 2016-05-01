@@ -12,7 +12,7 @@ using Dashboard.UI.Objects.Services.Plugins.Validation;
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
     /// <summary>
-    /// 
+    /// Validates plugin.xml against xsd schema
     /// </summary>
     /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class PluginXmlValidator : IValidatePlugin

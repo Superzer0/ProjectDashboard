@@ -1,11 +1,14 @@
-﻿using System.IO.Compression;
-using System.Linq;
+﻿using System.Linq;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.DataObjects.Extract;
 using Dashboard.UI.Objects.Services.Plugins.Extract;
 
 namespace Dashboard.Services.Plugins.Extract.Builders
 {
+    /// <summary>
+    /// Extract basic information about zip plugin
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.IExtractPluginInformation{Dashboard.UI.Objects.DataObjects.Extract.PluginZipBasicInformation}" />
     internal class PluginBasicZipInformationExtractor : IExtractPluginInformation<PluginZipBasicInformation>
     {
         private readonly ZipHelper _zipHelper;

@@ -6,6 +6,10 @@ using Dashboard.UI.Objects.Services.Plugins.Extract;
 
 namespace Dashboard.Services.Plugins.Extract.Builders
 {
+    /// <summary>
+    /// Extracts informations about basic zip information
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.IExtractPluginInformation{Dashboard.UI.Objects.DataObjects.Extract.PluginConfigurationInfo}" />
     internal class PluginJsonConfigurationExtactor : IExtractPluginInformation<PluginConfigurationInfo>
     {
         private readonly ZipHelper _zipHelper;

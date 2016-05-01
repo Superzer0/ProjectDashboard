@@ -7,6 +7,10 @@ using Dashboard.UI.Objects.Services.Plugins.Extract;
 
 namespace Dashboard.Services.Plugins.Extract.Builders
 {
+    /// <summary>
+    /// Extracts metadata from plugin.xml 
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.IExtractPluginInformation{Dashboard.UI.Objects.DataObjects.Extract.PluginXmlInfo}" />
     internal class PluginXmlExtractor : IExtractPluginInformation<PluginXmlInfo>
     {
         private readonly ZipHelper _zipHelper;

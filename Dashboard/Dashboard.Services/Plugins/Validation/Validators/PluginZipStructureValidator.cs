@@ -9,7 +9,7 @@ using Dashboard.UI.Objects.Services.Plugins.Validation;
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
     /// <summary>
-    /// 
+    /// Validates plugin zip structure
     /// </summary>
     /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class PluginZipStructureValidator : IValidatePlugin

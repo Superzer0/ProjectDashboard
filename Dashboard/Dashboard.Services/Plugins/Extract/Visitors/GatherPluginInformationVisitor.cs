@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Dashboard.Common;
-using Dashboard.UI.Objects;
 using Dashboard.UI.Objects.DataObjects.Extract;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services.Plugins.Extract.Visitors;
@@ -9,6 +8,10 @@ using Dashboard.UI.Objects.Services.Plugins.Install;
 
 namespace Dashboard.Services.Plugins.Extract.Visitors
 {
+    /// <summary>
+    /// Visitor for gathering information from objects that implement BasePluginInformation
+    /// </summary>
+    /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.Visitors.IProcessPluginInformationVisitor" />
     internal class GatherPluginInformationVisitor : IProcessPluginInformationVisitor
     {
         private readonly IProvidePlugins _providePlugins;

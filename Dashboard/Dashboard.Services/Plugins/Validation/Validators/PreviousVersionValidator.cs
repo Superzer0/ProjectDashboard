@@ -13,7 +13,7 @@ using static System.String;
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
     /// <summary>
-    /// 
+    /// Validates plugin zip version. Previous or same version of same plugin are not allowed
     /// </summary>
     /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class PreviousVersionValidator : IValidatePlugin

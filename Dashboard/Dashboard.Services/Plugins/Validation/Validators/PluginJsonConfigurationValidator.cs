@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 namespace Dashboard.Services.Plugins.Validation.Validators
 {
     /// <summary>
-    /// 
+    /// Validates configuration.json of plugin.zip
     /// </summary>
     /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Validation.IValidatePlugin" />
     internal class PluginJsonConfigurationValidator : IValidatePlugin
