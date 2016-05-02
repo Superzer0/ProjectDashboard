@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Dashboard.UI.Objects.Services;
 
-namespace Dashboard.Infrastructure.Services.Abstract
+namespace Dashboard.Infrastructure.Services
 {
     public class OwinSelfHostEnvironment : IEnvironment
     {

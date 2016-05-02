@@ -221,7 +221,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="tempPlugins\placeholder.txt" />
     <Content Include="app\app.js" />
     <Content Include="app\controllers\homeController.js" />
     <Content Include="app\controllers\home\homeapp.js" />
@@ -410,7 +409,6 @@
     <Compile Include="App_Start\RouteInitialization.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
     <Compile Include="Controllers\API\InstanceController.cs" />
-    <Compile Include="Controllers\API\ConfigureController.cs" />
     <Compile Include="Controllers\API\PluginCallDispatchController.cs" />
     <Compile Include="Controllers\API\PluginInstallationController.cs" />
     <Compile Include="Controllers\API\PluginsController.cs" />
@@ -432,7 +430,8 @@
     <Compile Include="Infrastructure\Middleware\GlobalExceptionLoggerMiddleware.cs" />
     <Compile Include="Infrastructure\Razor\IExecuteRazorViews.cs" />
     <Compile Include="Infrastructure\Razor\RazorEngineViewsExec.cs" />
-    <Compile Include="Infrastructure\Services\Abstract\OwinSelfHostEnvironment.cs" />
+    <Compile Include="Infrastructure\Services\MediaFormatterFileProvider.cs" />
+    <Compile Include="Infrastructure\Services\OwinSelfHostEnvironment.cs" />
     <Compile Include="Infrastructure\Startup\CleanUpTempDirectory.cs" />
     <Compile Include="Models\Account\ChangeRolesViewModel.cs" />
     <Compile Include="Models\Account\UsersInRoleModel.cs" />
@@ -452,6 +451,7 @@
     <Folder Include="logs\" />
     <Folder Include="Models\Dispatcher\" />
     <Folder Include="scripts\jsoneditor\img\" />
+    <Folder Include="tempPlugins\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dashboard.Common\Dashboard.Common.csproj">
@@ -469,6 +469,10 @@
     <ProjectReference Include="..\Dashboard.UI.Objects\Dashboard.UI.Objects.csproj">
       <Project>{b9cbabe8-8025-40d5-b458-ee661340e1a3}</Project>
       <Name>Dashboard.UI.Objects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboard.UI.Resources\Dashboard.UI.Resources.csproj">
+      <Project>{33e94534-3370-444b-af6f-4b98eb02e31f}</Project>
+      <Name>Dashboard.UI.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

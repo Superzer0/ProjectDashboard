@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Project Dashboard")]
-[assembly: AssemblyDescription("Plugin Platform UI")]
+[assembly: AssemblyTitle("Dashboard.UI.Resources")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("3qsd.com")]
-[assembly: AssemblyProduct("Dashboard")]
-[assembly: AssemblyCopyright("Copyright © 3qsd.com 2016")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Dashboard.UI.Resources")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("73068164-9498-48b5-a227-f13afc90ac34")]
+[assembly: Guid("33e94534-3370-444b-af6f-4b98eb02e31f")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,9 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers 
+// You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.*")]
-[assembly: InternalsVisibleTo("Dashboard.Tests")]
-[assembly: InternalsVisibleTo("Dashboard.DI.CompositionRoot")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

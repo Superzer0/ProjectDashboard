@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,7 +8,9 @@ using System.Web.Http;
 using Common.Logging;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Identity;
+using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services.Plugins;
+using Dashboard.UI.Resources;
 
 namespace Dashboard.Controllers.API
 {
@@ -17,11 +19,13 @@ namespace Dashboard.Controllers.API
     public class PluginInstallationController : BaseController
     {
         private readonly IManagePluginsFacade _pluginsFacade;
+        private readonly IProvideFiles _provideFiles;
         private readonly ILog _logger = LogManager.GetLogger<PluginInstallationController>();
 
-        public PluginInstallationController(IManagePluginsFacade pluginsFacade)
+        public PluginInstallationController(IManagePluginsFacade pluginsFacade, IProvideFiles provideFiles)
         {
             _pluginsFacade = pluginsFacade;
+            _provideFiles = provideFiles;
         }
 
         [HttpPost]
@@ -29,42 +33,32 @@ namespace Dashboard.Controllers.API
         public async Task<IHttpActionResult> UploadPlugin()
         {
             // Check if the request contains multipart/form-data.
-            if (!Request.Content.IsMimeMultipartContent())
+            if (!_provideFiles.ValidateRequest(Request))
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            var root = Environment.MapPath(Environment.PluginsUploadPath);
-            var provider = new MultipartFormDataStreamProvider(root);
-
             try
             {
-                // Read the form data.
-                await Request.Content.ReadAsMultipartAsync(provider);
-
-                var zipFileToProcess = provider.FileData.FirstOrDefault(); // only one plugin at a time
-
-                if (zipFileToProcess == null) return BadRequest("No file found");
-
-                var fileExtension =
-                    Path.GetExtension(zipFileToProcess.Headers.ContentDisposition.FileName
-                        .Trim('"')).TrimStart('.');
-
-                if (!"zip".Equals(fileExtension, StringComparison.OrdinalIgnoreCase))
-                    return BadRequest("File must be an zip archive");
-
-                var fileId = Path.GetFileName(zipFileToProcess.LocalFileName);
-
                 var user = await GetCurrentUser();
-                if (user == null) return BadRequest("User not found");
+                if (user == null) return BadRequest(ExceptionMessages.UserNotFoundMessage);
 
-                _pluginsFacade.AddToValidationQueue(fileId, zipFileToProcess.LocalFileName, Guid.Parse(user.Id));
+                // Read the form data.
+                var receivedFileMetadata = await _provideFiles.ReceiveFile(Request);
+                if (receivedFileMetadata == null) return BadRequest(ExceptionMessages.FilenNotFoundMessage);
 
-                return Ok(new { fileId });
+                if (!receivedFileMetadata.IsZip())
+                    return BadRequest(ExceptionMessages.FileNotZipMessage);
+
+                var fileId = Path.GetFileName(receivedFileMetadata.LocalFileName);
+
+                _pluginsFacade.AddToValidationQueue(fileId, receivedFileMetadata.LocalFileName, Guid.Parse(user.Id));
+
+                return Ok(new Dictionary<string, string> { { "fileId", fileId } });
             }
             catch (Exception e)
             {
-                _logger.Error(e);
+                _logger.Error(m => m("Unexpected error"), e);
                 return InternalServerError();
             }
         }
@@ -118,5 +112,6 @@ namespace Dashboard.Controllers.API
                 return BadRequest(e.Message);
             }
         }
+
     }
 }

@@ -9,9 +9,10 @@ using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Filters;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Razor;
-using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.Infrastructure.Services;
 using Dashboard.Infrastructure.Startup;
 using Dashboard.UI.Objects;
+using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
 using Module = Autofac.Module;
 
@@ -73,6 +74,7 @@ namespace Dashboard
         private static void RegisterStartup(ContainerBuilder builder)
         {
             builder.RegisterType<CleanUpTempDirectory>().As<IExecuteAtStartup>().InstancePerDependency();
+            builder.RegisterType<MediaStreamFileProvider>().As<IProvideFiles>().InstancePerDependency();
         }
     }
 }

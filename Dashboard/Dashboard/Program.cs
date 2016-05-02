@@ -4,7 +4,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
 using Common.Logging;
-using Dashboard.Infrastructure.Services.Abstract;
+using Dashboard.Infrastructure.Services;
 using Dashboard.UI.Objects.DataObjects.Install.AutoMapping;
 using Dashboard.UI.Objects.Services;
 using Microsoft.Owin.Hosting;

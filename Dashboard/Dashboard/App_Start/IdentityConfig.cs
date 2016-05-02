@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Dashboard.Infrastructure.Identity;
-using Dashboard.Models.Account;
 using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -33,6 +32,11 @@ namespace Dashboard
     // Configure the application user manager which is used in this application.
     public class ApplicationUserManager : UserManager<DashboardUser>
     {
+        internal ApplicationUserManager() : base(new UserStore<DashboardUser>())
+        {
+            // for unit testint only
+        }
+
         public ApplicationUserManager(IUserStore<DashboardUser> store)
             : base(store)
         {
