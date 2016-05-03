@@ -31,7 +31,7 @@ namespace UnitTests.Utils
         }
     }
 
-    internal class InMemoryLogger : AbstractSimpleLogger
+    public class InMemoryLogger : AbstractSimpleLogger
     {
         private Stack<LogMessage> LoggedExceptions { get; set; }
 
@@ -56,7 +56,7 @@ namespace UnitTests.Utils
         }
     }
 
-    internal class LogMessage
+    public class LogMessage
     {
         public LogLevel Level { get; set; }
         public object Message { get; set; }

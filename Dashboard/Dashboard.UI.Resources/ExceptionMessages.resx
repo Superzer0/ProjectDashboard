@@ -126,4 +126,7 @@
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>User not found</value>
   </data>
+  <data name="FileIdInvalid" xml:space="preserve">
+    <value>fileId must not be empty</value>
+  </data>
 </root>

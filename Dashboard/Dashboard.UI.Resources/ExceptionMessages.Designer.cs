@@ -61,6 +61,15 @@ namespace Dashboard.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fileId must not be empty.
+        /// </summary>
+        public static string FileIdInvalid {
+            get {
+                return ResourceManager.GetString("FileIdInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Not Found.
         /// </summary>
         public static string FilenNotFoundMessage {

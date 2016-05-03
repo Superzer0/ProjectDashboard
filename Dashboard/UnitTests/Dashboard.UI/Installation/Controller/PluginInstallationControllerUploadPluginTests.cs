@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-using Autofac.Extras.Moq;
 using Common.Logging;
 using Dashboard;
 using Dashboard.Controllers.API;
@@ -22,28 +21,12 @@ using UnitTests.Utils;
 namespace UnitTests.Dashboard.UI.Installation.Controller
 {
     [TestFixture]
-    public class PluginInstallationControllerUploadPluginTests
+    public class PluginInstallationControllerUploadPluginTests : BaseTestFixture
     {
-        private AutoMock AutoMock { get; set; }
-        private InMemoryLogger DummyLogger { get; set; }
-
-        [SetUp]
-        public void SetUp()
-        {
-            AutoMock = AutoMock.GetLoose();
-            DummyLogger = InMemoryLoggingAdapterFactory.CreateDummyLogger();
-            LogManager.Adapter = new InMemoryLoggingAdapterFactory(DummyLogger);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            AutoMock.Dispose();
-        }
-
         [Test]
         public async Task IsNotMultiPartContent_ThrowsHttpException()
         {
+            //arrange
             AutoMock.MockRepository.Create<IProvideFiles>()
                 .Setup(p => p.ValidateRequest(It.IsAny<HttpRequestMessage>()))
                 .Returns(false);
@@ -52,8 +35,10 @@ namespace UnitTests.Dashboard.UI.Installation.Controller
 
             try
             {
+                //act
                 await controller.UploadPlugin();
             }
+            // assert
             catch (HttpResponseException e)
             {
                 Assert.That(e.Response.StatusCode == HttpStatusCode.UnsupportedMediaType);
@@ -81,8 +66,8 @@ namespace UnitTests.Dashboard.UI.Installation.Controller
             controller.UserManager = applicationUserManager.Object;
 
             // Act
-
             var httpActionResult = await controller.UploadPlugin();
+
             // Assert
             AssertBadRequestMessage(httpActionResult, ExceptionMessages.UserNotFoundMessage);
 
@@ -93,6 +78,7 @@ namespace UnitTests.Dashboard.UI.Installation.Controller
         [Test]
         public async Task FileEmpty_BadRequestReturned()
         {
+            // arrange
             var applicationUserManager = new Mock<ApplicationUserManager>();
             applicationUserManager.Setup(p => p.FindByNameAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(new DashboardUser()));
@@ -106,19 +92,21 @@ namespace UnitTests.Dashboard.UI.Installation.Controller
                 .Returns(Task.FromResult((UploadedFileMetadata)null));
 
             var pluginsFacade = AutoMock.Mock<IManagePluginsFacade>();
-
             var controller = AutoMock.Create<PluginInstallationController>();
             controller.UserManager = applicationUserManager.Object;
 
+            //act
             var httpActionResult = await controller.UploadPlugin();
-            AssertBadRequestMessage(httpActionResult, ExceptionMessages.FilenNotFoundMessage);
 
+            //assert
+            AssertBadRequestMessage(httpActionResult, ExceptionMessages.FilenNotFoundMessage);
             pluginsFacade.Verify(p => p.AddToValidationQueue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()), Times.Never);
         }
 
         [Test]
         public async Task FileNotZip_BadRequestReturned()
         {
+            //arrange
             var applicationUserManager = new Mock<ApplicationUserManager>();
             applicationUserManager.Setup(p => p.FindByNameAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(new DashboardUser()));
@@ -132,13 +120,14 @@ namespace UnitTests.Dashboard.UI.Installation.Controller
                 .Returns(Task.FromResult(new UploadedFileMetadata()));
 
             var pluginsFacade = AutoMock.Mock<IManagePluginsFacade>();
-
             var controller = AutoMock.Create<PluginInstallationController>();
             controller.UserManager = applicationUserManager.Object;
 
+            // act
             var httpActionResult = await controller.UploadPlugin();
-            AssertBadRequestMessage(httpActionResult, ExceptionMessages.FileNotZipMessage);
 
+            //assert
+            AssertBadRequestMessage(httpActionResult, ExceptionMessages.FileNotZipMessage);
             pluginsFacade.Verify(p => p.AddToValidationQueue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()), Times.Never);
         }
 
@@ -219,15 +208,6 @@ namespace UnitTests.Dashboard.UI.Installation.Controller
                 It.Is<string>(v => fileId.Equals(v)),
                 It.Is<string>(v => uploadedFileMetadata.LocalFileName.Equals(v)),
                 It.Is<Guid>(v => v == Guid.Parse(userGuid))), Times.Once);
-
         }
-
-        private void AssertBadRequestMessage(IHttpActionResult httpActionResult, string message)
-        {
-            Assert.That(httpActionResult, Is.TypeOf<BadRequestErrorMessageResult>());
-            var badActionResult = (BadRequestErrorMessageResult)httpActionResult;
-            Assert.That(badActionResult.Message, Is.EqualTo(message));
-        }
-
     }
 }

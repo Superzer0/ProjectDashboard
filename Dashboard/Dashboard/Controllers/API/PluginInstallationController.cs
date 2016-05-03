@@ -67,11 +67,18 @@ namespace Dashboard.Controllers.API
         [Route("validate/{fileId}")]
         public async Task<IHttpActionResult> ValidatePlugin(string fileId)
         {
-            if (string.IsNullOrWhiteSpace(fileId)) return BadRequest("fileId must not be empty");
+            if (string.IsNullOrWhiteSpace(fileId)) return BadRequest(ExceptionMessages.FileIdInvalid);
 
             var user = await GetCurrentUser();
+            if (user == null) return BadRequest(ExceptionMessages.UserNotFoundMessage);
 
             var pluginValidationResults = await _pluginsFacade.ValidatePluginAsync(fileId, Guid.Parse(user.Id));
+
+            if (pluginValidationResults == null)
+            {
+                _logger.Error(m => m("pluginValidationResults was null - internal error"), new NullReferenceException());
+                return InternalServerError();
+            }
 
             if (pluginValidationResults.IsValidated)
                 return Ok(pluginValidationResults);
@@ -83,13 +90,15 @@ namespace Dashboard.Controllers.API
         [Route("info/{fileId}")]
         public async Task<IHttpActionResult> CheckPluginInformation(string fileId)
         {
-            if (string.IsNullOrWhiteSpace(fileId)) return BadRequest("fileId must not be empty");
+            if (string.IsNullOrWhiteSpace(fileId)) return BadRequest(ExceptionMessages.FileIdInvalid);
 
             var user = await GetCurrentUser();
+            if (user == null) return BadRequest(ExceptionMessages.UserNotFoundMessage);
+
             var pluginInfo = await _pluginsFacade.GetPluginInstallableInformationAsync(fileId, Guid.Parse(user.Id));
 
             if (pluginInfo == null)
-                return BadRequest($"transaction {fileId} not found or user does not have permission");
+                return BadRequest($"transaction with id: {fileId} not found");
 
             return Ok(pluginInfo);
         }
@@ -100,9 +109,11 @@ namespace Dashboard.Controllers.API
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(fileId)) return BadRequest("fileId must not be empty");
+                if (string.IsNullOrWhiteSpace(fileId)) return BadRequest(ExceptionMessages.FileIdInvalid);
 
                 var user = await GetCurrentUser();
+                if (user == null) return BadRequest(ExceptionMessages.UserNotFoundMessage);
+
                 await _pluginsFacade.InstallPluginAsync(fileId, Guid.Parse(user.Id));
 
                 return Ok();
