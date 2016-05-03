@@ -1,6 +1,4 @@
-﻿using System;
-using AutoMapper;
-using Common.Logging;
+﻿using AutoMapper;
 using Dashboard.Common.PluginXml;
 using Dashboard.UI.Objects.DataObjects.Extract;
 using Dashboard.UI.Objects.DataObjects.Install.AutoMapping.Resolvers;
@@ -12,7 +10,8 @@ namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
         public static void Configure()
         {
             Mapper.CreateMap<PluginXml, Plugin>()
-                .ForMember(dest => dest.CommunicationType, opt => opt.ResolveUsing<CommunicationTypeResolver>().FromMember(p => p.CommunicationType))
+                .ForMember(dest => dest.CommunicationType, opt => opt.ResolveUsing<CommunicationTypeResolver>()
+                .FromMember(p => p.CommunicationType))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
                 .ForMember(dest => dest.Version, opt => opt.MapFrom(p => p.Version))
                 .ForMember(dest => dest.StartingProgram, opt => opt.MapFrom(p => p.StartingProgram))
@@ -56,8 +55,6 @@ namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
                 .ForMember(dest => dest.Disabled, opt => opt.Ignore())
                 .ForMember(dest => dest.Xml, opt => opt.Ignore())
                 .ForMember(dest => dest.AddedBy, opt => opt.Ignore());
-
-            LogManager.GetLogger<AutoMapperConfiguration>().Info("Created objects map for AutoMapper");
         }
     }
 }

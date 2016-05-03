@@ -26,7 +26,7 @@ namespace Dashboard
             app.Use<GlobalExceptionLoggerMiddleware>();
             RouteInitialization.Register(configuration.Routes);
             configuration.MapHttpAttributeRoutes();
-            var container = DiContainerLoad.CreateContainer(configuration);
+            var container = Container.Create(configuration, app);
             configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             app.UseAutofacMiddleware(container);
             ConfigureAuth(app);
@@ -35,7 +35,7 @@ namespace Dashboard
             app.UseFileServer(new FileServerOptions
             {
                 FileSystem = new PhysicalFileSystem(@"../"),
-                EnableDirectoryBrowsing = true
+                EnableDirectoryBrowsing = false
             });
             app.UseDefaultFiles();
             app.UseErrorPage();

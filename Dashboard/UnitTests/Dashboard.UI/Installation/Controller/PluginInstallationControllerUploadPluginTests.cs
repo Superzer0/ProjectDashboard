@@ -9,6 +9,7 @@ using System.Web.Http.Results;
 using Common.Logging;
 using Dashboard;
 using Dashboard.Controllers.API;
+using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.Providers;

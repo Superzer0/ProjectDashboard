@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Results;
 using Dashboard;
 using Dashboard.Controllers.API;
+using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Services.Plugins;
 using Dashboard.UI.Resources;

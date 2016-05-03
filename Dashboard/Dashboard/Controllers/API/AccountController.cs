@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,13 +36,23 @@ namespace Dashboard.Controllers.API
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = new DashboardUser { UserName = model.UserName, Email = model.Email };
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var userCreatedResult = await UserManager.CreateAsync(user, model.Password);
 
-            var validationResult = ParseErrorResult(result);
-            if (validationResult != null) return validationResult;
+            // if some errors encountered - return them to the user
+            var userCreatedValidationResults = ParseErrorResult(userCreatedResult);
+            if (userCreatedValidationResults != null) return userCreatedValidationResults;
 
-            await UserManager.AddToRoleAsync(user.Id, DashboardRoles.User);
-            _log.Info(p => p("Registered User " + user.UserName));
+            // add standard User role to user
+            var roleAddedResult = await UserManager.AddToRoleAsync(user.Id, DashboardRoles.User);
+            var roleAddedValidationResult = ParseErrorResult(roleAddedResult);
+            if (roleAddedValidationResult != null)
+            {
+                // adding role failed, log errors, return OK to user (internal error)
+                _log.Error(l => l($"[Internal Error]: User {user.UserName} created but standard {DashboardRoles.User} role not added" +
+                                  $" . Errors: {GetModelStateSummary()}"));
+            }
+
+            _log.Info(p => p($"Created user: {user.UserName} with email: {user.Email}"));
             return Ok();
         }
 
@@ -66,8 +77,10 @@ namespace Dashboard.Controllers.API
                     UserManager.ChangePasswordAsync(user.Id, passwordViewModel.CurrentPassword,
                         passwordViewModel.NewPassword);
             var validationResult = ParseErrorResult(actionResult);
+            if (validationResult != null) return validationResult;
 
-            return validationResult ?? Ok();
+            _log.Info($"changed password for {user.Id}");
+            return Ok();
         }
 
         [HttpGet]
@@ -76,12 +89,14 @@ namespace Dashboard.Controllers.API
         public IHttpActionResult GetUserInfo()
         {
             var identity = User.Identity as ClaimsIdentity;
-            return Ok(new
+            if (identity == null) return BadRequest();
+
+            return Ok(new UserInfoViewModel
             {
-                id = identity?.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier)?.Value,
-                userName = identity?.Claims.First(p => p.Type == ClaimTypes.Name)?.Value,
-                email = identity?.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Email)?.Value,
-                roles = identity?.Claims.Where(p => p.Type == ClaimTypes.Role).Select(d => d?.Value)
+                Id = identity.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier)?.Value,
+                UserName = identity.Claims.First(p => p.Type == ClaimTypes.Name)?.Value,
+                Email = identity.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Email)?.Value,
+                Roles = identity.Claims.Where(p => p.Type == ClaimTypes.Role).Select(d => d.Value)
             });
         }
 
@@ -91,12 +106,13 @@ namespace Dashboard.Controllers.API
         public IHttpActionResult GetAllUsers()
         {
             var roles = RoleManager.Roles.ToList().Select(p => new IdentityRole { Id = p.Id, Name = p.Name });
-            var users = UserManager.Users.ToList().Select(p => new
+
+            var users = UserManager.Users.ToList().Select(p => new UserInfoViewModel
             {
-                p.Email,
-                p.Id,
-                p.UserName,
-                roles = p.Roles.Select(r => roles.FirstOrDefault(w => w.Id.Equals(r.RoleId))?.Name)
+                Email = p.Email,
+                Id = p.Id,
+                UserName = p.UserName,
+                Roles = p.Roles.Select(r => roles.FirstOrDefault(w => w.Id.Equals(r.RoleId))?.Name)
             }).ToList();
 
             return Ok(users);
@@ -107,13 +123,18 @@ namespace Dashboard.Controllers.API
         [Authorize(Roles = DashboardRoles.Admin)]
         public async Task<IHttpActionResult> DeleteUser(string userId)
         {
+            if (string.IsNullOrEmpty(userId)) return BadRequest();
+
             var dashboardUser = await UserManager.FindByIdAsync(userId);
             if (dashboardUser == null) return NotFound();
 
             var actionResult = await UserManager.DeleteAsync(dashboardUser);
             var validationResult = ParseErrorResult(actionResult);
 
-            return validationResult ?? Ok();
+            if (validationResult != null) return validationResult;
+
+            _log.Info(m => m($"User {userId} deleted"));
+            return Ok();
         }
 
         [HttpPost]
@@ -126,8 +147,9 @@ namespace Dashboard.Controllers.API
             var dashboardUser = await UserManager.FindByIdAsync(userId);
             if (dashboardUser == null) return NotFound();
 
-            await CheckIfRolesAreValid(viewModel.RolesToRemove);
-            await CheckIfRolesAreValid(viewModel.RolesToAdd);
+            var allRoles = await RoleManager.Roles.ToListAsync();
+            ValidateRoles(allRoles, viewModel.RolesToRemove);
+            ValidateRoles(allRoles, viewModel.RolesToAdd);
 
             if (!ModelState.IsValid) return BadRequest(ModelState); // some invalid roles in request
 
@@ -141,8 +163,6 @@ namespace Dashboard.Controllers.API
                     ParseErrorResult(additionResult);
                 }
             }
-
-            if (!ModelState.IsValid) return BadRequest(ModelState); // some invalid roles in request
 
             if (viewModel.RolesToRemove.Any())
             {
@@ -195,18 +215,11 @@ namespace Dashboard.Controllers.API
             return Ok();
         }
 
-        private async Task CheckIfRolesAreValid(IEnumerable<string> roles)
+        private void ValidateRoles(List<IdentityRole> allRoles, IEnumerable<string> roles)
         {
-            var verifiedRoles = new List<IdentityRole>();
-
             foreach (var role in roles)
             {
-                var verifiedRole = await RoleManager.FindByNameAsync(role);
-                if (verifiedRole != null)
-                {
-                    verifiedRoles.Add(verifiedRole);
-                }
-                else
+                if (string.IsNullOrEmpty(role) || !allRoles.Any(p => p.Name.Equals(role)))
                 {
                     ModelState.AddModelError(string.Empty, $"role {role} does not exist");
                 }
@@ -215,8 +228,6 @@ namespace Dashboard.Controllers.API
 
         private IHttpActionResult ParseErrorResult(IdentityResult result)
         {
-            if (result == null) return InternalServerError();
-
             if (result.Succeeded) return null; // everything ok
 
             if (result.Errors != null)

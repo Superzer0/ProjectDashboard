@@ -411,16 +411,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Application.cs" />
-    <Compile Include="App_Start\DiContainerLoad.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\Container.cs" />
     <Compile Include="App_Start\RouteInitialization.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
     <Compile Include="Controllers\API\InstanceController.cs" />
     <Compile Include="Controllers\API\PluginCallDispatchController.cs" />
     <Compile Include="Controllers\API\PluginInstallationController.cs" />
     <Compile Include="Controllers\API\PluginsController.cs" />
-    <Compile Include="Controllers\API\RolesController.cs" />
-    <Compile Include="Controllers\API\UserController.cs" />
     <Compile Include="Controllers\API\UserPluginsController.cs" />
     <Compile Include="Controllers\MVC\AdminController.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
@@ -430,10 +427,14 @@
     <Compile Include="Infrastructure\Filters\DbLoggingFIlter.cs" />
     <Compile Include="Infrastructure\Filters\DbSessionFilter.cs" />
     <Compile Include="Infrastructure\Filters\ErrorHandlingFilter.cs" />
-    <Compile Include="Infrastructure\Identity\ApplicationRoleManager.cs" />
-    <Compile Include="Infrastructure\Identity\AuthContext.cs" />
-    <Compile Include="Infrastructure\Identity\AuthRepository.cs" />
-    <Compile Include="Infrastructure\Identity\SimpleAuthorizationServerProvider.cs" />
+    <Compile Include="Infrastructure\Identity\Managers\ApplicationRoleManager.cs" />
+    <Compile Include="Infrastructure\Identity\Repository\AuthContext.cs" />
+    <Compile Include="Infrastructure\Identity\Repository\AuthRepository.cs" />
+    <Compile Include="Infrastructure\Identity\Managers\ApplicationUserManager.cs" />
+    <Compile Include="Infrastructure\Identity\Managers\ApplicationSignInManager.cs" />
+    <Compile Include="Infrastructure\Identity\MessageServices\SmsService.cs" />
+    <Compile Include="Infrastructure\Identity\MessageServices\EmailService.cs" />
+    <Compile Include="Infrastructure\Identity\Server\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Infrastructure\Middleware\GlobalExceptionLoggerMiddleware.cs" />
     <Compile Include="Infrastructure\Razor\IExecuteRazorViews.cs" />
     <Compile Include="Infrastructure\Razor\RazorEngineViewsExec.cs" />
@@ -441,6 +442,7 @@
     <Compile Include="Infrastructure\Services\OwinSelfHostEnvironment.cs" />
     <Compile Include="Infrastructure\Startup\CleanUpTempDirectory.cs" />
     <Compile Include="Models\Account\ChangeRolesViewModel.cs" />
+    <Compile Include="Models\Account\UserInfoViewModel.cs" />
     <Compile Include="Models\Account\UsersInRoleModel.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />

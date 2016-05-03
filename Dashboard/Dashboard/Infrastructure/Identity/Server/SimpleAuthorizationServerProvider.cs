@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.Owin;
 using Common.Logging;
-using Dashboard.UI.Objects.Auth;
+using Dashboard.Infrastructure.Identity.Managers;
+using Dashboard.Infrastructure.Identity.Repository;
 using Dashboard.UI.Objects.Providers;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 
-namespace Dashboard.Infrastructure.Identity
+namespace Dashboard.Infrastructure.Identity.Server
 {
     internal class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {

@@ -7,27 +7,26 @@ using Dashboard.DataAccess;
 using Dashboard.DI.CompositionRoot;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Filters;
-using Dashboard.Infrastructure.Identity;
+using Dashboard.Infrastructure.Identity.Managers;
+using Dashboard.Infrastructure.Identity.Repository;
 using Dashboard.Infrastructure.Razor;
 using Dashboard.Infrastructure.Services;
 using Dashboard.Infrastructure.Startup;
 using Dashboard.UI.Objects;
+using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
-using Module = Autofac.Module;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
+using Owin;
 
 namespace Dashboard
 {
-    public class DiContainerLoad : Module
+    internal class Container
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<RazorEngineViewsExec>().As<IExecuteRazorViews>().SingleInstance();
-            builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().SingleInstance();
-            builder.RegisterType<AuthRepository>().AsSelf().InstancePerRequest();
-        }
-
-        internal static IContainer CreateContainer(HttpConfiguration configuration)
+        internal static IContainer Create(HttpConfiguration configuration, IAppBuilder appBuilder)
         {
             var builder = new ContainerBuilder();
 
@@ -36,14 +35,14 @@ namespace Dashboard
                 {
                     if (args.Instance is RazorController)
                     {
-                        ((RazorController)args.Instance).ExecuteRazorViews
-                       = args.Context.Resolve<IExecuteRazorViews>();
+                        ((RazorController)args.Instance).ExecuteRazorViews = args.Context.Resolve<IExecuteRazorViews>();
                     }
 
                     if (args.Instance is BaseController)
                     {
-                        ((BaseController)args.Instance).Environment
-                        = args.Context.Resolve<IEnvironment>();
+                        ((BaseController)args.Instance).Environment = args.Context.Resolve<IEnvironment>();
+                        ((BaseController)args.Instance).RoleManager = args.Context.Resolve<ApplicationRoleManager>();
+                        ((BaseController)args.Instance).UserManager = args.Context.Resolve<ApplicationUserManager>();
                     }
 
                 }).InstancePerRequest();
@@ -53,6 +52,7 @@ namespace Dashboard
             builder.RegisterAssemblyModules(Assembly.GetAssembly(typeof(ServicesHandler)));
             RegisterFilters(builder);
             RegisterStartup(builder);
+            RegisterAuthProviders(builder, appBuilder);
             return builder.Build();
         }
 
@@ -61,7 +61,7 @@ namespace Dashboard
             builder.Register(p => new DbLoggingFilter(p.Resolve<PluginsContext>()))
              .AsWebApiActionFilterFor<BaseController>()
              .InstancePerRequest();
-            
+
             builder.Register(p => new DbSessionFilter(p.Resolve<PluginsContext>()))
                 .AsWebApiActionFilterFor<PluginInstallationController>()
                 .InstancePerRequest();
@@ -75,6 +75,33 @@ namespace Dashboard
         {
             builder.RegisterType<CleanUpTempDirectory>().As<IExecuteAtStartup>().InstancePerDependency();
             builder.RegisterType<MediaStreamFileProvider>().As<IProvideFiles>().InstancePerDependency();
+            builder.RegisterType<RazorEngineViewsExec>().As<IExecuteRazorViews>().SingleInstance();
+            builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().SingleInstance();
+        }
+
+        private static void RegisterAuthProviders(ContainerBuilder builder, IAppBuilder app)
+        {
+            builder.Register(c => new UserStore<DashboardUser>(c.Resolve<AuthDbContext>()))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
+            builder.Register(c => new RoleStore<IdentityRole>(c.Resolve<AuthDbContext>()))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
+            builder.RegisterType<AuthRepository>().AsSelf().InstancePerRequest();
+            builder.RegisterType<AuthDbContext>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationRoleManager>().AsSelf().InstancePerRequest();
+
+            builder.Register(c =>
+            {
+                var provider = new DpapiDataProtectionProvider("ProjectDashboard");
+                return provider;
+            }
+                ).As<IDataProtectionProvider>().InstancePerRequest();
         }
     }
 }

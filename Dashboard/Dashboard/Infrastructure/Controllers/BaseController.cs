@@ -1,7 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Dashboard.Infrastructure.Identity;
+using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.Services;
@@ -50,6 +51,11 @@ namespace Dashboard.Infrastructure.Controllers
         protected async Task<DashboardUser> GetCurrentUser()
         {
             return await UserManager.FindByNameAsync(User.Identity.Name);
+        }
+
+        protected string GetModelStateSummary()
+        {
+            return string.Join(", ", ModelState.Values.SelectMany(p => p.Errors).Select(p => p.ErrorMessage).ToList());
         }
 
         // TODO: move somewhere else

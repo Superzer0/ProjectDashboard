@@ -2,6 +2,9 @@
 using System.Linq;
 using Common.Logging;
 using Dashboard.Infrastructure.Identity;
+using Dashboard.Infrastructure.Identity.Managers;
+using Dashboard.Infrastructure.Identity.Repository;
+using Dashboard.Infrastructure.Identity.Server;
 using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -17,11 +20,7 @@ namespace Dashboard
     {
         private void ConfigureAuth(IAppBuilder app)
         {
-            // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(AuthContext.Create);
-            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
-            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -53,7 +52,7 @@ namespace Dashboard
             try
             {
                 LogManager.GetLogger<Application>().Info(m => m("Checking standard roles..."));
-                var roleManager = new ApplicationRoleManager(new RoleStore<IdentityRole>(new AuthContext()));
+                var roleManager = new ApplicationRoleManager(new RoleStore<IdentityRole>(new AuthDbContext()));
                 if (roleManager.Roles.Any()) return;
 
                 roleManager.Create(new IdentityRole(DashboardRoles.User));

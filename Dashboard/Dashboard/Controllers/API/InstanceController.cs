@@ -29,7 +29,7 @@ namespace Dashboard.Controllers.API
             }
             catch (Exception e)
             {
-                _logger.Error(e);
+                _logger.Error("[Broker not responding]", e);
                 return InternalServerError();
             }
         }
