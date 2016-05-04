@@ -5,13 +5,13 @@ using Dashboard.UI.Objects.DataObjects.Install.AutoMapping.Resolvers;
 
 namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
 {
-    public class AutoMapperConfiguration
+    public class UiObjectsMappingProfile : Profile
     {
-        public static void Configure()
+        protected override void Configure()
         {
-            Mapper.CreateMap<PluginXml, Plugin>()
+            CreateMap<PluginXml, Plugin>()
                 .ForMember(dest => dest.CommunicationType, opt => opt.ResolveUsing<CommunicationTypeResolver>()
-                .FromMember(p => p.CommunicationType))
+                    .FromMember(p => p.CommunicationType))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
                 .ForMember(dest => dest.Version, opt => opt.MapFrom(p => p.Version))
                 .ForMember(dest => dest.StartingProgram, opt => opt.MapFrom(p => p.StartingProgram))
@@ -28,8 +28,7 @@ namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
                 .ForMember(dest => dest.Xml, opt => opt.Ignore())
                 .ForMember(dest => dest.UncompressedSize, opt => opt.Ignore());
 
-
-            Mapper.CreateMap<PluginXmlMethod, PluginMethod>()
+            CreateMap<PluginXmlMethod, PluginMethod>()
                 .ForMember(dest => dest.InputType, opt => opt.ResolveUsing<InputTypeResolver>().FromMember(p => p.InputType))
                 .ForMember(dest => dest.OutputType, opt => opt.ResolveUsing<InputTypeResolver>().FromMember(p => p.OutputType))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
@@ -38,7 +37,7 @@ namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
                 .ForMember(dest => dest.PluginVersion, opt => opt.Ignore())
                 .ForMember(dest => dest.Plugin, opt => opt.Ignore());
 
-            Mapper.CreateMap<PluginZipBasicInformation, Plugin>()
+            CreateMap<PluginZipBasicInformation, Plugin>()
                 .ForMember(dest => dest.UncompressedSize, opt => opt.MapFrom(p => p.UncompressedSize))
                 .ForMember(dest => dest.FilesCount, opt => opt.MapFrom(p => p.FilesCount))
                 .ForMember(dest => dest.ArchiveSize, opt => opt.MapFrom(p => p.ArchiveSize))
@@ -55,6 +54,8 @@ namespace Dashboard.UI.Objects.DataObjects.Install.AutoMapping
                 .ForMember(dest => dest.Disabled, opt => opt.Ignore())
                 .ForMember(dest => dest.Xml, opt => opt.Ignore())
                 .ForMember(dest => dest.AddedBy, opt => opt.Ignore());
+
+
         }
     }
 }

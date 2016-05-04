@@ -77,10 +77,10 @@
     <Compile Include="DataObjects\Display\ProcessedPluginHtml.cs" />
     <Compile Include="DataObjects\Execution\BrokerExecutionInfo.cs" />
     <Compile Include="DataObjects\Extract\CheckSumPluginInformation.cs" />
-    <Compile Include="DataObjects\Install\AutoMapping\AutoMapperConfiguration.cs" />
     <Compile Include="DataObjects\Extract\PluginConfigurationInfo.cs" />
     <Compile Include="DataObjects\Extract\PluginXmlInfo.cs" />
     <Compile Include="DataObjects\Extract\PluginZipBasicInformation.cs" />
+    <Compile Include="DataObjects\Install\AutoMapping\DefaultMappingProfile.cs" />
     <Compile Include="DataObjects\Install\AutoMapping\Resolvers\CommunicationTypeResolver.cs" />
     <Compile Include="DataObjects\Install\AutoMapping\Resolvers\InputTypeResolver.cs" />
     <Compile Include="DataObjects\InstanceSetting.cs" />

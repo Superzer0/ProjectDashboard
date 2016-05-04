@@ -19,17 +19,13 @@ namespace Dashboard.UI.BrokerIntegration
         private readonly InstallPluginsServiceClient _installPluginsServiceClient;
         private readonly ManageBrokerServiceClient _manageBrokerServiceClient;
 
-        public BrokerFacade()
+        public BrokerFacade(ManageBrokerServiceClient brokerServiceClient,
+            LaunchPluginsServiceClient launchPluginsServiceClient,
+            InstallPluginsServiceClient installPluginsServiceClient)
         {
-            _manageBrokerServiceClient = new ManageBrokerServiceClient();
-            _launchPluginsServiceClient = new LaunchPluginsServiceClient();
-            _installPluginsServiceClient = new InstallPluginsServiceClient();
-            
-            Mapper.CreateMap<BrokerInformation, BrokerStats>()
-                .ForMember(dest => dest.EndpointAddress, opt => opt.Ignore());
-
-            Mapper.CreateMap<BrokerExecutionInfo, PluginExecutionInfo>()
-                .ForMember(dest => dest.ExtensionData, opt => opt.Ignore());
+            _manageBrokerServiceClient = brokerServiceClient;
+            _launchPluginsServiceClient = launchPluginsServiceClient;
+            _installPluginsServiceClient = installPluginsServiceClient;
         }
 
         public void SendNewPlugin(string filePath, PluginInformation infoAboutPlugin)

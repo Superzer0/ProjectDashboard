@@ -5,13 +5,13 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
-using Dashboard;
 using Dashboard.Controllers.API;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.Models.Account;
 using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Moq;
 using NUnit.Framework;
@@ -175,5 +175,103 @@ namespace UnitTests.Dashboard.UI.Users.AccountControllerTests
             Assert.That(viewModel.Content.Id, Is.EqualTo(expectedViewModel.Id));
             Assert.That(viewModel.Content.Roles, Is.EquivalentTo(expectedViewModel.Roles));
         }
+
+        [Test, TestCaseSource(nameof(GetUsersHappyPathTestCases))]
+        public void GetUsers_HappyPath(IQueryable<DashboardUser> testUsers, IQueryable<IdentityRole> testRoles,
+            List<UserInfoViewModel> expectedResult)
+        {
+            var applicationUserManager = new Mock<ApplicationUserManager>();
+            applicationUserManager.Setup(p => p.Users)
+                .Returns(testUsers);
+
+            var roleManagerMock = new Mock<ApplicationRoleManager>(new Mock<IRoleStore<IdentityRole, string>>().Object);
+            roleManagerMock.Setup(p => p.Roles)
+                .Returns(testRoles);
+
+            var accountController = AutoMock.Create<AccountController>();
+            accountController.UserManager = applicationUserManager.Object;
+            accountController.RoleManager = roleManagerMock.Object;
+
+            //act
+            var actionResult = accountController.GetAllUsers();
+
+            //assert
+            Assert.That(actionResult, Is.TypeOf<OkNegotiatedContentResult<List<UserInfoViewModel>>>());
+            var resultUserList = ((OkNegotiatedContentResult<List<UserInfoViewModel>>)actionResult).Content;
+
+            Assert.That(expectedResult.Count, Is.EqualTo(resultUserList.Count));
+
+            for (var i = 0; i < expectedResult.Count; i++)
+            {
+                Assert.That(expectedResult[i].Email, Is.EqualTo(resultUserList[i].Email));
+                Assert.That(expectedResult[i].Id, Is.EqualTo(resultUserList[i].Id));
+                Assert.That(expectedResult[i].UserName, Is.EqualTo(resultUserList[i].UserName));
+                Assert.That(expectedResult[i].Roles, Is.EquivalentTo(resultUserList[i].Roles));
+            }
+        }
+
+        private static readonly object[] GetUsersHappyPathTestCases =
+        {
+            new object[]
+            {
+                new List<DashboardUser>
+                {
+                    new DashboardUser
+                    {
+                        UserName = "Damian",
+                        Email = "Damian@damin.pl",
+                        Id = "1",
+                        Roles =
+                        {
+                            new IdentityUserRole {RoleId = "admin", UserId = "1"},
+                            new IdentityUserRole {RoleId = "user", UserId = "1"}
+                        }
+                    },
+                    new DashboardUser
+                    {
+                        UserName = "Bogdan",
+                        Email = "Bogdan@Bogdan.pl",
+                        Id = "2",
+                        Roles =
+                        {
+                            new IdentityUserRole {RoleId = "user", UserId = "2"},
+                            new IdentityUserRole {RoleId = "Nonexistingrole", UserId = "2"}
+                        }
+                    }
+                }.AsQueryable(),
+
+                new List<IdentityRole>
+                {
+                    new IdentityRole
+                    {
+                        Id = "admin",
+                        Name = "ADMIN"
+                    },
+                    new IdentityRole
+                    {
+                        Id = "user",
+                        Name = "USER"
+                    }
+                }.AsQueryable(),
+                new List<UserInfoViewModel>
+                {
+                    new UserInfoViewModel
+                    {
+                        Id = "2",
+                        UserName = "Bogdan",
+                        Email = "Bogdan@Bogdan.pl",
+                        Roles = new List<string> {"USER"}
+                    },
+
+                    new UserInfoViewModel
+                    {
+                        Id= "1",
+                        UserName = "Damian",
+                        Email = "Damian@damin.pl",
+                        Roles = new List<string> {"ADMIN", "USER"}
+                    }
+                }
+            }
+        };
     }
 }

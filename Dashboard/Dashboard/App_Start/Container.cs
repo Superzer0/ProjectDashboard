@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -17,16 +18,13 @@ using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
-using Owin;
 
 namespace Dashboard
 {
     internal class Container
     {
-        internal static IContainer Create(HttpConfiguration configuration, IAppBuilder appBuilder)
+        internal static IContainer Create(HttpConfiguration configuration)
         {
             var builder = new ContainerBuilder();
 
@@ -52,7 +50,7 @@ namespace Dashboard
             builder.RegisterAssemblyModules(Assembly.GetAssembly(typeof(ServicesHandler)));
             RegisterFilters(builder);
             RegisterStartup(builder);
-            RegisterAuthProviders(builder, appBuilder);
+            RegisterAuthProviders(builder);
             return builder.Build();
         }
 
@@ -74,12 +72,13 @@ namespace Dashboard
         private static void RegisterStartup(ContainerBuilder builder)
         {
             builder.RegisterType<CleanUpTempDirectory>().As<IExecuteAtStartup>().InstancePerDependency();
+            builder.RegisterType<AddStandardRoles>().As<IExecuteAtStartup>().InstancePerDependency();
             builder.RegisterType<MediaStreamFileProvider>().As<IProvideFiles>().InstancePerDependency();
             builder.RegisterType<RazorEngineViewsExec>().As<IExecuteRazorViews>().SingleInstance();
             builder.RegisterType<OwinSelfHostEnvironment>().As<IEnvironment>().SingleInstance();
         }
 
-        private static void RegisterAuthProviders(ContainerBuilder builder, IAppBuilder app)
+        private static void RegisterAuthProviders(ContainerBuilder builder)
         {
             builder.Register(c => new UserStore<DashboardUser>(c.Resolve<AuthDbContext>()))
                 .AsSelf()
@@ -95,6 +94,8 @@ namespace Dashboard
             builder.RegisterType<AuthDbContext>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationRoleManager>().AsSelf().InstancePerRequest();
+            Func<ApplicationRoleManager> roleManagerFactory = () => new ApplicationRoleManager(new RoleStore<IdentityRole>(new AuthDbContext()));
+            builder.Register(c => roleManagerFactory);
 
             builder.Register(c =>
             {

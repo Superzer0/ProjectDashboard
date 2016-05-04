@@ -15,11 +15,17 @@ namespace Dashboard.Services.Plugins.Install.Visitors
     /// <seealso cref="Dashboard.UI.Objects.Services.Plugins.Extract.Visitors.IProcessPluginInformationVisitor" />
     internal class CombinePluginInformationVisitor : IProcessPluginInformationVisitor
     {
+        private readonly IMapper _mapper;
         private readonly ILog _logger = LogManager.GetLogger<CombinePluginInformationVisitor>();
         private bool _resultReady = false;
 
         private IList<PluginMethod> _pluginMethods = new List<PluginMethod>();
         private Plugin _plugin = new Plugin();
+
+        public CombinePluginInformationVisitor(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
 
         public IList<PluginMethod> PluginMethods
         {
@@ -43,14 +49,14 @@ namespace Dashboard.Services.Plugins.Install.Visitors
 
         public void Visit(PluginZipBasicInformation leaf)
         {
-            Mapper.Map(leaf, _plugin);
+            _mapper.Map(leaf, _plugin);
             _plugin.Added = DateTime.Now;
             _resultReady = true;
         }
 
         public void Visit(PluginXmlInfo leaf)
         {
-            Mapper.Map(leaf.PluginXml, _plugin);
+            _mapper.Map(leaf.PluginXml, _plugin);
 
             _plugin.Xml = leaf.RawXml;
 

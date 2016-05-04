@@ -112,8 +112,10 @@ namespace Dashboard.Controllers.API
                 Email = p.Email,
                 Id = p.Id,
                 UserName = p.UserName,
-                Roles = p.Roles.Select(r => roles.FirstOrDefault(w => w.Id.Equals(r.RoleId))?.Name)
-            }).ToList();
+                Roles = p.Roles
+                    .Select(r => roles.FirstOrDefault(w => w.Id.Equals(r.RoleId))?.Name)
+                    .Where(r => !string.IsNullOrEmpty(r)).ToList()
+            }).OrderBy(p => p.UserName).ToList();
 
             return Ok(users);
         }

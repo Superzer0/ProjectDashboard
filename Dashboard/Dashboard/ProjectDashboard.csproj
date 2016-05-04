@@ -440,6 +440,7 @@
     <Compile Include="Infrastructure\Razor\RazorEngineViewsExec.cs" />
     <Compile Include="Infrastructure\Services\MediaFormatterFileProvider.cs" />
     <Compile Include="Infrastructure\Services\OwinSelfHostEnvironment.cs" />
+    <Compile Include="Infrastructure\Startup\AddStandardRoles.cs" />
     <Compile Include="Infrastructure\Startup\CleanUpTempDirectory.cs" />
     <Compile Include="Models\Account\ChangeRolesViewModel.cs" />
     <Compile Include="Models\Account\UserInfoViewModel.cs" />

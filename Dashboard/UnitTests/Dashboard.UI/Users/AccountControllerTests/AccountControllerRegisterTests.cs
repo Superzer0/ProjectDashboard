@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using Common.Logging;
-using Dashboard;
 using Dashboard.Controllers.API;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Identity.Managers;

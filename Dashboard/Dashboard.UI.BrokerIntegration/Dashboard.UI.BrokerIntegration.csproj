@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrokerFacade.cs" />
+    <Compile Include="BrokerObjectsMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\BrokerExecution\Reference.cs">
       <AutoGen>True</AutoGen>

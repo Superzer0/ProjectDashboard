@@ -26,7 +26,7 @@ namespace Dashboard
             app.Use<GlobalExceptionLoggerMiddleware>();
             RouteInitialization.Register(configuration.Routes);
             configuration.MapHttpAttributeRoutes();
-            var container = Container.Create(configuration, app);
+            var container = Container.Create(configuration);
             configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             app.UseAutofacMiddleware(container);
             ConfigureAuth(app);
@@ -39,7 +39,6 @@ namespace Dashboard
             });
             app.UseDefaultFiles();
             app.UseErrorPage();
-            AddStandardRoles();
 
             var jsonMediaTypeFormatter = configuration.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonMediaTypeFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

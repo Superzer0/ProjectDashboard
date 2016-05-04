@@ -8,10 +8,10 @@ using Dashboard.UI.Objects.Services.Plugins.Validation;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Dashboard.Services.Plugins.Extract.Visitors;
 using Dashboard.Services.Plugins.Install.Visitors;
 using Dashboard.UI.Objects.BrokerIntegration;
-using Dashboard.UI.Objects.DataObjects.Install.AutoMapping;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services.Plugins.Extract;
 using Dashboard.UI.Objects.Services.Plugins.Install;
@@ -29,18 +29,20 @@ namespace Dashboard.Services.Plugins
         private readonly IManageBrokerFacade _brokerFacade;
         private readonly IProvidePlugins _pluginsProvider;
         private readonly IManagePluginsStorage _pluginsStorage;
+        private readonly IMapper _mapper;
 
         private static readonly ConcurrentDictionary<string, PluginInstallation> ValidationQueue
             = new ConcurrentDictionary<string, PluginInstallation>();
 
         public StandardPluginFacade(IBuildValidationResult validationResultBuilder, IBuildPluginInfo pluginInfoBuilder,
-            IManageBrokerFacade brokerFacade, IProvidePlugins pluginsProvider, IManagePluginsStorage pluginsStorage)
+            IManageBrokerFacade brokerFacade, IProvidePlugins pluginsProvider, IManagePluginsStorage pluginsStorage, IMapper mapper)
         {
             _validationResultBuilder = validationResultBuilder;
             _pluginInfoBuilder = pluginInfoBuilder;
             _brokerFacade = brokerFacade;
             _pluginsProvider = pluginsProvider;
             _pluginsStorage = pluginsStorage;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -157,10 +159,9 @@ namespace Dashboard.Services.Plugins
 
             using (var processedPlugin = await GetPluginStream(fileId, pluginInstallation.FilePath))
             {
-                AutoMapperConfiguration.Configure();
                 _pluginInfoBuilder.ConfigureStandard();
                 var infoCollection = _pluginInfoBuilder.Build(processedPlugin).ToList();
-                var persistenceVisitor = new CombinePluginInformationVisitor();
+                var persistenceVisitor = new CombinePluginInformationVisitor(_mapper);
                 infoCollection.ForEach(l => l.Accept(persistenceVisitor));
 
                 var infoVisitor = new GatherPluginInformationVisitor(_pluginsProvider);

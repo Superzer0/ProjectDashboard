@@ -49,22 +49,7 @@ namespace Dashboard
 
         private void AddStandardRoles()
         {
-            try
-            {
-                LogManager.GetLogger<Application>().Info(m => m("Checking standard roles..."));
-                var roleManager = new ApplicationRoleManager(new RoleStore<IdentityRole>(new AuthDbContext()));
-                if (roleManager.Roles.Any()) return;
-
-                roleManager.Create(new IdentityRole(DashboardRoles.User));
-                roleManager.Create(new IdentityRole(DashboardRoles.Admin));
-                roleManager.Create(new IdentityRole(DashboardRoles.PluginManager));
-                LogManager.GetLogger<Application>().Info(m => m("Created standard roles"));
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger<Application>().Error(e);
-                LogManager.GetLogger<Application>().Error(m => m("Error while creating standard roles", e));
-            }
+            
         }
     }
 }

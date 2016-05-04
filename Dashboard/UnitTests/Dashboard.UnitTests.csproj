@@ -41,6 +41,10 @@
       <HintPath>..\packages\Autofac.Extras.Moq.4.0.0\lib\net45\Autofac.Extras.Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
       <Private>True</Private>
@@ -104,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapperConfigurationTests.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerCheckInformationAction.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerInstallAction.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerValidateAction.cs" />
@@ -119,6 +124,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboard.UI.BrokerIntegration\Dashboard.UI.BrokerIntegration.csproj">
+      <Project>{22133E14-2C53-42C0-92BD-68519574FEFF}</Project>
+      <Name>Dashboard.UI.BrokerIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.UI.Objects\Dashboard.UI.Objects.csproj">
       <Project>{B9CBABE8-8025-40D5-B458-EE661340E1A3}</Project>
       <Name>Dashboard.UI.Objects</Name>
