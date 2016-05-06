@@ -13,15 +13,17 @@ using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Newtonsoft.Json.Serialization;
 using Owin;
+// ReSharper disable UnusedMember.Global
 
 [assembly: OwinStartup(typeof(Application))]
 namespace Dashboard
 {
     public partial class Application
     {
-        // order of function calls is critical
+        
         public void Configuration(IAppBuilder app)
-        {
+        {   
+            // order of function calls is critical
             var configuration = new HttpConfiguration();
             app.Use<GlobalExceptionLoggerMiddleware>();
             RouteInitialization.Register(configuration.Routes);

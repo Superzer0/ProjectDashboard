@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Common.Logging;
 using Dashboard.Infrastructure.Controllers;
-using Dashboard.Infrastructure.Identity;
 using Dashboard.Models.Account;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;

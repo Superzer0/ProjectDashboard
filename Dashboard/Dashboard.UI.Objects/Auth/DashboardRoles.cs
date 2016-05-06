@@ -1,4 +1,4 @@
-﻿namespace Dashboard.Infrastructure.Identity
+﻿namespace Dashboard.UI.Objects.Auth
 {
     public static class DashboardRoles
     {

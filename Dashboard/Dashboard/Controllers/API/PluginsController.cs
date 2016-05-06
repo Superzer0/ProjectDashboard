@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Dashboard.Infrastructure.Controllers;
-using Dashboard.Infrastructure.Identity;
+using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 
 namespace Dashboard.Controllers.API
@@ -78,7 +78,7 @@ namespace Dashboard.Controllers.API
                 await _managePlugins.SwitchPluginInstanceState(appId, version, state);
                 return Ok();
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
                 return BadRequest("Plugin not found");
             }

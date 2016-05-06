@@ -3,7 +3,6 @@ using System.Linq;
 using Common.Logging;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Identity.Managers;
-using Dashboard.Infrastructure.Identity.Repository;
 using Dashboard.Infrastructure.Identity.Server;
 using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
@@ -39,17 +38,13 @@ namespace Dashboard
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromHours(4),
-                Provider = new SimpleAuthorizationServerProvider()
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                Provider = new SimpleAuthorizationServerProvider(),
+                RefreshTokenProvider = new SimpleRefreshTokenProvider()
             };
 
             app.UseOAuthAuthorizationServer(authAuthorizationServerOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-        }
-
-        private void AddStandardRoles()
-        {
-            
         }
     }
 }

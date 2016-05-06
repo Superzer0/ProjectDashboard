@@ -27,11 +27,6 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
         templateUrl: "/app/views/refresh.html"
     });
 
-    $routeProvider.when("/tokens", {
-        controller: "tokensManagerController",
-        templateUrl: "/app/views/tokens.html"
-    });
-
     //---- user
 
     $routeProvider.when("/user/index", {
@@ -64,6 +59,11 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
     $routeProvider.when("/instance/users", {
         controller: "indexInstanceController",
         templateUrl: "/app/views/instance/users.html"
+    });
+
+    $routeProvider.when("/instance/tokens", {
+        controller: "tokensManagerController",
+        templateUrl: "/app/views/instance/tokens.html"
     });
 
     //---- plugins

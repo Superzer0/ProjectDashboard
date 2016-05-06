@@ -1,0 +1,147 @@
+﻿<article id="user_index" class="sidebar-content">
+    <div id="wrapper">
+        <div data-ng-include="'app/views/instance/sidebar.html'"></div>
+        <div id="page-content-wrapper">
+            <div data-ng-click="toogleMenu()" class="showSidebar">
+                <i class="fa fa-bars fa-2x"></i>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <h3>new client</h3>
+                    <hr />
+                    <div>
+                        <div class="row">
+                            <div class="row col-md-8 col-md-offset-1">
+                                <div class="col-md-3">
+                                    <i ng-show="authClient.applicationType == 0" class="fa fa-globe fa-4x" aria-hidden="true"></i>
+                                    <i ng-show="authClient.applicationType == 1" class="fa fa-android fa-4x" aria-hidden="true"></i>
+                                    <div class="form-group">
+                                        <label for="appType">Application Type</label>
+                                        <select id="appType" class="form-control" ng-model="authClient.applicationType">
+                                            <option value="0" selected="selected">JS Application</option>
+                                            <option value="1" >Native application</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <h3>Create new app</h3>
+                                    <div class="form-group">
+                                        <label for="allowedOrigin">Name</label>
+                                        <input id="appName" type="text" class="form-control" maxlength="100" required ng-model="authClient.name" />
+                                    </div>
+                                    <div class="form-group" ng-show="authClient.applicationType == 0">
+                                        <label for="allowedOrigin">Origin</label>
+                                        <input id="allowedOrigin" type="text" class="form-control" ng-model="authClient.allowedOrigin"
+                                               maxlength="100" placeholder="http://www.consonto.com" />
+                                    </div>
+                                    <div style="overflow: auto;">
+                                        <button class="btn btn-default btn pull-right" id="generateAppIdBtn" ng-click="createApp()">
+                                            Create
+                                        </button>
+                                    </div>
+
+                                    <div ng-show="newAppCreated()" class="well" style="margin-top: 20px; overflow: auto;">
+                                        <h3>New application created</h3>
+                                        <p>Store these information safely</p>
+                                        <span>
+                                            <b>
+                                                Application Id:
+                                            </b>
+                                            <span id="appId">{{authClient.id}}</span>
+                                        </span>
+                                        <br />
+                                        <span ng-show="authClient.applicationType == 1">
+                                            <b>
+                                                Secret:
+                                            </b>
+                                            <span id="appSecret">{{authClient.secret}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>registered applications ({{clients.length}})</h3>
+                        <hr />
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Active</th>
+                                    <th>Origin</th>
+                                    <th>Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="client in clients">
+                                    <td>
+                                        {{ client.id }}
+                                    </td>
+                                    <td>
+                                        {{ client.name }}
+                                    </td>
+                                    <td>
+                                        <i ng-show="client.applicationType == 0" class="fa fa-globe" aria-hidden="true"></i>
+                                        <i ng-show="client.applicationType == 1" class="fa fa-android" aria-hidden="true"></i>
+                                    </td>
+                                    <td>
+                                        {{ client.active | date:'medium' }}
+                                    </td>
+                                    <td>
+                                        {{ client.allowedOrigin }}
+                                    </td>
+                                    
+                                    <td>
+                                        {{ client.createdAt | date:'medium' }}
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>refresh tokens ({{refreshTokens.length}})</h3>
+                        <hr/>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Subject</th>
+                                <th>Client</th>
+                                <th>Issued At (UTC)</th>
+                                <th>Expires At (UTC)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="token in refreshTokens">
+                                <td>
+                                    <a data-ng-click="deleteRefreshTokens($index,token.id)" href="">Remove</a>
+                                </td>
+                                <td>
+                                    {{ token.subject }}
+                                </td>
+                                <td>
+                                    {{ token.clientId }}
+                                </td>
+                                <td>
+                                    {{ token.issuedUtc | date:'medium' }}
+                                </td>
+                                <td>
+                                    {{ token.expiresUtc | date:'medium' }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

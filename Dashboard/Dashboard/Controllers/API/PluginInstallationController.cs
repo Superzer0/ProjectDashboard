@@ -8,6 +8,7 @@ using System.Web.Http;
 using Common.Logging;
 using Dashboard.Infrastructure.Controllers;
 using Dashboard.Infrastructure.Identity;
+using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services.Plugins;
 using Dashboard.UI.Resources;

@@ -5,7 +5,7 @@ using Microsoft.Owin;
 
 namespace Dashboard.Infrastructure.Middleware
 {
-    class GlobalExceptionLoggerMiddleware : OwinMiddleware
+    internal class GlobalExceptionLoggerMiddleware : OwinMiddleware
     {
         private readonly ILog _log = LogManager.GetLogger<GlobalExceptionLoggerMiddleware>();
 
@@ -21,7 +21,7 @@ namespace Dashboard.Infrastructure.Middleware
             }
             catch (Exception e)
             {
-                _log.Error(m => m("Unhandled exception: ", e));
+                _log.Error(m => m("Unhandled exception: "), e);
                 throw;
             }
         }

@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthContext.cs" />
     <Compile Include="PluginsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ConfigurationProvider.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Providers\PluginStorageProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sql\Auth.sql" />
     <Content Include="Sql\Plugins.sql" />
     <None Include="App.config">
       <SubType>Designer</SubType>

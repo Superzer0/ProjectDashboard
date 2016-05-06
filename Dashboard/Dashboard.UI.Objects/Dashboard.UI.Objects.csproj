@@ -69,6 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\AuthClient.cs" />
+    <Compile Include="Auth\ApplicationType.cs" />
+    <Compile Include="Auth\AuthRefreshToken.cs" />
     <Compile Include="Auth\DashboardRoles.cs" />
     <Compile Include="Auth\DashboardUser.cs" />
     <Compile Include="BrokerIntegration\IManageBrokerFacade.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Providers\IManagePluginsStorage.cs" />
     <Compile Include="Providers\IProvideFiles.cs" />
     <Compile Include="Providers\IProvidePlugins.cs" />
+    <Compile Include="Services\IAuthRepository.cs" />
     <Compile Include="Services\ICallRemoteMethods.cs" />
     <Compile Include="Services\IEnvironment.cs" />
     <Compile Include="Services\IPreparePluginHtml.cs" />

@@ -2,7 +2,7 @@
 using System.Web.Http;
 using Common.Logging;
 using Dashboard.Infrastructure.Controllers;
-using Dashboard.Infrastructure.Identity;
+using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.BrokerIntegration;
 
 namespace Dashboard.Controllers.API

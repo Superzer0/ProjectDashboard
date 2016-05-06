@@ -90,7 +90,7 @@ namespace Dashboard
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<AuthRepository>().AsSelf().InstancePerRequest();
+            builder.RegisterType<AuthRepository>().As<IAuthRepository>().InstancePerRequest();
             builder.RegisterType<AuthDbContext>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationRoleManager>().AsSelf().InstancePerRequest();

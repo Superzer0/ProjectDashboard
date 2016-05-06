@@ -3,9 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Dashboard.Infrastructure.Controllers;
-using Dashboard.Infrastructure.Identity;
+using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 using Newtonsoft.Json.Linq;
+using static Dashboard.UI.Objects.Auth.DashboardRoles;
 
 namespace Dashboard.Controllers.API
 {
@@ -60,7 +61,7 @@ namespace Dashboard.Controllers.API
 
         [HttpGet]
         [Route("get/{pluginId:guid}/{version}")]
-        [Authorize(Roles = DashboardRoles.PluginManager)]
+        [Authorize(Roles = PluginManager)]
         public async Task<IHttpActionResult> GetUserPluginConfiguration(string pluginId, string version)
         {
             var plugin = _providePlugins.GetPluginAsync(pluginId, version);
@@ -83,7 +84,7 @@ namespace Dashboard.Controllers.API
 
         [HttpPost]
         [Route("change/configuration/{appId:guid}/{version}")]
-        public async Task<IHttpActionResult> ChangeUserPluginConfiguration(Guid appId, string version)
+        public IHttpActionResult ChangeUserPluginConfiguration(Guid appId, string version)
         {
             return Ok();
         }
@@ -98,7 +99,7 @@ namespace Dashboard.Controllers.API
                 await _managePlugins.SwitchPluginUserState(appId, version, user, state);
                 return Ok();
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
                 return BadRequest("Plugin or user not found");
             }
@@ -117,7 +118,7 @@ namespace Dashboard.Controllers.API
                 await _managePlugins.ChangeUserPluginConfiguration(appId, version, user, configurationString);
                 return Ok();
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
                 return BadRequest("Plugin or user not found");
             }

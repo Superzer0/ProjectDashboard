@@ -258,7 +258,7 @@
     <Content Include="app\views\plugins\sidebar.html" />
     <Content Include="app\views\refresh.html" />
     <Content Include="app\views\signup.html" />
-    <Content Include="app\views\tokens.html" />
+    <Content Include="app\views\instance\tokens.html" />
     <Content Include="app\views\user\configure.html" />
     <Content Include="app\views\user\index.html" />
     <Content Include="app\views\user\plugins.html" />
@@ -414,6 +414,7 @@
     <Compile Include="App_Start\Container.cs" />
     <Compile Include="App_Start\RouteInitialization.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
+    <Compile Include="Controllers\API\ApplicationAccessController.cs" />
     <Compile Include="Controllers\API\InstanceController.cs" />
     <Compile Include="Controllers\API\PluginCallDispatchController.cs" />
     <Compile Include="Controllers\API\PluginInstallationController.cs" />
@@ -428,12 +429,12 @@
     <Compile Include="Infrastructure\Filters\DbSessionFilter.cs" />
     <Compile Include="Infrastructure\Filters\ErrorHandlingFilter.cs" />
     <Compile Include="Infrastructure\Identity\Managers\ApplicationRoleManager.cs" />
-    <Compile Include="Infrastructure\Identity\Repository\AuthContext.cs" />
-    <Compile Include="Infrastructure\Identity\Repository\AuthRepository.cs" />
     <Compile Include="Infrastructure\Identity\Managers\ApplicationUserManager.cs" />
     <Compile Include="Infrastructure\Identity\Managers\ApplicationSignInManager.cs" />
     <Compile Include="Infrastructure\Identity\MessageServices\SmsService.cs" />
     <Compile Include="Infrastructure\Identity\MessageServices\EmailService.cs" />
+    <Compile Include="Infrastructure\Identity\Repository\AuthRepository.cs" />
+    <Compile Include="Infrastructure\Identity\Server\SimpleRefreshTokenProvider.cs" />
     <Compile Include="Infrastructure\Identity\Server\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Infrastructure\Middleware\GlobalExceptionLoggerMiddleware.cs" />
     <Compile Include="Infrastructure\Razor\IExecuteRazorViews.cs" />
@@ -443,6 +444,7 @@
     <Compile Include="Infrastructure\Startup\AddStandardRoles.cs" />
     <Compile Include="Infrastructure\Startup\CleanUpTempDirectory.cs" />
     <Compile Include="Models\Account\ChangeRolesViewModel.cs" />
+    <Compile Include="Models\Account\CreateAppViewModel.cs" />
     <Compile Include="Models\Account\UserInfoViewModel.cs" />
     <Compile Include="Models\Account\UsersInRoleModel.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />

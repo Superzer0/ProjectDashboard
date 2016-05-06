@@ -1,6 +1,7 @@
 ﻿@using Dashboard.Common
 @using Dashboard.Infrastructure.Identity
 @using Dashboard.UI.Objects
+@using Dashboard.UI.Objects.Auth
 @inherits RazorEngine.Templating.TemplateBase<Dashboard.Models.BaseViewModel>
 
 @{
@@ -157,6 +158,7 @@
     <script src="~/app/services/authService.js"></script>
     <script src="~/app/services/notificationService.js"></script>
     <script src="~/app/services/utilsService.js"></script>
+    <script src="~/app/services/tokensManagerService.js"></script>
     <!-- Load controllers -->
     <script src="~/app/controllers/navigationController.js"></script>
     <script src="~/app/controllers/homeController.js"></script>
@@ -168,6 +170,7 @@
     <script src="~/app/controllers/plugins/pluginUploadWizardController.js"></script>
     <script src="~/app/controllers/plugins/pluginController.js"></script>
     <script src="~/app/controllers/user/userPluginsController.js"></script>
+    <script src="~/app/controllers/tokensManagerController.js"></script>
     <script src="~/scripts/wow.js"></script>
     <script src="~/scripts/jsoneditor/jsoneditor.js"></script>
     <script src="~/scripts/jsoneditor/ng-jsoneditor.js"></script>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Common.Logging;
-using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects;
+using Dashboard.UI.Objects.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 

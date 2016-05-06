@@ -21,7 +21,6 @@ namespace Dashboard.DI.CompositionRoot
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ConfigurationProvider>().As<IConfigureDashboard>().InstancePerRequest();
-
             builder.RegisterType<StandardPluginValidationBuilder>().As<IBuildValidationResult>().InstancePerRequest();
             builder.RegisterType<StandardPluginFacade>().As<IManagePluginsFacade>().InstancePerRequest();
             builder.RegisterType<StandardPluginInfoBuilder>().As<IBuildPluginInfo>().InstancePerRequest();

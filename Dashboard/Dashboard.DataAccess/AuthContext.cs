@@ -1,9 +1,8 @@
 ﻿using System.Data.Entity;
 using Dashboard.UI.Objects.Auth;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Dashboard.Infrastructure.Identity.Repository
+namespace Dashboard.DataAccess
 {
     public class AuthDbContext : IdentityDbContext<DashboardUser>
     {
@@ -12,5 +11,8 @@ namespace Dashboard.Infrastructure.Identity.Repository
         {
             Database.SetInitializer<AuthDbContext>(null);
         }
+
+        public DbSet<AuthClient> Clients { get; set; }
+        public DbSet<AuthRefreshToken> RefreshTokens { get; set; }
     }
 }
