@@ -1,51 +1,95 @@
-﻿'use strict';
-app.factory('authService', ['$http', '$q', 'localStorageService', 'dashboardRoles',
-    function ($http, $q, localStorageService, roles) {
+﻿"use strict";
+app.factory('authService', ['$http', '$q', 'localStorageService', 'dashboardRoles', 'clientId',
+    function ($http, $q, localStorageService, roles, clientId) {
         var authorizationDataKey = 'authorizationData';
         var userProfileDataKey = 'userProfileData';
         var authServiceFactory = {};
+        authServiceFactory.dashboardRoles = angular.copy(roles);
+        var userProfileData = null;
+
+        var onUserProfileChanged = function () { }
 
         var authData = {
             isAuth: false,
-            userName: ""
+            userName: "",
+            tokenExipreTime: new Date().getTime() - 1
         };
 
-        var dashboardRoles = angular.copy(roles);
+        //------------ User profile methods
 
-        var userProfileData = null;
+        authServiceFactory.isAuthenticated = function () {
+            return authData && authData.isAuth && authData.tokenExipreTime >= Date.now();
+        }
 
-        var login = function (loginData) {
-            var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-            var deferred = $q.defer();
+        authServiceFactory.getCurrentUserAuthorizationData = function () {
+            return localStorageService.get(authorizationDataKey);
+        }
 
-            $http.post('/token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-                .success(function (response) {
+        authServiceFactory.getCurrentUserProfile = function (force) {
 
-                    localStorageService.set(authorizationDataKey,
-                        {
-                            token: response.access_token,
-                            userName: loginData.userName, refreshToken: ""
+            if (!userProfileData || force) { // check if cached
+                userProfileData = localStorageService.get(userProfileDataKey);
+                if (!userProfileData || force) { // check in local storage
+                    //force refresh
+                    var deffered = $q.defer();
+
+                    $http.get("/api/account/user-info")
+                        .success(function (response) {
+                            userProfileData = response;
+                            localStorageService.set(userProfileDataKey, response);
+                            deffered.resolve(userProfileData);
+                        }).error(function (err, status) {
+                            deffered.reject(err);
                         });
 
-                    authData.isAuth = true;
-                    authData.userName = loginData.userName;
-                    getUserProfile(true);
-                    deferred.resolve(response);
+                    return deffered.promise;
+                }
+            }
 
-                }).error(function (err, status) {
-                    deferred.reject(err);
-                });
+            return $q.resolve(userProfileData);
+        }
 
-            return deferred.promise;
+        authServiceFactory.fillAuthData = function () {
+            var authorizationData = authServiceFactory.getCurrentUserAuthorizationData();
+            if (authorizationData) {
+                authData.isAuth = true;
+                authData.userName = authorizationData.userName;
+                authData.tokenExipreTime = authorizationData.expiresIn;
+            }
         };
 
-        var logOut = function (logoutCookie) {
+        //--- SignInManagerMethods
+
+        authServiceFactory.loginWithRefreshToken = function () {
+
+            var storedData = localStorageService.get(authorizationDataKey);
+            if (storedData && storedData.refreshToken) {
+                var singInRequestData = {
+                    "grant_type": "refresh_token",
+                    "client_id": clientId,
+                    "refresh_token": storedData.refreshToken
+                };
+
+                return login(singInRequestData);
+            }
+
+            return $q.reject();
+        }
+        authServiceFactory.login = function (loginData) {
+
+            var singInRequestData = {
+                "grant_type": "password",
+                "username": loginData.userName,
+                "password": loginData.password,
+                "client_id": clientId
+            };
+
+            return login(singInRequestData);
+        };
+
+        authServiceFactory.logOut = function (logoutCookie) {
 
             var deffered = $q.defer();
-
-            localStorageService.remove(authorizationDataKey);
-            authData.isAuth = false;
-            authData.userName = "";
 
             if (logoutCookie) {
                 $http.post("/api/account/logoff", {})
@@ -53,109 +97,119 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'dashboardRole
                         deffered.resolve(response);
                     }).error(function (err, status) {
                         deffered.reject(err);
+                    }).finally(function () {
+                        clearUserProfile();
                     });
             } else {
+                clearUserProfile();
                 deffered.resolve();
             }
 
             return deffered.promise;
         };
 
-        var saveRegistration = function (registrationData) {
-            return $http.post('/api/account/register', registrationData)
-                .then(function (response) {
-                    return response;
-                });
+       
+
+        authServiceFactory.onUserProfileChanged = function (callback) {
+            onUserProfileChanged = callback;
         };
 
-        var changePass = function (oldPass, newPass) {
+        authServiceFactory.saveRegistration = function (registrationData) {
+            return $http.post('/api/account/register', registrationData);
+        };
+
+        authServiceFactory.changePass = function (oldPass, newPass) {
             return $http.post("/api/account/changePass", { currentPassword: oldPass, newPassword: newPass });
         }
 
-        var fillAuthData = function () {
-            var storedData = localStorageService.get(authorizationDataKey);
-            if (storedData) {
-                authData.isAuth = true;
-                authData.userName = storedData.userName;
-            }
-        };
+        // -- Users Service methods
 
-        var refreshUserProfile = function () {
-            var deffered = $q.defer();
-
-            $http.get("/api/account/user-info")
-                .success(function (response) {
-                    userProfileData = response;
-                    localStorageService.set(userProfileDataKey, response);
-                    deffered.resolve(response);
-                }).error(function (err, status) {
-                    deffered.reject(err);
-                });
-
-            return deffered.promise;
-        }
-
-        var getUserProfile = function (force) {
-
-            if (!userProfileData || force) { // check if cached
-                userProfileData = localStorageService.get(userProfileDataKey);
-                if (!userProfileData || force) { // check in local storage
-                    //force refresh
-                    $q.all([refreshUserProfile()]).then(function () {
-                        return userProfileData;
-                    });
-                }
-            }
-            return userProfileData;
-        }
-
-        var getAllUsers = function () {
+        authServiceFactory.getAllUsers = function () {
             return $http.get('/api/account/allusers');
         }
 
-        var deleteUser = function (userId) {
+        authServiceFactory.deleteUser = function (userId) {
             return $http.delete('/api/account/delete/' + userId);
         }
 
-        var isAuthenticated = function () {
-            return authData && authData.isAuth;
+        authServiceFactory.changeRoles = function (userId, rolesToRemove, rolesToAdd) {
+            return $http.post('/api/account/change-roles/' + userId, { rolesToRemove: rolesToRemove, rolesToAdd: rolesToAdd })
+                .then(function (response) {
+                    return authServiceFactory.getCurrentUserProfile()
+                        .then(function (userProfile) {
+                            if (userId === userProfile.id) {
+                                return authServiceFactory.loginWithRefreshToken().finally(function () {
+                                    $q.resolve(response);
+                                });
+                            }
+                            return $q.resolve(response);
+                        });
+
+                }, function (err) {
+                    return $q.reject(err);
+                });
         }
 
-        var currentUserHasRole = function (role) {
-            if (!isAuthenticated()) return false;
-
-            var userProfile = getUserProfile(); //refresh userProfile
-            return userProfile.roles.indexOf(role) >= 0;
-        }
-
-        var changeRoles = function (userId, rolesToRemove, rolesToAdd) {
-            return $http.post('/api/account/change-roles/' + userId, { rolesToRemove: rolesToRemove, rolesToAdd: rolesToAdd });
-        }
-
-        var getAdminPartyState = function () {
+        authServiceFactory.getAdminPartyState = function () {
             return $http.get('/api/account/admin-party/state');
         }
 
-        var setAdminPartyState = function (allowed) {
+        authServiceFactory.setAdminPartyState = function (allowed) {
             return $http.post('/api/account/admin-party/change', allowed);
         }
 
-        authServiceFactory.saveRegistration = saveRegistration;
-        authServiceFactory.login = login;
-        authServiceFactory.logOut = logOut;
-        authServiceFactory.fillAuthData = fillAuthData;
-        authServiceFactory.authentication = authData;
-        authServiceFactory.changePass = changePass;
-        authServiceFactory.refreshUserProfile = refreshUserProfile;
-        authServiceFactory.getUserProfile = getUserProfile;
-        authServiceFactory.getAllUsers = getAllUsers;
-        authServiceFactory.deleteUser = deleteUser;
-        authServiceFactory.isAuthenticated = isAuthenticated;
-        authServiceFactory.dashboardRoles = angular.copy(dashboardRoles);
-        authServiceFactory.currentUserHasRole = currentUserHasRole;
-        authServiceFactory.changeRoles = changeRoles;
-        authServiceFactory.getAdminPartyState = getAdminPartyState;
-        authServiceFactory.setAdminPartyState = setAdminPartyState;
+        function clearUserProfile() {
+            localStorageService.remove(authorizationDataKey);
+            localStorageService.remove(userProfileDataKey);
+            authData.isAuth = false;
+            authData.userName = "";
+            onUserProfileChanged();
+        }
+
+        function login(requestLoginData) {
+            var deferred = $q.defer();
+            $http({
+                method: "POST",
+                url: '/token',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj)
+                        if (obj.hasOwnProperty(p))
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+
+                    return str.join("&");
+                },
+                data: requestLoginData
+            }).success(function (response) {
+
+                var authorizationData = {
+                    token: response.access_token,
+                    userName: response.userName,
+                    refreshToken: response.refresh_token,
+                    expiresIn: response.expires_in,
+                    useRefreshTokens: !(response.refresh_token == 'undefined' || response.refresh_token.length === 0)
+                };
+
+                localStorageService.set(authorizationDataKey, authorizationData);
+
+                authData.isAuth = true;
+                authData.userName = response.userName;
+                authData.tokenExipreTime = Date.now() + (authorizationData.expiresIn * 1000);
+
+                authServiceFactory.getCurrentUserProfile(true)
+                    .then(function (userProfile) {
+                        onUserProfileChanged(userProfile);
+                    });
+
+                deferred.resolve(authorizationData);
+
+            }).error(function (err, status) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
 
         return authServiceFactory;
     }]);

@@ -19,7 +19,7 @@
                                         <label for="appType">Application Type</label>
                                         <select id="appType" class="form-control" ng-model="authClient.applicationType">
                                             <option value="0" selected="selected">JS Application</option>
-                                            <option value="1" >Native application</option>
+                                            <option value="1">Native application</option>
                                         </select>
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="form-group" ng-show="authClient.applicationType == 0">
                                         <label for="allowedOrigin">Origin</label>
-                                        <input id="allowedOrigin" type="text" class="form-control" ng-model="authClient.allowedOrigin"
+                                        <input id="allowedOrigin" type="url" class="form-control" ng-model="authClient.allowedOrigin"
                                                maxlength="100" placeholder="http://www.consonto.com" />
                                     </div>
                                     <div style="overflow: auto;">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <h3>registered applications ({{clients.length}})</h3>
                         <hr />
                         <table class="table table-striped table-bordered table-hover">
@@ -75,68 +75,109 @@
                                     <th>Active</th>
                                     <th>Origin</th>
                                     <th>Created</th>
+                                    <th>Users</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="client in clients">
+                                <tr ng-repeat="app in clients">
                                     <td>
-                                        {{ client.id }}
+                                        {{ app.client.id }}
                                     </td>
                                     <td>
-                                        {{ client.name }}
+                                        {{ app.client.name }}
                                     </td>
                                     <td>
-                                        <i ng-show="client.applicationType == 0" class="fa fa-globe" aria-hidden="true"></i>
-                                        <i ng-show="client.applicationType == 1" class="fa fa-android" aria-hidden="true"></i>
+                                        <i ng-show="app.client.applicationType == 0" class="fa fa-globe" aria-hidden="true"></i>
+                                        <i ng-show="app.client.applicationType == 1" class="fa fa-android" aria-hidden="true"></i>
                                     </td>
                                     <td>
-                                        {{ client.active | date:'medium' }}
+                                        <i data-ng-show="app.client.active" class="fa fa-check-circle" aria-hidden="true"></i>
+                                        <i data-ng-hide="app.client.active" class="fa fa-times-circle" aria-hidden="true"></i>
                                     </td>
                                     <td>
-                                        {{ client.allowedOrigin }}
+                                        {{ app.client.allowedOrigin }}
                                     </td>
-                                    
+
                                     <td>
-                                        {{ client.createdAt | date:'medium' }}
+                                        {{ app.client.createdAt | date:'medium' }}
                                     </td>
-                                    
+                                    <td>
+                                        {{ app.activeUsers  }}
+                                    </td>
+                                    <td>
+                                        <button data-ng-click="deleteApp($index, app.client.id, app.client.name)" class="btn btn-sm">
+                                            <i class="fa fa-trash"></i>
+                                            delete
+                                        </button>
+                                        <button data-ng-click="reGenerateAppId($index,app.client.id, app.client.name)" class="btn btn-sm">
+                                            <i class="fa fa-recycle"></i>
+                                            new secret
+                                        </button>
+
+                                        <button data-ng-hide="app.client.active"
+                                                 data-ng-click="toggleClientState($index, app.client.id, app.client.name, !app.client.active)"
+                                                class="btn btn-sm btn-success">
+
+                                            <span data-ng-hide="app.client.active">
+                                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                                activate
+                                            </span>
+
+                                        </button>
+
+                                        <button data-ng-show="app.client.active" data-ng-click="toggleClientState($index, app.client.id, app.client.name, !app.client.active)"
+                                                class="btn btn-sm btn-danger">
+
+                                            <span data-ng-show="app.client.active">
+                                                <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                                                deactivate
+                                            </span>
+
+                                        </button>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <h3>refresh tokens ({{refreshTokens.length}})</h3>
-                        <hr/>
+                        <span class="help-block">not showing expired tokens</span>
+                        <hr />
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>Subject</th>
-                                <th>Client</th>
-                                <th>Issued At (UTC)</th>
-                                <th>Expires At (UTC)</th>
-                            </tr>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Client</th>
+                                    <th>Issued At (UTC)</th>
+                                    <th>Expires At (UTC)</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr data-ng-repeat="token in refreshTokens">
-                                <td>
-                                    <a data-ng-click="deleteRefreshTokens($index,token.id)" href="">Remove</a>
-                                </td>
-                                <td>
-                                    {{ token.subject }}
-                                </td>
-                                <td>
-                                    {{ token.clientId }}
-                                </td>
-                                <td>
-                                    {{ token.issuedUtc | date:'medium' }}
-                                </td>
-                                <td>
-                                    {{ token.expiresUtc | date:'medium' }}
-                                </td>
-                            </tr>
+                                <tr data-ng-repeat="token in refreshTokens">
+                                    <td>
+                                        {{ token.subject }}
+                                    </td>
+                                    <td>
+                                        {{ token.clientId }}
+                                    </td>
+                                    <td>
+                                        {{ token.issuedUtc | date:'medium' }}
+                                    </td>
+                                    <td>
+                                        {{ token.expiresUtc | date:'medium' }}
+                                    </td>
+                                    <td>
+                                        <button data-ng-click="deleteRefreshTokens($index,token.id)" class="btn btn-sm">
+                                            <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+                                            revoke
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

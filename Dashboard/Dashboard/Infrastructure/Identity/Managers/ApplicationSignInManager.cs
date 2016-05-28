@@ -18,7 +18,7 @@ namespace Dashboard.Infrastructure.Identity.Managers
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(DashboardUser user)
         {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+            return user.GenerateUserCookieIdentityAsync((ApplicationUserManager)UserManager);
         }
 
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)

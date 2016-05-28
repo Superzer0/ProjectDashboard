@@ -231,15 +231,15 @@
     <Content Include="app\app.js" />
     <Content Include="app\controllers\homeController.js" />
     <Content Include="app\controllers\home\homeapp.js" />
-    <Content Include="app\controllers\instance\indexInstanceController.js" />
+    <Content Include="app\controllers\instance\instanceUsersController.js" />
+    <Content Include="app\controllers\instance\brokerInstanceController.js" />
     <Content Include="app\controllers\navigationController.js" />
     <Content Include="app\controllers\loginController.js" />
     <Content Include="app\controllers\plugins\pluginController.js" />
     <Content Include="app\controllers\plugins\indexPluginsController.js" />
     <Content Include="app\controllers\plugins\pluginUploadWizardController.js" />
-    <Content Include="app\controllers\refreshController.js" />
     <Content Include="app\controllers\signupController.js" />
-    <Content Include="app\controllers\tokensManagerController.js" />
+    <Content Include="app\controllers\instance\appsManagerController.js" />
     <Content Include="app\controllers\user\userPluginsController.js" />
     <Content Include="app\controllers\user\indexUserController.js" />
     <Content Include="app\services\authInterceptorService.js" />
@@ -248,7 +248,7 @@
     <Content Include="app\services\tokensManagerService.js" />
     <Content Include="app\services\utilsService.js" />
     <Content Include="app\views\home.html" />
-    <Content Include="app\views\instance\index.html" />
+    <Content Include="app\views\instance\broker.html" />
     <Content Include="app\views\instance\users.html" />
     <Content Include="app\views\instance\sidebar.html" />
     <Content Include="app\views\login.html" />
@@ -406,6 +406,7 @@
     <None Include="scripts\jsoneditor\jsoneditor.map" />
     <None Include="Shared\_AdminLayout.cshtml" />
     <None Include="Shared\_HomeLayout.cshtml" />
+    <None Include="Views\OfficialAppId.cshtml" />
     <None Include="Views\Home.cshtml" />
     <None Include="Views\Admin.cshtml" />
   </ItemGroup>
@@ -425,6 +426,7 @@
     <Compile Include="Infrastructure\ActionResults\RazorResult.cs" />
     <Compile Include="Infrastructure\Controllers\BaseController.cs" />
     <Compile Include="Infrastructure\Controllers\RazorController.cs" />
+    <Compile Include="Infrastructure\Filters\AuthorizeDashboardAttribute.cs" />
     <Compile Include="Infrastructure\Filters\DbLoggingFIlter.cs" />
     <Compile Include="Infrastructure\Filters\DbSessionFilter.cs" />
     <Compile Include="Infrastructure\Filters\ErrorHandlingFilter.cs" />
@@ -434,6 +436,8 @@
     <Compile Include="Infrastructure\Identity\MessageServices\SmsService.cs" />
     <Compile Include="Infrastructure\Identity\MessageServices\EmailService.cs" />
     <Compile Include="Infrastructure\Identity\Repository\AuthRepository.cs" />
+    <Compile Include="Infrastructure\Identity\Server\AuthContextParameters.cs" />
+    <Compile Include="Infrastructure\Identity\Server\AuthErrors.cs" />
     <Compile Include="Infrastructure\Identity\Server\SimpleRefreshTokenProvider.cs" />
     <Compile Include="Infrastructure\Identity\Server\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Infrastructure\Middleware\GlobalExceptionLoggerMiddleware.cs" />
@@ -452,6 +456,7 @@
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Admin\AdminViewModel.cs" />
+    <Compile Include="Models\ApplicationAccess\RegisteredApplications.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\Home\HomeViewModel.cs" />
     <Compile Include="Models\Home\PluginViewModel.cs" />

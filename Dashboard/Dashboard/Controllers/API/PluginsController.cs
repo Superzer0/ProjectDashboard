@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Dashboard.Infrastructure.Controllers;
+using Dashboard.Infrastructure.Filters;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 
 namespace Dashboard.Controllers.API
 {
     [RoutePrefix("api/instance/plugins")]
-    [Authorize(Roles = DashboardRoles.PluginManager)]
+    [AuthorizeUser(Roles = DashboardRoles.PluginManager)]
     public class PluginsController : BaseController
     {
         private readonly IProvidePlugins _providePlugins;

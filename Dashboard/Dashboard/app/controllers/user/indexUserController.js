@@ -42,7 +42,7 @@
                     }
 
                 }).error(function (err) {
-                    notificationService.addNotification('active plugins', 'error while loading active plugins list', 'error');
+                    notificationService.addError('active plugins', 'error while loading active plugins list');
                     console.log(err);
                 });
         }
@@ -54,7 +54,7 @@
             isWorking = true;
 
             authService.changePass($scope.changePassData.oldPass, $scope.changePassData.newPass).success(function () {
-                notificationService.addNotification("password change", "password has been changed successfuly");
+                notificationService.addSuccess("password change", "password has been changed successfuly");
                 isWorking = false;
                 $scope.changePassData = {};
                 $scope.changePassForm.$setPristine();
@@ -64,18 +64,17 @@
                     message: "Correct errors listed below: "
                 };
 
-                notificationService.addNotification("password change", "error while changing password", "error");
+                notificationService.addError("password change", "error while changing password");
 
                 isWorking = false;
             });
         }
 
-        $scope.getUserData = function () {
-            $scope.userProfile = authService.getUserProfile();
-        }
-
         $scope.refreshUserProfile = function () {
-            $scope.userProfile = authService.getUserProfile(true);
+            authService.getCurrentUserProfile(true)
+                .then(function (userProfile) {
+                    $scope.userProfile = userProfile;
+                });
         }
 
         $scope.toogleMenu = function () {

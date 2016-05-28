@@ -10,7 +10,7 @@ using Dashboard.UI.Objects.Services;
 
 namespace Dashboard.Controllers.MVC
 {
-    [Authorize]
+
     [RoutePrefix("home")]
     public class HomeController : RazorController
     {

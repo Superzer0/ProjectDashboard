@@ -10,6 +10,9 @@
 
         var service = {
             addNotification: addNotification,
+            addSuccess: addSuccess,
+            addWarning: addWarning,
+            addError: addError,
             removeLast: removeLast,
             removeAll: removeAll,
             init: init
@@ -22,6 +25,18 @@
                 internalNotificationList.shift();
             }
             internalNotificationList.push({ "title": title, "body": body, "type": type });
+        }
+
+        function addSuccess(title, body) {
+            addNotification(title, body, 'success');
+        }
+
+        function addWarning(title, body) {
+            addNotification(title, body, 'warn');
+        }
+
+        function addError(title, body) {
+            addNotification(title, body, 'error');
         }
 
         function removeLast() {

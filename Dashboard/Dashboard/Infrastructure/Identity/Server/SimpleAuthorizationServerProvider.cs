@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.Owin;
 using Common.Logging;
-using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
@@ -18,38 +17,89 @@ namespace Dashboard.Infrastructure.Identity.Server
 {
     internal class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+        private const string DefaultAllowedOrigin = "*";
         private readonly ILog _logger = LogManager.GetLogger<SimpleAuthorizationServerProvider>();
 
+        /// <summary>
+        ///  Validates user agent that is acting on behalf of the user
+        /// </summary>
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        {
+            string clientId;
+            string clientSecret;
+
+            if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
+            {
+                context.TryGetFormCredentials(out clientId, out clientSecret);
+            }
+
+            if (context.ClientId == null)
+            {
+                context.Validated();
+                SetContextEror(context, AuthError.AgentErrorClientIdMissing);
+                return;
+            }
+
+            var authRepository = Resolve<IAuthRepository>(context.OwinContext);
+            var client = await authRepository.FindClient(context.ClientId);
+
+            if (client == null)
+            {
+                SetContextEror(context, AuthError.AgentErrorClientIdNotFound);
+                return;
+            }
+
+            if (client.ApplicationType == AuthApplicationType.NativeConfidential)
+            {
+                if (string.IsNullOrWhiteSpace(clientSecret))
+                {
+                    SetContextEror(context, AuthError.AgentErrorSecretMissing);
+                    return;
+                }
+
+                if (client.Secret != authRepository.GetHash(clientSecret))
+                {
+                    SetContextEror(context, AuthError.AgentErrorSecretInvalid);
+                    return;
+                }
+            }
+
+            if (!client.Active)
+            {
+                SetContextEror(context, AuthError.AgentErrorAppInactive);
+                return;
+            }
+
+            context.OwinContext.Set(AuthContextParameters.AllowedOrigin, client.AllowedOrigin);
+            context.OwinContext.Set(AuthContextParameters.AllowedRefreshTokenLifeTime, client.RefreshTokenLifeTime.ToString());
+
+            context.Validated();
+        }
+        /// <summary>
+        /// Validates user based on sent user_name/password. Creates auth ticket
+        /// </summary>
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             try
             {
-                var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin") ?? "*";
+                var allowedOrigin = context.OwinContext.Get<string>(AuthContextParameters.AllowedOrigin) ?? DefaultAllowedOrigin;
 
                 context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
                 var authRepository = Resolve<IAuthRepository>(context.OwinContext);
                 var user = await authRepository.FindUser(context.UserName, context.Password);
-                if (user == null)
+                var userIdentity = await BuildUserIdentity(context, authRepository, user);
+
+                if (userIdentity == null)
                 {
-                    context.SetError("invalid_grant", "The user name or password is incorrect");
+                    SetContextEror(context, AuthError.PasswordGrantCredentialsInvalid);
                     return;
                 }
 
-                AuthenticationManager(context).SignOut();
-
-                await SignInManager(context).SignInAsync(user, false, false);
-                var userIdentity = await authRepository.GetUserClaims(user);
-
-                userIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-                userIdentity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-                userIdentity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-                AddAdminPartyRoles(context, userIdentity);
-
                 var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
-                    {"as:client_id", context.ClientId ?? string.Empty},
-                    {"userName", context.UserName}
+                    {AuthContextParameters.ClientId, context.ClientId ?? string.Empty},
+                    {AuthContextParameters.UserNameKey, context.UserName}
                 });
 
                 var ticket = new AuthenticationTicket(userIdentity, props);
@@ -63,113 +113,82 @@ namespace Dashboard.Infrastructure.Identity.Server
             }
         }
 
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        /// <summary>
+        /// Restores user identity based on refresh token id, 
+        /// </summary>
+        public override async Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
         {
-            string clientId;
-            string clientSecret;
-
-            if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
-            {
-                context.TryGetFormCredentials(out clientId, out clientSecret);
-            }
-
-            if (context.ClientId == null)
-            {
-                //Remove the comments from the below line context.SetError, and invalidate context 
-                //if you want to force sending clientId/secrects once obtain access tokens. 
-                context.Validated();
-                //context.SetError("invalid_clientId", "ClientId should be sent.");
-                return Task.FromResult<object>(null);
-            }
-
-            var authRepository = Resolve<IAuthRepository>(context.OwinContext);
-            var client = authRepository.FindClient(context.ClientId);
-
-            if (client == null)
-            {
-                context.SetError("invalid_clientId", $"Client '{context.ClientId}' is not registered in the system.");
-                return Task.FromResult<object>(null);
-            }
-
-            if (client.ApplicationType == AuthApplicationType.NativeConfidential)
-            {
-                if (string.IsNullOrWhiteSpace(clientSecret))
-                {
-                    context.SetError("invalid_clientId", "Client secret should be sent.");
-                    return Task.FromResult<object>(null);
-                }
-
-                if (client.Secret != authRepository.GetHash(clientSecret))
-                {
-                    context.SetError("invalid_clientId", "Client secret is invalid.");
-                    return Task.FromResult<object>(null);
-                }
-            }
-
-            if (!client.Active)
-            {
-                context.SetError("invalid_clientId", "Client is inactive.");
-                return Task.FromResult<object>(null);
-            }
-
-            context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
-            context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
-
-            context.Validated();
-            return Task.FromResult<object>(null);
-        }
-
-        public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
-        {
-            var originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
+            var originalClient = context.Ticket.Properties.Dictionary[AuthContextParameters.ClientId];
             var currentClient = context.ClientId;
 
             if (originalClient != currentClient)
             {
-                context.SetError("invalid_clientId", "Refresh token is issued to a different clientId.");
-                return Task.FromResult<object>(null);
+                SetContextEror(context, AuthError.AgentErrorRefreshTokenMismatch);
             }
 
-            // Change auth ticket for refresh token requests
-            var newIdentity = new ClaimsIdentity(context.Ticket.Identity);
-            newIdentity.AddClaim(new Claim("newClaim", "newValue"));
+            var authRepository = Resolve<IAuthRepository>(context.OwinContext);
+            var user = await authRepository.FindUser(context.Ticket.Identity.Name);
+            var newUserIdentity = await BuildUserIdentity(context, authRepository, user);
 
-            var newTicket = new AuthenticationTicket(newIdentity, context.Ticket.Properties);
+            if (newUserIdentity == null)
+            {
+                SetContextEror(context, AuthError.UserNotFoundForRefreshToken);
+                return;
+            }
+
+            var newTicket = new AuthenticationTicket(newUserIdentity, context.Ticket.Properties);
             context.Validated(newTicket);
-
-            return Task.FromResult<object>(null);
         }
 
-        private static void AddAdminPartyRoles(OAuthGrantResourceOwnerCredentialsContext context,
+        public override async Task TokenEndpoint(OAuthTokenEndpointContext context)
+        {
+            foreach (var property in context.Properties.Dictionary)
+            {
+                context.AdditionalResponseParameters.Add(property.Key, property.Value);
+            }
+        }
+
+        private async Task<ClaimsIdentity> BuildUserIdentity(BaseValidatingTicketContext<OAuthAuthorizationServerOptions> context,
+            IAuthRepository authRepository, DashboardUser user)
+        {
+            if (context == null) throw new NullReferenceException("context must not be null");
+            if (authRepository == null) throw new NullReferenceException("authRepository must not be null");
+            if (user == null) return null;
+
+            var userIdentity = await authRepository.GetUserClaims(user);
+            userIdentity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+            AddAdminPartyRoles(context, userIdentity);
+            return userIdentity;
+        }
+
+        private static void AddAdminPartyRoles(BaseValidatingTicketContext<OAuthAuthorizationServerOptions> context,
             ClaimsIdentity userIdentity)
         {
             var configureDashboard = Resolve<IConfigureDashboard>(context.OwinContext);
 
             if (!configureDashboard.GetAdminPartyState()) return;
+            var userClaim = new Claim(ClaimTypes.Role, DashboardRoles.User);
+            var pluginManagerClaim = new Claim(ClaimTypes.Role, DashboardRoles.PluginManager);
+            var adminClaim = new Claim(ClaimTypes.Role, DashboardRoles.Admin);
 
-            userIdentity.AddClaim(new Claim(ClaimTypes.Role, DashboardRoles.User));
-            userIdentity.AddClaim(new Claim(ClaimTypes.Role, DashboardRoles.PluginManager));
-            userIdentity.AddClaim(new Claim(ClaimTypes.Role, DashboardRoles.Admin));
-        }
-
-        public override Task TokenEndpoint(OAuthTokenEndpointContext context)
-        {
-            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+            foreach (var claim in userIdentity.Claims.Where(p => p.Type == ClaimTypes.Role))
             {
-                context.AdditionalResponseParameters.Add(property.Key, property.Value);
+                userIdentity.TryRemoveClaim(claim);
             }
 
-            return Task.FromResult<object>(null);
+            userIdentity.AddClaim(userClaim);
+            userIdentity.AddClaim(pluginManagerClaim);
+            userIdentity.AddClaim(adminClaim);
         }
 
-        private ApplicationSignInManager SignInManager(OAuthGrantResourceOwnerCredentialsContext context)
+        private void SetContextEror(BaseValidatingClientContext context, AuthErrorDescription authError)
         {
-            return context.OwinContext.Get<ApplicationSignInManager>();
+            context.SetError(authError.ErrorKey, authError.ErrorDescription);
         }
 
-        private IAuthenticationManager AuthenticationManager(OAuthGrantResourceOwnerCredentialsContext context)
+        private void SetContextEror<T>(BaseValidatingContext<T> context, AuthErrorDescription authError)
         {
-            return context.OwinContext.Authentication;
+            context.SetError(authError.ErrorKey, authError.ErrorDescription);
         }
 
         private static T Resolve<T>(IOwinContext context)

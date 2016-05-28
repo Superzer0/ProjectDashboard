@@ -6,38 +6,33 @@ app.controller('navigationController', ['$scope', '$location', 'authService', 'n
         notificationService.init($scope.notifications);
 
         $scope.logOut = function () {
-            authService.logOut(true).then(function (response) {
-                notificationService.addNotification("Sign out", "Logged out successfully", "");
-                $location.path('/home');
-            }, function (err) {
-                notificationService.addNotification("Sign out", "Error while logging out", "error");
-            });
+            authService.logOut(true)
+                .then(function (response) {
+                    $location.path('/home');
+                }, function (err) {
+                    notificationService.addWarning("Sign out", "Error while logging out");
+                });
         }
 
         $scope.isAuth = function () {
             return authService.isAuthenticated();
         }
 
-        $scope.hasUserRole = function () {
-            return hasRole(authService.dashboardRoles.user);
+        function hasRole(userProfile, role) {
+            return userProfile.roles.indexOf(role) >= 0;
         }
 
-        $scope.hasAdminRole = function () {
-            return hasRole(authService.dashboardRoles.admin);
-        }
-
-        $scope.hasPluginsRole = function () {
-            return hasRole(authService.dashboardRoles.plugins);
-        }
-
-        function hasRole(role) {
-            return authService.currentUserHasRole(role);
-        }
-
-        (function () {
-            authService.fillAuthData();
-            if ($scope.isAuth()) {
-                $scope.userProfile = authService.getUserProfile(true);
+        authService.onUserProfileChanged(function (userProfile) {
+            if (userProfile) {
+                $scope.userProfileGetter = userProfile;
+                $scope.hasUserRole = hasRole(userProfile, authService.dashboardRoles.user);
+                $scope.hasAdminRole = hasRole(userProfile, authService.dashboardRoles.admin);
+                $scope.hasPluginsRole = hasRole(userProfile, authService.dashboardRoles.plugins);
+            } else {
+                $scope.userProfileGetter = null;
+                $scope.hasUserRole = false;
+                $scope.hasAdminRole = false;
+                $scope.hasPluginsRole = false;
             }
-        })();
+        });
     }]);

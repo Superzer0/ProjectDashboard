@@ -58,12 +58,12 @@
         };
 
         pluginsService.setPluginStateForUser = function (pluginId, version, state) {
-            var userProfile = authService.getUserProfile();
+            var userProfile = authService.getCurrentUserProfile();
             return $http.post('api/user/plugins/switch/' + pluginId + '/' + version + '/' + userProfile.id, state);
         };
 
         pluginsService.configureUserPlugin = function (pluginId, version, configuration) {
-            var userProfile = authService.getUserProfile();
+            var userProfile = authService.getCurrentUserProfile();
             return $http.post('api/user/plugins/configuration/' + pluginId + '/' + version + '/' + userProfile.id,
                configuration);
         };

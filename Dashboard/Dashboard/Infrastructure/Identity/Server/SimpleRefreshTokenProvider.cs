@@ -18,16 +18,16 @@ namespace Dashboard.Infrastructure.Identity.Server
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            var clientid = context.Ticket.Properties.Dictionary["as:client_id"];
+            var clientid = context.Ticket.Properties.Dictionary[AuthContextParameters.ClientId];
 
             if (string.IsNullOrEmpty(clientid))
             {
-                return;
+                throw new ArgumentNullException(nameof(clientid), @"client_id must be known when creating refresh token");                
             }
 
             var refreshTokenId = Guid.NewGuid().ToString("n");
 
-            var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime");
+            var refreshTokenLifeTime = context.OwinContext.Get<string>(AuthContextParameters.AllowedRefreshTokenLifeTime);
             var authRepository = Resolve<IAuthRepository>(context.OwinContext);
             var token = new AuthRefreshToken
             {
@@ -58,7 +58,7 @@ namespace Dashboard.Infrastructure.Identity.Server
 
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-            var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
+            var allowedOrigin = context.OwinContext.Get<string>(AuthContextParameters.AllowedOrigin);
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             var authRepository = Resolve<IAuthRepository>(context.OwinContext);

@@ -34,7 +34,7 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
         templateUrl: "/app/views/user/index.html",
         resolve: {
             userProfile: ['authService', function (authService) {
-                return authService.getUserProfile();
+                return authService.getCurrentUserProfile();
             }]
         }
     });
@@ -51,18 +51,18 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
 
     //---- instance
 
-    $routeProvider.when("/instance/index", {
-        controller: "indexInstanceController",
-        templateUrl: "/app/views/instance/index.html"
-    });
-
     $routeProvider.when("/instance/users", {
-        controller: "indexInstanceController",
+        controller: "instanceUsersController",
         templateUrl: "/app/views/instance/users.html"
     });
 
+    $routeProvider.when("/instance/index", {
+        controller: "brokerInstanceController",
+        templateUrl: "/app/views/instance/broker.html"
+    });
+
     $routeProvider.when("/instance/tokens", {
-        controller: "tokensManagerController",
+        controller: "appsManagerController",
         templateUrl: "/app/views/instance/tokens.html"
     });
 

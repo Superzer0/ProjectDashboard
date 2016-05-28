@@ -1,5 +1,4 @@
 ﻿@using Dashboard.Common
-@using Dashboard.Infrastructure.Identity
 @using Dashboard.UI.Objects
 @using Dashboard.UI.Objects.Auth
 @inherits RazorEngine.Templating.TemplateBase<Dashboard.Models.BaseViewModel>
@@ -51,7 +50,7 @@
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
                 <a class="navbar-brand" href="#/">
-                    <img id="logo-img" alt="PD" src="content/img/logo/dashboard-48x48.png">
+                    <img id="logo-img" alt="PD" src="/content/img/logo/dashboard-48x48.png">
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
@@ -62,20 +61,20 @@
                             MY DASHBOARD
                         </a>
                     </li>
-                    <li data-ng-show="hasUserRole()">
+                    <li data-ng-show="hasUserRole">
                         <a href="#/user/index">
                             <i class="fa fa-user-plus"></i>
                             ME
                         </a>
                     </li>
-                    <li data-ng-show="hasPluginsRole()">
+                    <li data-ng-show="hasPluginsRole">
                         <a href="#/plugins">
                             <i class="fa fa-plug"></i>
                             PLUGINS
                         </a>
                     </li>
-                    <li data-ng-show="hasAdminRole()">
-                        <a href="#/instance/index">
+                    <li data-ng-show="hasAdminRole">
+                        <a href="#/instance/users">
                             <i class="fa fa-server"></i>
                             INSTANCE
                         </a>
@@ -83,7 +82,7 @@
                     <li data-ng-show="isAuth()">
                         <a href="" data-ng-click="logOut()">
                             <i class="fa fa-sign-out"></i>
-                            LOGOUT [{{userProfile.userName}}]
+                            LOGOUT [{{userProfileGetter.userName}}]
                         </a>
                     </li>
 
@@ -164,13 +163,15 @@
     <script src="~/app/controllers/homeController.js"></script>
     <script src="~/app/controllers/loginController.js"></script>
     <script src="~/app/controllers/signupController.js"></script>
-    <script src="~/app/controllers/instance/indexInstanceController.js"></script>
+    <script src="~/app/controllers/instance/instanceUsersController.js"></script>
+    <script src="~/app/controllers/instance/appsManagerController.js"></script>
+    <script src="~/app/controllers/instance/brokerInstanceController.js"></script>
     <script src="~/app/controllers/user/indexUserController.js"></script>
     <script src="~/app/controllers/plugins/indexPluginsController.js"></script>
     <script src="~/app/controllers/plugins/pluginUploadWizardController.js"></script>
     <script src="~/app/controllers/plugins/pluginController.js"></script>
     <script src="~/app/controllers/user/userPluginsController.js"></script>
-    <script src="~/app/controllers/tokensManagerController.js"></script>
+    <script src="/officalAppId"></script>
     <script src="~/scripts/wow.js"></script>
     <script src="~/scripts/jsoneditor/jsoneditor.js"></script>
     <script src="~/scripts/jsoneditor/ng-jsoneditor.js"></script>
@@ -223,6 +224,7 @@
             .constant('dashboardRoles', dashboardRoles)
             .constant('dashboardRolesNames', dashboardRolesNames)
             .constant('communicationTypes', communicationTypes)
+            .constant('clientId', "e65431581ce0449faa1e7b8bbdb5441a")
             .constant('inputTypes', inputType);
 
     </script>

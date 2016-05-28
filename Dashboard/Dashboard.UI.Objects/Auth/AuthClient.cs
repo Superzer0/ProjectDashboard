@@ -24,6 +24,7 @@ namespace Dashboard.UI.Objects.Auth
 
         public int RefreshTokenLifeTime { get; set; }
         public DateTime CreatedAt { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string AllowedOrigin { get; set; }

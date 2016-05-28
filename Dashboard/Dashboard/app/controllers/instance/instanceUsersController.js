@@ -3,10 +3,9 @@
 
     angular
         .module('angularAdmin')
-        .controller('indexInstanceController', ['$scope', 'authService', 'notificationService', '$http', indexInstanceController]);
+        .controller('instanceUsersController', ['$scope', 'authService', 'notificationService', instanceUsersController]);
 
-    function indexInstanceController($scope, authService, notificationService, $http) {
-        $scope.title = 'indexInstanceController';
+    function instanceUsersController($scope, authService, notificationService) {
 
         $scope.userList = [];
         $scope.isWorking = false;
@@ -34,7 +33,7 @@
                 .success(function (response) {
                     $scope.userList = response;
                 }).error(function (err) {
-                    notificationService.addNotification("users list", "failed to update users list", "error");
+                    notificationService.addSuccess("users list", "failed to update users list", "error");
                 });
         }
 
@@ -44,11 +43,11 @@
             $scope.isWorking = true;
             authService.deleteUser(userId)
                 .success(function (response) {
-                    notificationService.addNotification("delete user", "user " + userName + " has been deleted");
+                    notificationService.addSuccess("delete user", "user " + userName + " has been deleted");
                     $scope.refreshUserList();
                     $scope.isWorking = false;
                 }).error(function (err) {
-                    notificationService.addNotification("deleted user", "user " + userName + " could not be deleted", "error");
+                    notificationService.addError("deleted user", "user " + userName + " could not be deleted");
                     $scope.isWorking = false;
                 });
         }
@@ -87,17 +86,17 @@
 
             $scope.isWorking = true;
             authService.changeRoles($scope.manageRoleModel.userId, rolesToRemove, rolesToAdd)
-                .success(function (response) {
-                    notificationService.addNotification("roles", "you might need to re-login to see the effects");
+                .then(function (response) {
+                    notificationService.addSuccess("roles", "user might need to re-login to see the effects");
                     dismissRolesModal();
                     $scope.manageRoleModel = angular.copy(initRoleManagerValues);
                     $scope.refreshUserList();
                     $scope.isWorking = false;
-                }).error(function (err) {
+                }, function (err) {
                     $scope.isWorking = false;
                     console.log(err);
                     dismissRolesModal();
-                    notificationService.addNotification("roles", "an error occured, try again later.", "error");
+                    notificationService.addError("roles", "an error occured, try again later.");
                 });
         }
 
@@ -114,36 +113,17 @@
             authService.setAdminPartyState($scope.adminPartyState)
                .success(function () {
                    if ($scope.adminPartyState) {
-                       notificationService.addNotification("roles", "admin party on");
+                       notificationService.addSuccess("roles", "admin party on");
                    } else {
-                       notificationService.addNotification("roles", "admin party off");
+                       notificationService.addSuccess("roles", "admin party off");
                    }
                }).error(function () {
-                   notificationService.addNotification("roles", "error occured while setting admin party property", "error");
+                   notificationService.addError("roles", "error occured while setting admin party property");
                    $scope.adminPartyState = !$scope.adminPartyState;
                });
         }
 
-        $scope.brokerInfoLoading = true;
-        $scope.broker = undefined;
-
-        $scope.refreshBrokerInfo = function () {
-            $http.get('api/instance/broker-status').success(function (response) {
-                $scope.broker = response;
-                $scope.brokerInfoLoading = false;
-            }).error(function (response) {
-                notificationService.addNotification('broker info', 'could not fetch broker information', 'error');
-                $scope.broker = undefined;
-                $scope.brokerInfoLoading = false;
-            });
-        };
-
-        activate();
-
-        function activate() {
-            $scope.refreshUserList();
-            $scope.getAdminPartyState();
-            $scope.refreshBrokerInfo();
-        }
+        $scope.refreshUserList();
+        $scope.getAdminPartyState();
     }
 })();

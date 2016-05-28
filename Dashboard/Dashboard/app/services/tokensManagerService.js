@@ -1,34 +1,36 @@
 ﻿'use strict';
+
 app.factory('tokensManagerService', ['$http', function ($http) {
 
     var tokenManagerServiceFactory = {};
 
-    var _getRefreshTokens = function () {
-
-        return $http.get('api/refreshtokens').then(function (results) {
-            return results;
-        });
+    tokenManagerServiceFactory.getRefreshTokens = function () {
+        return $http.get('api/manageApps/refreshTokens');
     };
 
-    var _deleteRefreshTokens = function (tokenid) {
-
-        return $http.delete('api/refreshtokens/?tokenid=' + tokenid).then(function (results) {
-            return results;
-        });
+    tokenManagerServiceFactory.deleteRefreshTokens = function (tokenid) {
+        return $http.delete('api/manageApps/refreshTokens/' + tokenid);
     };
 
-    var _createApp = function(appModel) {
-        return $http.post('api/refreshtokens/createapp', appModel);
+    tokenManagerServiceFactory.createApp = function (appModel) {
+        return $http.post('api/manageApps/app/create', appModel);
     };
 
-    var _getClients = function () {
-        return $http.get('api/refreshtokens/apps');
+    tokenManagerServiceFactory.getClients = function () {
+        return $http.get('api/manageApps/apps');
     };
 
-    tokenManagerServiceFactory.deleteRefreshTokens = _deleteRefreshTokens;
-    tokenManagerServiceFactory.getRefreshTokens = _getRefreshTokens;
-    tokenManagerServiceFactory.createApp = _createApp;
-    tokenManagerServiceFactory.getClients = _getClients;
+    tokenManagerServiceFactory.deleteClient = function (appId) {
+        return $http.delete('api/manageApps/apps/' + appId);
+    };
+
+    tokenManagerServiceFactory.changeClientStatus = function (appId, status) {
+        return $http.post('api/manageApps/apps/status/' + appId + '/' + status);
+    };
+
+    tokenManagerServiceFactory.regenerateClientSecret = function (appId) {
+        return $http.post('api/manageApps/apps/secret/regenerate/' + appId);
+    };
 
     return tokenManagerServiceFactory;
 }]);

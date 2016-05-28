@@ -33,13 +33,13 @@ app.controller('signupController', ['$scope', '$location', '$timeout', 'authServ
 
             $scope.formBeingSubmitted = true;
             $scope.formClass = "";
-            authService.saveRegistration($scope.registration).then(function (response) {
-
-                $scope.savedSuccessfully = true;
-                $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
-                notificationService.addNotification("Registration", "User has been registered successfully. You can now log in.");
-                startTimer();
-            },
+            authService.saveRegistration($scope.registration)
+                .then(function (response) {
+                    $scope.savedSuccessfully = true;
+                    $scope.message = "User has been registered successfully, you will be redicted to login page in 2 seconds.";
+                    notificationService.addSuccess("Registration", "User has been registered successfully. You can now log in.");
+                    startTimer();
+                },
              function (response) {
                  if (response.status === 400) {
                      $scope.errors = utilsService.parseModelStateErrors(response.data);

@@ -18,7 +18,7 @@
                         $scope.plugins = data;
                     }
                 }).error(function (err) {
-                    notificationService.addNotification('user plugins', 'error while loading user plugins list', 'error');
+                    notificationService.addError('user plugins', 'error while loading user plugins list');
                     console.log(err);
                 });
         }
@@ -58,7 +58,7 @@
                     }
 
                 }).error(function (err) {
-                    notificationService.addNotification('active plugins', 'error while loading active plugins list', 'error');
+                    notificationService.addError('active plugins', 'error while loading active plugins list');
                     console.log(err);
                 });
         }
@@ -69,7 +69,7 @@
                 .success(function () {
                     $scope.plugin.disabled = valueToChange;
                 }).error(function () {
-                    notificationService.addNotification('plugin state', 'error while changing state for ' + $scope.plugin.name, 'error');
+                    notificationService.addError('plugin state', 'error while changing state for ' + $scope.plugin.name);
                     $scope.pluginState = !$scope.plugin.disabled;
                 });
         };
@@ -82,7 +82,7 @@
                 .success(function () {
                     $route.reload();
                 }).error(function () {
-                    notificationService.addNotification('plugin configuration', 'error while changing configuration for ' + $scope.plugin.name, 'error');
+                    notificationService.addError('plugin configuration', 'error while changing configuration for ' + $scope.plugin.name);
                 });;
         };
 
