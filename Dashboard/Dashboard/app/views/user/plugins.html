@@ -32,10 +32,10 @@
                                                 </td>
                                                 <td>{{plugin.version}}</td>
                                                 <td>
-                                                    <span data-ng-if="!plugin.disabled">
+                                                    <span data-ng-hide="plugin.disabled">
                                                         <i class="fa fa-check-circle" title="plugin enabled"></i>
                                                     </span>
-                                                    <span data-ng-if="plugin.disabled">
+                                                    <span data-ng-show="plugin.disabled">
                                                         <i class="fa fa-times-circle" title="plugin disabled"></i>
                                                     </span>
                                                 </td>

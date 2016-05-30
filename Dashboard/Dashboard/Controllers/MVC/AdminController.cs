@@ -25,8 +25,8 @@ namespace Dashboard.Controllers.MVC
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("officalAppId")]
-        public IHttpActionResult OfficialApplicationId()
+        [Route("authConstants")]
+        public IHttpActionResult AuthConstants()
         {
             var officialAppClient = _authRepository.GenerateOfficialClientId();
             if (string.IsNullOrWhiteSpace(officialAppClient?.Id))
@@ -34,7 +34,7 @@ namespace Dashboard.Controllers.MVC
                 throw new NullReferenceException("officialAppClient id corrupted. Application cannot work properly");
             }
 
-            return View("~/Views/OfficialAppId.cshtml", officialAppClient.Id);
+            return View("~/Views/AuthConstants.cshtml", officialAppClient.Id);
         }
     }
 }

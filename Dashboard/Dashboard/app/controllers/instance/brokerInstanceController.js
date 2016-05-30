@@ -20,7 +20,7 @@
         $scope.refreshBrokerInfo = function () {
             $http.get('api/instance/broker-status')
                 .then(function (response) {
-                    $scope.broker = response;
+                    $scope.broker = response.data;
                     $scope.brokerInfoLoading = false;
                 }, function (err) {
                     notificationService.addError('broker info', 'could not fetch broker information');

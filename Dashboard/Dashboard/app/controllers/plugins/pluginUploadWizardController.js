@@ -4,15 +4,17 @@
     angular
         .module('angularAdmin')
         .controller('pluginUploadWizardController',
-        ['$scope', 'FileUploader', '$http', '$timeout', 'installationStepStates', 'installationSteps', 'communicationTypes',
+        ['$scope', 'FileUploader', '$http', '$timeout', 'installationStepStates', 'installationSteps', 'communicationTypes','authService',
 
             pluginUploadWizardController]);
 
     function pluginUploadWizardController($scope, FileUploader, $http, $timeout,
-        installationStepStates, installationSteps, communicationTypes) {
+        installationStepStates, installationSteps, communicationTypes, authService) {
 
         $scope.uploader = new FileUploader({
-            url: 'api/plugins/upload'
+            url: 'api/plugins/upload',
+            headers: {},
+            withCredentials: true
         });
 
         $scope.roundPluginSize = function (size) {
@@ -141,10 +143,8 @@
         };
 
         (function () {
-            configureFileUpload($scope, $timeout);
+            configureFileUpload($scope, $timeout, authService);
             $scope.initialize();
-            /* $scope.stepNumber = 2;
-             $scope.stepContext.information.pluginInfo = pluginInfo;*/
         })();
     }
 })();
@@ -168,21 +168,19 @@ angular
         { name: 'completed', state: undefined }
     ]);
 
-function configureFileUpload($scope, $timeout) {
+function configureFileUpload($scope, $timeout, authService) {
 
     var zipFileRegEx = /.+\.zip/i;
 
     $scope.uploader.filters.push({
         name: 'fileCountFilter',
         fn: function (item, options) {
-            console.log(item);
             return this.queue.length < 2;
         }
     });
 
     $scope.uploader.onAfterAddingFile = function (fileItem) {
         $scope.stepContext.upload.fileDropVisible = false;
-        console.info('onAfterAddingFile', fileItem);
     };
 
     $scope.removeItemFromUploadQueue = function (item) {
@@ -196,6 +194,11 @@ function configureFileUpload($scope, $timeout) {
             return zipFileRegEx.test(item.name);
         }
     });
+
+    $scope.uploader.onBeforeUploadItem = function (fileItem) {
+        var bearerHeader = authService.getAuthorizationHeader();
+        fileItem.headers = angular.extend({ Authorization: bearerHeader }, fileItem.headers || {});
+    };
 
     $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
         $scope.stepContext.fileId = response.fileId;

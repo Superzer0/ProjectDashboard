@@ -84,16 +84,28 @@ namespace Dashboard.DataAccess.Providers
 
         public async Task<IEnumerable<Plugin>> GetActiveUserPluginsAsync(string userId)
         {
-            var userPlugins = await _pluginsContext.PluginUiConfigurations.Where(p => p.UserId == userId).ToListAsync();
+            var userConfigurations = await _pluginsContext.PluginUiConfigurations.Where(p => p.UserId == userId && !p.Disabled).ToListAsync();
             var allEnabledPlugins = await _pluginsContext.Plugins.Where(p => !p.Disabled).ToListAsync();
             return
-                allEnabledPlugins.Where(p => userPlugins.Any(r => !r.Disabled && p.Id == r.Id && r.Version == p.Version))
-                    .ToList();
+                allEnabledPlugins
+                .Where(p => userConfigurations.Any(r => p.Id == r.Id && r.Version == p.Version)).Select(p =>
+                {
+                    p.Disabled = userConfigurations.FirstOrDefault(r => p.Id == r.Id && r.Version == p.Version)?.Disabled ??
+                                 p.Disabled;
+                    return p;
+                }).ToList();
         }
 
         public async Task<PluginUiConfiguration> GetUserPluginConfiguration(string pluginId, string version, string userId)
         {
             return await _pluginsContext.PluginUiConfigurations.FindAsync(pluginId, version, userId);
+        }
+
+        public async Task<IEnumerable<PluginUiConfiguration>> GetActiveUserPluginsConfiguration(string userId)
+        {
+            var userConfigurations = await _pluginsContext.PluginUiConfigurations.Where(p => p.UserId == userId && !p.Disabled).ToListAsync();
+            var allEnabledPlugins = await _pluginsContext.Plugins.Where(p => !p.Disabled).ToListAsync();
+            return userConfigurations.Where(p => allEnabledPlugins.Any(r => p.Id == r.Id && r.Version == p.Version)).ToList();
         }
 
         public async Task SavePluginInfo(Plugin plugin)

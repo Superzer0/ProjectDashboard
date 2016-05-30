@@ -1,29 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.DataObjects.Display;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 
 namespace Dashboard.Services.Display
 {
     /// <summary>
     /// Appends meta information about execution environment to plugin html
     /// </summary>
-    /// <seealso cref="Dashboard.UI.Objects.Services.IPreparePluginHtml" />
-    internal class PluginHtmlPreprocessor : IPreparePluginHtml
+    /// <seealso cref="IPreparePluginFrontEnd" />
+    internal class PluginFrontPreprocessor : IPreparePluginFrontEnd
     {
         private readonly IProvidePlugins _providePlugins;
         private readonly IManagePluginsStorage _pluginsStorage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PluginHtmlPreprocessor"/> class.
+        /// Initializes a new instance of the <see cref="PluginFrontPreprocessor"/> class.
         /// </summary>
         /// <param name="providePlugins">Plugins Persistence Instance</param>
         /// <param name="pluginsStorage">Plugins Storage Instance</param>
-        public PluginHtmlPreprocessor(IProvidePlugins providePlugins, IManagePluginsStorage pluginsStorage)
+        public PluginFrontPreprocessor(IProvidePlugins providePlugins, IManagePluginsStorage pluginsStorage)
         {
             _providePlugins = providePlugins;
             _pluginsStorage = pluginsStorage;
@@ -61,14 +64,72 @@ namespace Dashboard.Services.Display
             return result;
         }
 
+        public async Task<IEnumerable<ProcessedPluginConfiguration>> ProcessActivePluginsConfiguration(string userId)
+        {
+            var plugins = await _providePlugins.GetActiveUserPluginsConfiguration(userId);
+            var result = new List<ProcessedPluginConfiguration>();
+
+            foreach (var plugin in plugins)
+            {
+                var displaySettings = JsonConvert.DeserializeObject<PluginDisplaySettings>(plugin.JsonConfiguration);
+
+                // normalize values
+                displaySettings.Columns = displaySettings.Columns > 12 ? 12 : displaySettings.Columns;
+                displaySettings.Order = displaySettings.Order < 0 ? 0 : displaySettings.Order;
+
+                result.Add(new ProcessedPluginConfiguration
+                {
+                    DisplaySettings = displaySettings,
+                    JsonConfiguration = plugin.JsonConfiguration,
+                    PluginUniqueId = Plugin.GetUniqueName(plugin.Id, plugin.Version),
+                    DispatchLink = $"api/dispatch/{plugin.Id}/{plugin.Version}/"
+                });
+            }
+
+            return result;
+        }
+
+        public IEnumerable<IEnumerable<Tuple<ProcessedPluginHtml, ProcessedPluginConfiguration>>> PackPluginHtmlToGrid(IEnumerable<ProcessedPluginHtml> processedPlugins,
+                IEnumerable<ProcessedPluginConfiguration> pluginConfiguration)
+        {
+            var rows = new List<List<Tuple<ProcessedPluginHtml, ProcessedPluginConfiguration>>>();
+
+            var configurationGroups = from p in processedPlugins
+                                      join c in pluginConfiguration on Plugin.GetUniqueName(p.Plugin.Id, p.Plugin.Version) equals
+                                          c.PluginUniqueId
+                                      select new Tuple<ProcessedPluginHtml, ProcessedPluginConfiguration>(p, c);
+
+            foreach (var configurationGroup in configurationGroups.OrderBy(p => p.Item2.DisplaySettings.Order))
+            {
+                var freeSpotFound = false;
+                foreach (var row in rows)
+                {
+                    var columnsSum = row.Sum(p => p.Item2.DisplaySettings.Columns);
+                    if (columnsSum + configurationGroup.Item2.DisplaySettings.Columns > 12) continue;
+
+                    // found free spot
+                    row.Add(configurationGroup);
+                    freeSpotFound = true;
+                    break;
+                }
+
+                if (!freeSpotFound)
+                {
+                    rows.Add(new List<Tuple<ProcessedPluginHtml, ProcessedPluginConfiguration>> { configurationGroup });
+                }
+
+            }
+
+            return rows;
+        }
+
         private async Task<ProcessedPluginHtml> ProcessPluginHtml(Plugin plugin,
             HtmlProcessingOptions processingOptions)
         {
             var rawContent = await _pluginsStorage.GetPluginIndexFile(plugin);
             var linkPrefix = $"{processingOptions.BaseAddress}/plugins/{plugin.UrlName}/front";
-            var dispatchLink = $"api/dispatch/{plugin.Id}/{plugin.Version}/";
             var processedContent = UpdateResourceLinks(rawContent, processingOptions.ResourcePrefixTag, linkPrefix);
-            processedContent = AddApiLink(processedContent, processingOptions.BaseAddressTag, dispatchLink);
+            processedContent = AddApiId(processedContent, processingOptions.ApiAppIdTag, Plugin.GetUniqueName(plugin.Id, plugin.Version));
 
             return new ProcessedPluginHtml
             {
@@ -77,18 +138,18 @@ namespace Dashboard.Services.Display
             };
         }
 
-        private string AddApiLink(string content, string apiLinkTag, string apiLink)
+        private string AddApiId(string content, string apiAppIdTag, string apiAppId)
         {
             var textReader = new StringReader(content);
             var document = new HtmlDocument();
             document.Load(textReader);
 
-            var apiTag = document.DocumentNode.SelectSingleNode($"//div[@{apiLinkTag}]");
+            var apiTag = document.DocumentNode.SelectSingleNode($"//div[@{apiAppIdTag}]");
 
             if (apiTag == null) return content;
 
-            var attr = apiTag.Attributes[apiLinkTag];
-            attr.Value = apiLink;
+            var attr = apiTag.Attributes[apiAppIdTag];
+            attr.Value = apiAppId;
             var stringWriter = new StringWriter();
             document.Save(stringWriter);
             return stringWriter.ToString();

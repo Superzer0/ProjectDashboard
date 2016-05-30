@@ -207,15 +207,17 @@ body {
         }
     }
 
-    #step1{
-        #validation-results{
-            >div{
+    #step1 {
+        #validation-results {
+            > div {
                 text-align: center;
             }
-            .fa-check-circle, .glyphicon-ok{
+
+            .fa-check-circle, .glyphicon-ok {
                 color: @success-color;
             }
-            .fa-times-circle, .glyphicon-remove{
+
+            .fa-times-circle, .glyphicon-remove {
                 color: @error-color;
             }
         }
@@ -345,6 +347,11 @@ footer#footer {
         cursor: inherit;
         display: block;
     }
+}
+
+.help-block {
+    font-size: small;
+    color: grey;
 }
 
 .fade {

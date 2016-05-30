@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.Owin;
 using Common.Logging;
+using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects.Auth;
 using Dashboard.UI.Objects.Providers;
 using Dashboard.UI.Objects.Services;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
@@ -103,7 +106,8 @@ namespace Dashboard.Infrastructure.Identity.Server
                 });
 
                 var ticket = new AuthenticationTicket(userIdentity, props);
-
+                AuthenticationManager(context).SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                await SignInManager(context).SignInAsync(user, false, false);
                 context.Validated(ticket);
             }
             catch (Exception e)
@@ -137,6 +141,9 @@ namespace Dashboard.Infrastructure.Identity.Server
             }
 
             var newTicket = new AuthenticationTicket(newUserIdentity, context.Ticket.Properties);
+            AuthenticationManager(context).SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            await SignInManager(context).SignInAsync(user, false, false);
+
             context.Validated(newTicket);
         }
 
@@ -179,6 +186,16 @@ namespace Dashboard.Infrastructure.Identity.Server
             userIdentity.AddClaim(userClaim);
             userIdentity.AddClaim(pluginManagerClaim);
             userIdentity.AddClaim(adminClaim);
+        }
+
+        private ApplicationSignInManager SignInManager<T>(BaseValidatingContext<T> context)
+        {
+            return context.OwinContext.Get<ApplicationSignInManager>();
+        }
+
+        private IAuthenticationManager AuthenticationManager<T>(BaseValidatingContext<T> context)
+        {
+            return context.OwinContext.Authentication;
         }
 
         private void SetContextEror(BaseValidatingClientContext context, AuthErrorDescription authError)

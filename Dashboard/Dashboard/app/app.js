@@ -1,6 +1,6 @@
 ﻿
 var app = angular.module('angularAdmin',
-    ['ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'growlNotifications',
+    ['dashboardAuth', 'ngRoute', 'LocalStorageModule', 'angular-loading-bar', 'growlNotifications',
         'ngAnimate', 'frapontillo.bootstrap-switch', 'angularFileUpload', 'ng.jsoneditor']);
 
 app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider, cfpLoadingBarProvider) {
@@ -87,9 +87,10 @@ app.config(['$routeProvider', 'cfpLoadingBarProvider', function ($routeProvider,
 
 }]);
 
-app.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('authInterceptorService');
-});
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('dashboardAuthMiddlewareInterceptor');
+    $httpProvider.defaults.withCredentials = true;
+}]);
 
 app.run(['authService', function (authService) {
     authService.fillAuthData();

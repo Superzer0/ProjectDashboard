@@ -1,0 +1,24 @@
+﻿@using Dashboard.UI.Objects.Auth
+@inherits RazorEngine.Templating.TemplateBase<string>
+
+@{
+    Layout = null;
+}
+(function(){
+            var dashboardRoles = {
+            user: "@DashboardRoles.User",
+            admin: "@DashboardRoles.Admin",
+            plugins: "@DashboardRoles.PluginManager"
+            };
+
+            var dashboardRolesNames = {
+            "@DashboardRoles.User": "user",
+            "@DashboardRoles.Admin": "admin",
+            "@DashboardRoles.PluginManager": "plugin manager"
+            };
+
+            angular.module('dashboardAuth')
+            .constant('clientId', '@Model')
+            .constant('dashboardRolesNames', dashboardRolesNames)
+            .constant('dashboardRoles', dashboardRoles);
+            })();

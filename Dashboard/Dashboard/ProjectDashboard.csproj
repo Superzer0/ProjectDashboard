@@ -242,6 +242,9 @@
     <Content Include="app\controllers\instance\appsManagerController.js" />
     <Content Include="app\controllers\user\userPluginsController.js" />
     <Content Include="app\controllers\user\indexUserController.js" />
+    <Content Include="app\modules\auth\dashboardUtils.js" />
+    <Content Include="app\modules\auth\dashboardAuthMiddlewareInterceptor.js" />
+    <Content Include="app\modules\auth\dashboardAuthMiddleware.js" />
     <Content Include="app\services\authInterceptorService.js" />
     <Content Include="app\services\authService.js" />
     <Content Include="app\services\notificationService.js" />
@@ -321,6 +324,10 @@
     <Content Include="scripts\angular-animate.js" />
     <Content Include="scripts\angular-animate.min.js" />
     <Content Include="scripts\angular-bootstrap-switch.js" />
+    <Content Include="scripts\angular-chart.js\angular-chart.css" />
+    <Content Include="scripts\angular-chart.js\angular-chart.js" />
+    <Content Include="scripts\angular-chart.js\angular-chart.min.css" />
+    <Content Include="scripts\angular-chart.js\angular-chart.min.js" />
     <Content Include="scripts\angular-file-upload.min.js" />
     <Content Include="scripts\angular-growl-notifications.min.js" />
     <Content Include="scripts\angular-local-storage.min.js" />
@@ -354,6 +361,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="App_Code\BaseModel.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -399,14 +407,15 @@
     <None Include="polymer\webcomponentsjs\README.md" />
     <None Include="ProjectDashboard_TemporaryKey.pfx" />
     <None Include="scripts\angular-animate.min.js.map" />
+    <None Include="scripts\angular-chart.js\angular-chart.min.css.map" />
+    <None Include="scripts\angular-chart.js\angular-chart.min.js.map" />
     <None Include="scripts\angular-resource.min.js.map" />
     <None Include="scripts\angular-route.min.js.map" />
     <None Include="scripts\angular.min.js.map" />
     <None Include="scripts\jquery-2.2.3.min.map" />
     <None Include="scripts\jsoneditor\jsoneditor.map" />
     <None Include="Shared\_AdminLayout.cshtml" />
-    <None Include="Shared\_HomeLayout.cshtml" />
-    <None Include="Views\OfficialAppId.cshtml" />
+    <None Include="Views\AuthConstants.cshtml" />
     <None Include="Views\Home.cshtml" />
     <None Include="Views\Admin.cshtml" />
   </ItemGroup>

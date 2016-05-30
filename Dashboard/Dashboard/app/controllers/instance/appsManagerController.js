@@ -21,7 +21,7 @@ app.controller('appsManagerController', ['$scope', 'tokensManagerService', 'noti
         });
 
         $scope.deleteRefreshTokens = function (index, tokenid) {
-            tokenid = window.encodeURIComponent(tokenid); // TODO: sprawdzic dzialanie tego
+            tokenid = window.encodeURIComponent(tokenid);
             tokensManagerService.deleteRefreshTokens(tokenid).then(function (results) {
                 $scope.refreshTokens.splice(index, 1);
             }, function (error) {

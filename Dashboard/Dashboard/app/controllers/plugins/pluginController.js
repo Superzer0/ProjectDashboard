@@ -5,10 +5,10 @@
         .module('angularAdmin')
         .controller('pluginController', ['$scope', 'instancePluginsService',
             'notificationService', '$location', '$routeParams', '$timeout', 'communicationTypes',
-            'inputTypes', '$http', pluginController]);
+            'inputTypes', pluginController]);
 
     function pluginController($scope, instancePluginsService, notificationService,
-        $location, $routeParams, $timeout, communicationTypes, inputTypes, $http) {
+        $location, $routeParams, $timeout, communicationTypes, inputTypes) {
         $scope.plugin = {};
 
         if (!($routeParams.id && $routeParams.version)) {
@@ -29,16 +29,6 @@
                     notificationService.addNotification('plugin', 'error while loading plugin info', 'error');
                 });
         }
-
-        $scope.callPlugin = function () {
-            $http.post('api/dispatch/' + $scope.plugin.id + '/' + $scope.plugin.version + '/GetData',
-                '{configuration:"heheh"}')
-                .success(function (response) {
-                    console.log(response);
-                }).error(function (err) {
-                    console.error(err);
-                });
-        };
 
         $scope.onPluginStateChange = function (state) {
             var valueToChange = !state;

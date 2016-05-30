@@ -58,7 +58,14 @@ namespace Dashboard.UI.Objects.DataObjects
 
         public string UrlName => GetUrlName(Name, Id, Version);
 
+        public string IconUrl(string pluginPath)
+        {
+            return $"{pluginPath}/{UrlName}/{Icon}".TrimStart('~');
+        }
+
         public static string GetUrlName(string name, string id, string version) => $"{name.Replace(" ", "-")}_{id}_{version.Replace(".", "-")}";
+
+        public static string GetUniqueName(string id, string version) => $"{id}-{version}";
 
         public override string ToString()
         {

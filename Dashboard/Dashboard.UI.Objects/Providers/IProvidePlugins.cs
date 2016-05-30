@@ -17,5 +17,6 @@ namespace Dashboard.UI.Objects.Providers
         Task SavePluginConfiguration(PluginUiConfiguration pluginConfiguration);
         Task AddPluginUiConfiguration(PluginUiConfiguration pluginUiConfiguration);
         IEnumerable<Plugin> GetPluginVersions(string pluginId);
+        Task<IEnumerable<PluginUiConfiguration>> GetActiveUserPluginsConfiguration(string userId);
     }
 }

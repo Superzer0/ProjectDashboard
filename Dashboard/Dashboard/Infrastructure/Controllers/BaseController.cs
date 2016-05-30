@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.UI.Objects.Auth;
-using Dashboard.UI.Objects.DataObjects;
 using Dashboard.UI.Objects.Services;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -58,11 +57,6 @@ namespace Dashboard.Infrastructure.Controllers
             return string.Join(", ", ModelState.Values.SelectMany(p => p.Errors).Select(p => p.ErrorMessage).ToList());
         }
 
-        // TODO: move somewhere else
-        protected string GetPluginIconUrl(Plugin plugin)
-        {
-            return $"{Environment.PluginsPath}/{plugin.UrlName}/{plugin.Icon}".TrimStart('~');
-        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

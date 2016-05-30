@@ -58,6 +58,10 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -77,6 +81,8 @@
     <Compile Include="BrokerIntegration\IManageBrokerFacade.cs" />
     <Compile Include="DataObjects\BrokerInformation.cs" />
     <Compile Include="DataObjects\Display\HtmlProcessingOptions.cs" />
+    <Compile Include="DataObjects\Display\PluginDisplaySettings.cs" />
+    <Compile Include="DataObjects\Display\ProcessedPluginConfiguration.cs" />
     <Compile Include="DataObjects\Display\ProcessedPluginHtml.cs" />
     <Compile Include="DataObjects\Execution\BrokerExecutionInfo.cs" />
     <Compile Include="DataObjects\Extract\CheckSumPluginInformation.cs" />

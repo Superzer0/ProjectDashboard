@@ -11,6 +11,7 @@ namespace Dashboard.UI.BrokerIntegration
     {
         protected override void Configure()
         {
+            AllowNullDestinationValues = true;
 
             CreateMap<BrokerInformation, BrokerStats>()
                 .ForMember(dest => dest.EndpointAddress, opt => opt.Ignore());

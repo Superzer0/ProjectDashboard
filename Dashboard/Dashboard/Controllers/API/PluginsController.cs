@@ -36,7 +36,7 @@ namespace Dashboard.Controllers.API
                         added = p.Added.ToString("d"),
                         p.Disabled,
                         p.UncompressedSize,
-                        icon = GetPluginIconUrl(p)
+                        icon = p.IconUrl(Environment.PluginsPath)
                     });
 
             return Ok(plugins);
@@ -65,7 +65,7 @@ namespace Dashboard.Controllers.API
                 plugin.Xml,
                 plugin.Configuration,
                 plugin.StartingProgram,
-                icon = GetPluginIconUrl(plugin),
+                icon = plugin.IconUrl(Environment.PluginsPath),
                 api = plugin.PluginMethods.Select(r => new { r.Name, r.InputType, r.OutputType }).ToArray()
             });
         }

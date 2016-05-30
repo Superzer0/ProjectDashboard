@@ -18,14 +18,16 @@ namespace Dashboard.UI.BrokerIntegration
         private readonly LaunchPluginsServiceClient _launchPluginsServiceClient;
         private readonly InstallPluginsServiceClient _installPluginsServiceClient;
         private readonly ManageBrokerServiceClient _manageBrokerServiceClient;
+        private readonly IMapper _mapper;
 
         public BrokerFacade(ManageBrokerServiceClient brokerServiceClient,
             LaunchPluginsServiceClient launchPluginsServiceClient,
-            InstallPluginsServiceClient installPluginsServiceClient)
+            InstallPluginsServiceClient installPluginsServiceClient, IMapper mapper)
         {
             _manageBrokerServiceClient = brokerServiceClient;
             _launchPluginsServiceClient = launchPluginsServiceClient;
             _installPluginsServiceClient = installPluginsServiceClient;
+            _mapper = mapper;
         }
 
         public void SendNewPlugin(string filePath, PluginInformation infoAboutPlugin)
@@ -43,8 +45,7 @@ namespace Dashboard.UI.BrokerIntegration
         {
             var brokerInformation = _manageBrokerServiceClient.GetBrokerInformation();
             var brokerStats = new BrokerStats();
-            Mapper.AllowNullDestinationValues = true;
-            Mapper.Map(brokerInformation, brokerStats);
+            _mapper.Map(brokerInformation, brokerStats);
             brokerStats.EndpointAddress = _manageBrokerServiceClient.Endpoint.Address.Uri.ToString();
             return brokerStats;
         }
@@ -52,8 +53,7 @@ namespace Dashboard.UI.BrokerIntegration
         public string ExecutePlugin(BrokerExecutionInfo executionInfo)
         {
             var pluginExecutionInfo = new PluginExecutionInfo();
-            Mapper.AllowNullDestinationValues = true;
-            Mapper.DynamicMap(executionInfo, pluginExecutionInfo);
+            _mapper.Map(executionInfo, pluginExecutionInfo);
             return _launchPluginsServiceClient.Execute(pluginExecutionInfo);
         }
     }

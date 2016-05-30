@@ -66,9 +66,9 @@
         $scope.onPluginStateChange = function (state) {
             var valueToChange = !state;
             instancePluginsService.setPluginStateForUser($scope.plugin.id, $scope.plugin.version, valueToChange)
-                .success(function () {
+                .then(function () {
                     $scope.plugin.disabled = valueToChange;
-                }).error(function () {
+                }, function () {
                     notificationService.addError('plugin state', 'error while changing state for ' + $scope.plugin.name);
                     $scope.pluginState = !$scope.plugin.disabled;
                 });

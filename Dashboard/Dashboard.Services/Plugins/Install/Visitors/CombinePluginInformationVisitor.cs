@@ -63,7 +63,7 @@ namespace Dashboard.Services.Plugins.Install.Visitors
             foreach (var pluginXmlMethod in leaf.PluginXml?.XmlMethods ?? new PluginXmlMethod[] { })
             {
                 var newPluginMethod = new PluginMethod { PluginId = _plugin.Id, PluginVersion = _plugin.Version };
-                Mapper.Map(pluginXmlMethod, newPluginMethod);
+                _mapper.Map(pluginXmlMethod, newPluginMethod);
                 _pluginMethods.Add(newPluginMethod);
             }
 

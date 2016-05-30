@@ -27,7 +27,7 @@ namespace Dashboard.DI.CompositionRoot
             builder.RegisterType<BrokerFacade>().As<IManageBrokerFacade>().InstancePerRequest();
             builder.RegisterType<PluginsManager>().As<IManagePlugins>().InstancePerRequest();
             builder.RegisterType<RemoteCallsDispatcher>().As<ICallRemoteMethods>().InstancePerRequest();
-            builder.RegisterType<PluginHtmlPreprocessor>().As<IPreparePluginHtml>().InstancePerRequest();
+            builder.RegisterType<PluginFrontPreprocessor>().As<IPreparePluginFrontEnd>().InstancePerRequest();
             builder.RegisterType<CombinePluginInformationVisitor>()
                 .AsSelf()
                 .InstancePerDependency();

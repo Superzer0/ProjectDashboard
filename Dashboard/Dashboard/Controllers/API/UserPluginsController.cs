@@ -34,7 +34,7 @@ namespace Dashboard.Controllers.API
                         p.Name,
                         p.Version,
                         p.Disabled,
-                        icon = GetPluginIconUrl(p)
+                        icon = p.IconUrl(Environment.PluginsPath)
                     });
 
             return Ok(plugins);
@@ -53,7 +53,7 @@ namespace Dashboard.Controllers.API
                         p.Id,
                         p.Name,
                         p.Version,
-                        icon = GetPluginIconUrl(p)
+                        icon = p.IconUrl(Environment.PluginsPath)
                     });
 
             return Ok(plugins);
@@ -68,7 +68,6 @@ namespace Dashboard.Controllers.API
             if (plugin == null) return NotFound();
 
             var user = await GetCurrentUser();
-
             var userConfiguration = await _providePlugins.GetUserPluginConfiguration(pluginId, version, user.Id);
 
             return Ok(new
@@ -78,7 +77,7 @@ namespace Dashboard.Controllers.API
                 plugin.Name,
                 disabled = userConfiguration?.Disabled ?? true,
                 configuration = userConfiguration?.JsonConfiguration ?? plugin.Configuration,
-                icon = GetPluginIconUrl(plugin)
+                icon = plugin.IconUrl(Environment.PluginsPath)
             });
         }
 
