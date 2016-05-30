@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin>
-  <name>Jenkins Jobs</name>
-  <pluginId>B099E79A-4279-4035-80B5-5438C66D75AF</pluginId>
-  <version>1.1.1.9992</version>
+  <name>Git Latest Commits</name>
+  <pluginId>78CC701D-4C86-43D0-8D48-0B9D480B0708</pluginId>
+  <version>1.1.1.1113</version>
   <communicationType>Plain</communicationType>
-  <startingProgram>SampleDashboardBrokerConsumer.exe</startingProgram>
+  <startingProgram>gitLatestCommits.jar</startingProgram>
   <icon>icon.ico</icon>
   <api>
-    <method name="get-jobs">
+    <method name="get-commits">
       <inputType>String</inputType>
       <outputType>String</outputType>
     </method>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+  <name>Git Charts</name>
+  <pluginId>DB0D2F71-441F-4CAC-BCAE-29C3B5BC38E1</pluginId>
+  <version>1.1.1.1113</version>
+  <communicationType>Plain</communicationType>
+  <startingProgram>gitCharts.jar</startingProgram>
+  <icon>icon.png</icon>
+  <api>
+    <method name="get-git-charts">
+      <inputType>String</inputType>
+      <outputType>String</outputType>
+    </method>
+  </api>
+</plugin>

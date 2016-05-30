@@ -1,25 +1,111 @@
-<script dblink src="jenkinsController.js"></script>
+<script data-server-link src="jenkinsController.js"></script>
+<style>
+    .badge-icon {
+        width: 30px;
+        height: 30px;
+        color: white;
+        display: block;
+        border-radius: 100px;
+        text-align: center;
+        vertical-align: text-top;
+        text-transform: uppercase;
+        font-size: large;
+    }
 
-<div ng-controller="jenkinsController">
-	<div class="card-content" id="main-div" api-link>
-		<table class="table table-striped " >
-			<thead>
-				<tr>
-					<td>Job</td>
-					<td>Is in queue</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr data-ng-repeat="job in jobs | limitTo:'4'">
-					<td>{{job.Name}}</td>
-					<td>{{job.IsInQueue}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="card-action">
-		<a class="btn-floating btn-medium waves-effect waves-light red" ng-click="fetchJobs()">
-			<i class="fa fa-repeat"></i>
-	 	</a>		
-	</div>
+    .badge-icon-stable {
+        background: #3fb618;
+    }
+
+    .badge-icon-unstable {
+        background: yellow;
+    }
+
+    .badge-icon-fail {
+        background: red;
+    }
+</style>
+
+<div ng-controller="jenkinsController" data-app-id>
+    <div class="card-content">
+        <table class="table table-striped ">
+            <thead>
+                <tr>
+                    <td>status</td>
+                    <td>name</td>
+                    <td>success rate</td>
+                    <td>last build time </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="job in jobs | orderBy: IsInQueue | limitTo: config.jobsToShow">
+                    <td>
+                        <span class="badge-icon {{getStatusClass(job.Status)}}" ng-hide="job.IsInQueue">
+                        </span>
+
+                        <div class="preloader-wrapper small active" ng-show="job.IsInQueue">
+                            <div class="spinner-layer spinner-blue">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-red">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-yellow">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-green">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>{{job.Name}}</td>
+                    <td>{{job.SuccessRate}}%</td>
+                    <td>{{job.LastBuildTime}} min</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-action">
+        <span class="help-block">
+            <i>showing jobs from: 
+            <b>{{config.jenkinsAddress}}</b>
+            </i>
+        </span>
+        <br />
+
+        <span ng-show="lastFetchedOn" class="help-block">
+            <i>last fetched on: {{lastFetchedOn | date : 'medium'}}</i>
+            <br />
+            <a href ng-click="fetchJobs()">
+                reload
+            </a>
+        </span>
+    </div>
 </div>

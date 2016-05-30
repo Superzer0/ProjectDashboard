@@ -1,0 +1,8 @@
+{
+	"repoAdress" : "https://builds.apache.org/view/Tika",
+	"branch" : "master",
+	"commitsToShow" : 6,
+	"refreshRate" : 180000,
+	"columns" : 6,
+	"order" : 4
+}
