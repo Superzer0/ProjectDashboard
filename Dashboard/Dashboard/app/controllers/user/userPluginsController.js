@@ -79,11 +79,13 @@
         $scope.configureUserPlugin = function () {
             var stringifiedJson = JSON.stringify($scope.plugin.configuration);
             instancePluginsService.configureUserPlugin($scope.plugin.id, $scope.plugin.version, stringifiedJson)
-                .success(function () {
-                    $route.reload();
-                }).error(function () {
-                    notificationService.addError('plugin configuration', 'error while changing configuration for ' + $scope.plugin.name);
-                });;
+                .then(function() {
+                        $route.reload();
+                    },
+                    function() {
+                        notificationService.addError('plugin configuration',
+                            'error while changing configuration for ' + $scope.plugin.name);
+                    });
         };
 
         $scope.toogleMenu = function () {

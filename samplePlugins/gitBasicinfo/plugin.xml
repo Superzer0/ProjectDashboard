@@ -2,7 +2,7 @@
 <plugin>
   <name>Git Latest Commits</name>
   <pluginId>78CC701D-4C86-43D0-8D48-0B9D480B0708</pluginId>
-  <version>1.1.1.1113</version>
+  <version>1.1.1.1114</version>
   <communicationType>Plain</communicationType>
   <startingProgram>gitLatestCommits.jar</startingProgram>
   <icon>icon.ico</icon>

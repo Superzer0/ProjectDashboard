@@ -4,7 +4,6 @@
         width: 40px;
         height: 40px;
         color: white;
-        background: #29b6f6;
         display: block;
         border-radius: 100px;
         text-align: center;
@@ -17,37 +16,68 @@
 
 <div ng-controller="gitLatestCommitsCtrl" data-app-id>
     <div class="card-content">
-        <table class="table table-striped ">
+
+        <!-- loading -->
+        <div class="progress" ng-show="showLoader()">
+            <div class="indeterminate"></div>
+        </div>
+    
+        <!-- error -->
+        <div ng-show="showError()" style="text-align:center;">
+             <i class="material-icons">error_outline</i>
+            <br>
+            <span>Error occured
+                <a ng-click="fetchCommits()" href>
+                    reload
+                </a>
+            </span>
+        </div>
+
+        <!-- empty state -->
+        <div ng-show="showEmptyState()" style="text-align:center;">
+             <i class="material-icons">not_interested</i>
+            <br>
+            <span>Nothing to show here.
+                <a ng-click="fetchCommits()" href>
+                    reload
+                </a>
+            </span>
+        </div>
+
+        <!-- content -->        
+        <table class="table table-striped " ng-show="showContent()">
             <thead>
                 <tr>
                 	<td></td>
                     <td>name</td>
                     <td>message</td>
                     <td>date</td>
-                    <td>changes</td>
                 </tr>
             </thead>
             <tbody>
                 <tr data-ng-repeat="commit in commits | orderBy: '-Date' | limitTo: config.commitsToShow">
                     <td>
-						<span class="badge-icon">
-							{{commit.CommiterName.charAt(0)}}
-						</span>
+						<div style="width:50px; height:50px;">
+                            <img src="{{commit.avatarUrl}}" alt="{{commit.name}}" class="circle responsive-img" />
+                        </div>
+												
                     </td>
-                    <td>{{commit.CommiterName}}</td>
-                    <td>{{commit.Message}}</td>
-                    <td>{{commit.Date | date: 'medium' }}</td>
-                    <td>{{commit.Changes}}</td>
+                    <td>{{commit.name}}</td>
+                    <td>{{commit.message}}</td>
+                    <td>
+                        <div style="width: 100px;">
+                            {{commit.date | date: 'd/MMM H:mm' }}
+                        </div>
+                    </td>
                 </tr>
-            </tbody>
+            </tbody>    
         </table>
     </div>
     <div class="card-action">
         <span class="help-block">
-            <i>showing commits from: <b>{{config.repoAdress}} </b>@<b>{{config.branch}}</b></i>
+            <i>showing commits from: <b>{{config.repoOwner}}/{{config.repoName}}</b></i>
         </span>
-        <br />
-
+        
         <span ng-show="lastFetchedOn" class="help-block">
             <i>last fetched on: {{lastFetchedOn | date : 'medium'}}</i>
             <br />

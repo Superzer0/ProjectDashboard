@@ -220,6 +220,6 @@ _Pvt_Extensions
 
 /Dashboard/Dashboard/plugins
 /Documentation
-/samplePlugins/SampleDashboardBrokerConsumer
 /Dashboard/Dashboard/logs
 /Dashboard/Dashboard/tempPlugins
+*.zip

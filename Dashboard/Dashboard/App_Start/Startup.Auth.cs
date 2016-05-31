@@ -21,7 +21,7 @@ namespace Dashboard
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 ExpireTimeSpan = TimeSpan.FromMinutes(5),
-                LoginPath = new PathString("/#login"),
+                LoginPath = new PathString("/"),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.
