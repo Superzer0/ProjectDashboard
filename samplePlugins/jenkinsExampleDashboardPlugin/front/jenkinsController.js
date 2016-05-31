@@ -2,15 +2,18 @@
 angular.module('homeApp')
     .controller('jenkinsController',
     [
-        '$scope', '$http', '$interval','$attrs',
-        function ($scope, $http, $timeout, $attrs) {
+        '$scope', '$http', '$interval','$attrs','$filter',
+        function ($scope, $http, $timeout, $attrs, $filter) {
 
+            var dateFilter = $filter('date');
             $scope.init($attrs);
             $scope.jobs = [];
             var statusJobs = {
-                1: "badge-icon-stable",
-                2: "badge-icon-unstable",
-                3: "badge-icon-fail"
+                1: "build-status-icon-success",
+                2: "build-status-icon-unstable",
+                3: "build-status-icon-failed",
+                4: "build-status-icon-disabled",
+                5: "build-status-icon-aborted"
             };
 
             $scope.config = {
@@ -19,65 +22,38 @@ angular.module('homeApp')
                 refreshRate: $scope.initialParams.config.refreshRate || 10000 * 6 * 3, // 3 minutes,
                 jenkinsAddress: $scope.initialParams.config.jenkinsAddress
             };
-            console.log($scope.initialParams);
+
+            $scope.showContent = function(){
+                return $scope.firstTimeLoading === false 
+                    && angular.isArray($scope.jobs) && $scope.jobs.length > 0;                   
+            };
+
+            $scope.showError = function(){
+                return $scope.firstTimeLoading === false 
+                    && !angular.isArray($scope.jobs);
+            };
+
+            $scope.showEmptyState = function(){
+                return $scope.firstTimeLoading === false 
+                    && angular.isArray($scope.jobs) && $scope.jobs.length === 0;
+            };
+
+            $scope.showLoader = function(){
+                return $scope.firstTimeLoading;
+            };
+
+            $scope.firstTimeLoading = true;
             $scope.lastFetchedOn = undefined;
             $scope.fetchJobs = function () {
-
-                /*
-                $http.post(config.apiLink + '/get-jobs', "")
+        
+                $http.post($scope.config.apiLink + '/get-jobs', "")
                 .success(function(response){
                     $scope.jobs = response;
+                    $scope.lastFetchedOn = Date.now();
+                    $scope.firstTimeLoading = false;
                 }).error(function(err){
-                    console.error(err);
-                });*/
-
-                $scope.jobs = [
-                {
-                    Name: "some job 1",
-                    IsInQueue: false,
-                    Status: 0,
-                    SuccessRate: 79,
-                    LastBuildTime: 20
-                },
-                {
-                    Name: "some job 2",
-                    IsInQueue: false,
-                    Status: 1,
-                    SuccessRate: 20,
-                    LastBuildTime: 40
-                },
-                {
-                    Name: "some job 3",
-                    IsInQueue: false,
-                    Status: 3,
-                    SuccessRate: 30,
-                    LastBuildTime: 900
-                },
-                {
-                    Name: "some job 4",
-                    IsInQueue: false,
-                    Status: 0,
-                    SuccessRate: 79,
-                    LastBuildTime: 20
-                },
-                {
-                    Name: "some job 5",
-                    IsInQueue: true,
-                    Status: 1,
-                    SuccessRate: 79,
-                    LastBuildTime: 20
-                },
-                {
-                    Name: "some job 6",
-                    IsInQueue: false,
-                    Status: 3,
-                    SuccessRate: 20,
-                    LastBuildTime: 10
-                }
-
-                ];
-
-                $scope.lastFetchedOn = Date.now();
+                    $scope.firstTimeLoading = false;
+                });
 
                 $timeout(function () {
                     $scope.fetchJobs();
@@ -86,6 +62,12 @@ angular.module('homeApp')
 
             $scope.getStatusClass = function (statusCode) {
                 return statusJobs[statusCode];
+            }
+
+            $scope.getFormattedDate = function(dateString){
+                if(!dateString) return 'n/a';
+                var date = new Date(dateString);
+                return dateFilter(date,'medium');
             }
 
             $scope.fetchJobs();

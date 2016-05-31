@@ -15,6 +15,10 @@ app.factory('authInterceptorService', ['$q', '$injector', '$location', 'localSto
 
             //  do not intercept calls for token
             if (config.url === '/token') return config;
+            if (config.url.startsWith('https://api.github')) {
+                console.log(config);
+                return config;
+            }
 
             var authService = $injector.get('authService');
             config.headers = config.headers || {};

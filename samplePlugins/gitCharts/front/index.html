@@ -1,71 +1,65 @@
 <script data-server-link src="gitCharts.js"></script>
-<style>
-    .highlight{
-        color: #ffab40;
-    }
-
-    .highlight-big{
-     font-size: 40px;
- }
-
- .highlight-medium{
-    font-size: 30px;
-}
-</style>
 
 <div ng-controller="gitChartsCtrl" data-app-id>
-    <div class="card-content">
+  <div class="card-content">
 
-        <div class="row">
-            <div class="col s8">
-
-                <canvas id="line" class="chart chart-line" chart-data="chartData.data"
-                chart-labels="chartData.labels" chart-legend="true" chart-series="chartData.series"
-                chart-click="onClick" >
-            </canvas> 
-        </div>
-        <div class="col s4">
-            <div style="text-align:center;">
-                <span class="highlight highlight-big">234</span> commits @ <b>master</b>    
-            </div>
-            
-
-            <br>
-            <br>
-
-            <span class="highlight highlight-big">0.5 
-                <i class="fa fa-arrow-up" aria-hidden="true"></i>
-            </span>  commits per day
-            <br>
-            <div style="text-align:right;">
-                <span >compared to <span class="highlight highlight-medium">0.4</span> last month</span>    
-            </div>
-
-            <br>
-            <br>
-
-            <span class="highlight highlight-medium">Zbyszek Burakowski</span> 
-            <br>
-    <div style="text-align:right;">
-        
-            changed most files
-            (<span class="highlight highlight-medium">432</span> in the last <b>20 days</b>) 
-
+    <!-- loading -->
+    <div class="progress" ng-show="showLoader()">
+      <div class="indeterminate"></div>
     </div>
-        
-        </div>
-    </div>     
 
+    <!-- error -->
+    <div ng-show="showError()" style="text-align:center;">
+       <i class="material-icons">error_outline</i>
+       <br>
+       <span>Error occured
+        <a ng-click="fetchCommits()" href>
+          reload
+        </a>
+      </span>
+    </div>
+
+  <!-- empty state -->
+  <div ng-show="showEmptyState()" style="text-align:center;">
+   <i class="material-icons">not_interested</i>
+   <br>
+   <span>Nothing to show here.
+    <a ng-click="fetchCommits()" href>
+      reload
+    </a>
+  </span>
+  </div>
+
+<!-- content -->  
+<div ng-show="showContent()">
+
+  <div class="row">
+    <div class="col s12">
+      <canvas id="commit-activity" class="chart chart-line" chart-data="commitActivity.data"
+      chart-labels="commitActivity.labels" chart-legend="true" chart-series="commitActivity.series">
+    </canvas> 
+  </div>
+</div>     
+
+<div class="row">
+  <div class="col s12">
+    <canvas id="commit-frequency" class="chart chart-line" chart-data="commitFrequency.data"
+    chart-labels="commitFrequency.labels" chart-legend="true" chart-series="commitFrequency.series">
+  </canvas> 
 </div>
+</div>     
+
+</div>    
+
 <div class="card-action">
-    <span class="help-block">
-        <i> showing commits from: <b>{{config.repoAdress}} </b>@<b>{{config.branch}} </b></i>
-    </span>
-    <span ng-show="lastFetchedOn" class="help-block">
-        <i>last fetched on: {{lastFetchedOn | date : 'medium'}} </i>
-        <a ng-click="fetchCommits()" href> 
-         reload
-     </a>
+  <span class="help-block">
+    <i> showing commits from: <b>{{config.repoOwner}} </b>/<b>{{config.repoName}} </b></i>
+  </span>
+  <span ng-show="lastFetchedOn" class="help-block">
+    <i>last fetched on: {{lastFetchedOn | date : 'medium'}} </i>
+    <a ng-click="fetchCommits()" href> 
+     reload
+   </a>
  </span>
 </div>
 </div>

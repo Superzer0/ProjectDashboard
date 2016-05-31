@@ -1,5 +1,5 @@
 ﻿var app = angular.module('homeApp',
-        ['dashboardAuth', 'ngRoute', 'LocalStorageModule', 'ngAnimate', 'chart.js']);
+        ['dashboardAuth', 'ngRoute', 'LocalStorageModule', 'ngAnimate', 'chart.js', 'ngResource']);
 
 app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('dashboardAuthMiddlewareInterceptor');

@@ -1,8 +1,9 @@
 {
-	"repoAdress" : "https://builds.apache.org/view/Tika",
 	"branch" : "master",
 	"commitsToShow" : 6,
 	"refreshRate" : 180000,
-	"columns" : 6,
+	"fromLastDays": 20,
+	"repoOwner": "twbs",
+	"repoName" : "bootstrap",
 	"order" : 4
 }
