@@ -1,0 +1,150 @@
+<script data-server-link src="jenkinsController.js"></script>
+<style>
+    .build-status-icon {
+        width: 40px;
+        height: 40px;
+        color: white;
+        display: block;
+        border-radius: 100px;
+        text-align: center;
+        vertical-align: text-top;
+        text-transform: uppercase;
+        font-size: large;
+    }
+
+    .build-status-icon-success {
+        background: #4CAF50;
+    }
+
+    .build-status-icon-unstable {
+        background: #FFEB3B;
+    }
+
+    .build-status-icon-failed {
+        background: #F44336;
+    }
+
+    .build-status-icon-disabled {
+        background: #9E9E9E;
+    }
+
+    .build-status-icon-aborted {
+        background: #607D8B;
+    }
+
+</style>
+
+<div ng-controller="jenkinsController" data-app-id>
+
+    <div class="card-content">
+
+           <!-- loading -->
+        <div class="progress" ng-show="showLoader()">
+          <div class="indeterminate"></div>
+        </div>
+
+        <!-- error -->
+        <div ng-show="showError()" style="text-align:center;">
+           <i class="material-icons">error_outline</i>
+           <br>
+           <span>Error occured
+            <a ng-click="fetchJobs()" href>
+              reload
+            </a>
+          </span>
+        </div>
+
+      <!-- empty state -->
+      <div ng-show="showEmptyState()" style="text-align:center;">
+         <i class="material-icons">not_interested</i>
+         <br>
+         <span>Nothing to show here.
+          <a ng-click="fetchJobs()" href>
+            reload
+          </a>
+        </span>
+      </div>
+
+        <table class="table table-striped " ng-show="showContent()">
+            <thead>
+                <tr>
+                    <td>status</td>
+                    <td>name</td>
+                    <td>last build</td>
+                    <td>last success</td>
+                    <td>last failure</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="job in jobs | orderBy: isInQueue | limitTo: config.jobsToShow">
+                    <td>
+                        <span class="build-status-icon {{getStatusClass(job.state)}}" ng-hide="job.isInQueue">
+                        </span>
+
+                        <div class="preloader-wrapper small active" ng-show="job.isInQueue">
+                            <div class="spinner-layer spinner-blue">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-red">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-yellow">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-green">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>{{job.name}}</td>
+                    <td>{{job.lastBuildDuration | number : 2 }} min</td>
+                    <td>{{getFormattedDate(job.lastSuccessDate)}}</td>
+                    <td>{{getFormattedDate(job.lastFaildate)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-action">
+        <span class="help-block">
+            <i>showing jobs from: 
+            <b>{{config.jenkinsAddress}},</b>
+            </i>
+        </span>
+    
+        <span ng-show="lastFetchedOn" class="help-block">
+            <i>last fetched on: {{lastFetchedOn | date : 'medium'}}</i>
+
+            <a href ng-click="fetchJobs()">
+                reload
+            </a>
+        </span>
+    </div>
+</div>

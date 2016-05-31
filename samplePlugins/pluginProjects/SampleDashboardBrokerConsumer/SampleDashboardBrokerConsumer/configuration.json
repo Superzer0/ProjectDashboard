@@ -1,0 +1,7 @@
+{
+	"jenkinsAddress" : "https://builds.apache.org/view/Tika",
+	"jobsToShow" : 5,
+	"refreshRate" : 180000,
+	"columns" : 6,
+	"order" : 4
+}
