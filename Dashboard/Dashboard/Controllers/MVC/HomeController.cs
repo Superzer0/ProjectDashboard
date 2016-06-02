@@ -34,7 +34,7 @@ namespace Dashboard.Controllers.MVC
         {
             try
             {
-                var user = await UserManager.FindByNameAsync(User.Identity.Name);
+                var user = await GetCurrentUser();
                 var processedPluginHtmls =
                     await _preparePluginFrontEnd.ProcessActivePluginsHtml(user.Id, new HtmlProcessingOptions
                     {

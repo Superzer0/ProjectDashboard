@@ -15,6 +15,7 @@ angular.module('dashboardAuth', ['ngRoute', 'LocalStorageModule'])
             userName: "",
             tokenExipreTime: new Date().getTime() - 1
         };
+
         //TODO: this sevice should be splited into smaller ones
 
         //------------ User profile methods
@@ -65,7 +66,7 @@ angular.module('dashboardAuth', ['ngRoute', 'LocalStorageModule'])
             if (authorizationData) {
                 authData.isAuth = true;
                 authData.userName = authorizationData.userName;
-                authData.tokenExipreTime = authorizationData.expiresIn;
+                authData.tokenExipreTime = Date.now() + (authorizationData.expiresIn * 1000);
             }
         };
 

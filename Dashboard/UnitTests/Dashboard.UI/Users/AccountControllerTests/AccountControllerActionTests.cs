@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
+using Autofac.Extras.Moq;
 using Dashboard.Controllers.API;
 using Dashboard.Infrastructure.Identity;
 using Dashboard.Infrastructure.Identity.Managers;
 using Dashboard.Models.Account;
 using Dashboard.UI.Objects.Auth;
+using Dashboard.UI.Objects.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
@@ -208,6 +210,54 @@ namespace UnitTests.Dashboard.UI.Users.AccountControllerTests
                 Assert.That(expectedResult[i].UserName, Is.EqualTo(resultUserList[i].UserName));
                 Assert.That(expectedResult[i].Roles, Is.EquivalentTo(resultUserList[i].Roles));
             }
+        }
+
+        [Test]
+        public void AdminPartyStateTests()
+        {
+            AutoMock.Mock<IConfigureDashboard>().Setup(p => p.GetAdminPartyState()).Returns(true);
+            var accountController = AutoMock.Create<AccountController>();
+
+            var actionResult = accountController.AdminPartyState();
+            Assert.That(actionResult);
+            AutoMock.Mock<IConfigureDashboard>().Verify(p => p.GetAdminPartyState(), Times.Once);
+        }
+
+        [Test]
+        public async Task SetAdminPartyState_StatusSame_OkReturned()
+        {
+            AutoMock.Mock<IConfigureDashboard>().Setup(p => p.GetAdminPartyState()).Returns(true);
+            var accountController = AutoMock.Create<AccountController>();
+
+            var actionResult = await accountController.SetAdminPartyState(true);
+            Assert.That(actionResult, Is.TypeOf<OkResult>());
+            AutoMock.Mock<IConfigureDashboard>().Verify(p => p.GetAdminPartyState(), Times.Once);
+            AutoMock.Mock<IConfigureDashboard>().Verify(p => p.SetAdminPartyState(It.IsAny<bool>()), Times.Never);
+        }
+
+        [Test]
+        public async Task SetAdminPartyState_UserMustHaveAdminRole_OkReturned()
+        {
+            AutoMock.Mock<IConfigureDashboard>().Setup(p => p.GetAdminPartyState()).Returns(false);
+
+            var userManagerMock = new Mock<ApplicationUserManager>();
+
+            userManagerMock.Setup(p => p.FindByNameAsync(It.IsAny<string>()))
+                .Returns(Task.FromResult(new DashboardUser()));
+
+            userManagerMock.Setup(p => p.IsInRoleAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(false));
+
+            userManagerMock.Setup(p => p.AddToRoleAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(IdentityResult.Success));
+
+            var accountController = AutoMock.Create<AccountController>();
+            accountController.UserManager = userManagerMock.Object;
+
+            var actionResult = await accountController.SetAdminPartyState(true);
+            Assert.That(actionResult, Is.TypeOf<OkResult>());
+            AutoMock.Mock<IConfigureDashboard>().Verify(p => p.GetAdminPartyState(), Times.Once);
+            AutoMock.Mock<IConfigureDashboard>().Verify(p => p.SetAdminPartyState(It.Is<bool>(b => b)), Times.Once);
         }
 
         private static readonly object[] GetUsersHappyPathTestCases =

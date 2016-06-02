@@ -242,11 +242,8 @@
     <Content Include="app\controllers\instance\appsManagerController.js" />
     <Content Include="app\controllers\user\userPluginsController.js" />
     <Content Include="app\controllers\user\indexUserController.js" />
-    <Content Include="app\modules\auth\dashboardUtils.js" />
     <Content Include="app\modules\auth\dashboardAuthMiddlewareInterceptor.js" />
     <Content Include="app\modules\auth\dashboardAuthMiddleware.js" />
-    <Content Include="app\services\authInterceptorService.js" />
-    <Content Include="app\services\authService.js" />
     <Content Include="app\services\notificationService.js" />
     <Content Include="app\services\tokensManagerService.js" />
     <Content Include="app\services\utilsService.js" />

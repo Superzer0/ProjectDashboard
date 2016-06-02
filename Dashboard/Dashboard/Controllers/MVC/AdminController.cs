@@ -31,7 +31,7 @@ namespace Dashboard.Controllers.MVC
             var officialAppClient = _authRepository.GenerateOfficialClientId();
             if (string.IsNullOrWhiteSpace(officialAppClient?.Id))
             {
-                throw new NullReferenceException("officialAppClient id corrupted. Application cannot work properly");
+                throw new ArgumentNullException(nameof(officialAppClient), "officialAppClient id corrupted. Application cannot work properly");
             }
 
             return View("~/Views/AuthConstants.cshtml", officialAppClient.Id);

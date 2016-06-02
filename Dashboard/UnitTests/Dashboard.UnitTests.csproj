@@ -109,10 +109,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperConfigurationTests.cs" />
+    <Compile Include="Dashboard.UI\Dispatch\Controller\InstanceControllerTests.cs" />
+    <Compile Include="Dashboard.UI\Dispatch\Controller\ApplicationAccessControllerTests.cs" />
+    <Compile Include="Dashboard.UI\Dispatch\Controller\PluginsControllerTests.cs" />
+    <Compile Include="Dashboard.UI\Dispatch\Controller\HomeControllerTests.cs" />
+    <Compile Include="Dashboard.UI\Dispatch\Controller\AdminControllerTests.cs" />
+    <Compile Include="Dashboard.UI\Dispatch\Controller\PluginCallDispatchControllerTests.cs" />
+    <Compile Include="Dashboard.UI\Front\PluginFrontPreprocessorTests.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerCheckInformationAction.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerInstallAction.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerValidateAction.cs" />
     <Compile Include="Dashboard.UI\Installation\Controller\PluginInstallationControllerUploadPluginTests.cs" />
+    <Compile Include="Dashboard.UI\Installation\Services\StandardPluginExtractorBuilderTests.cs" />
+    <Compile Include="Dashboard.UI\Installation\Services\StandardPluginValidationBuilderTests.cs" />
+    <Compile Include="Dashboard.UI\Installation\Services\CombinePluginInformationVisitorTests.cs" />
+    <Compile Include="Dashboard.UI\Startup\AddStandardRolesTests.cs" />
+    <Compile Include="Dashboard.UI\Users\AccountControllerTests\AccountControllerActionChangeRolesTests.cs" />
     <Compile Include="Dashboard.UI\Users\AccountControllerTests\AccountControllerActionTests.cs" />
     <Compile Include="Dashboard.UI\Users\AccountControllerTests\AccountControllerRegisterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +136,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Services\Dashboard.Services.csproj">
+      <Project>{8544D787-599A-483A-B91F-8C91466BEC19}</Project>
+      <Name>Dashboard.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dashboard.UI.BrokerIntegration\Dashboard.UI.BrokerIntegration.csproj">
       <Project>{22133E14-2C53-42C0-92BD-68519574FEFF}</Project>
       <Name>Dashboard.UI.BrokerIntegration</Name>

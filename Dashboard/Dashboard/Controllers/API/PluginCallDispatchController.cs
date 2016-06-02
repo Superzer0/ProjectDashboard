@@ -32,7 +32,7 @@ namespace Dashboard.Controllers.API
 
             var currentUser = await GetCurrentUser();
 
-            if (currentUser == null) return BadRequest("user not found");
+            if (currentUser == null) return NotFound();
 
             var brokerCall = new BrokerExecutionInfo
             {

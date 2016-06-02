@@ -59,7 +59,7 @@ namespace Dashboard.Services.Display
             foreach (var plugin in plugins)
             {
                 result.Add(await ProcessPluginHtml(plugin, processingOptions));
-            }
+            }  
 
             return result;
         }

@@ -148,7 +148,7 @@ namespace Dashboard.Controllers.API
             var dashboardUser = await UserManager.FindByIdAsync(userId);
             if (dashboardUser == null) return NotFound();
 
-            var allRoles = await RoleManager.Roles.ToListAsync();
+            var allRoles = RoleManager.Roles.ToList();
             ValidateRoles(allRoles, viewModel.RolesToRemove);
             ValidateRoles(allRoles, viewModel.RolesToAdd);
 
@@ -201,11 +201,11 @@ namespace Dashboard.Controllers.API
             if (changeStatus)
             {
                 var dashboardUser = await GetCurrentUser();
+                if (dashboardUser == null) return NotFound();
 
                 if (!await UserManager.IsInRoleAsync(dashboardUser.Id, DashboardRoles.Admin))
                 {
                     var identityResult = await UserManager.AddToRoleAsync(dashboardUser.Id, DashboardRoles.Admin);
-
                     var actionResult = ParseErrorResult(identityResult);
                     if (actionResult != null) return actionResult;
                 }
