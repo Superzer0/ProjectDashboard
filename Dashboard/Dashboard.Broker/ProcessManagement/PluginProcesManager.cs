@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using System.Linq;
 using System.Text;
 using Common.Logging;
 using Dashboard.Broker.DataAccess.Providers;
@@ -72,6 +73,11 @@ namespace Dashboard.Broker.ProcessManagement
         {
             var startingFile = Path.Combine(_brokerEnvironment.MapPath(fileLocation), startingProgram);
 
+            if (!IsValidConfiguration(configuration))
+            {
+                throw new ArgumentException("Invalid configuration parameter", nameof(configuration));
+            }
+
             var jobProcess = new Process
             {
                 StartInfo =
@@ -97,6 +103,12 @@ namespace Dashboard.Broker.ProcessManagement
                 var identifier = $"{executionInfo.PluginId}.{executionInfo.Version}.{executionInfo.Configuration}";
                 return BitConverter.ToString(cryptoProvider.ComputeHash(Encoding.UTF8.GetBytes(identifier)));
             }
+        }
+
+        private bool IsValidConfiguration(string configuration)
+        {
+            // Allow only alphanumeric characters and a few safe symbols
+            return configuration.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_' || c == '.');
         }
     }
 }
